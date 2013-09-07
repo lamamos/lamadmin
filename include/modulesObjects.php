@@ -20,14 +20,18 @@ abstract class Module{
 		$file = file_get_contents($this->pathToConfigFile);
         
         //we get the paragraph wich is between =HEAD1 ARGUMENTS and the next =something
-        preg_match_all("/=head1 ARGUMENTS[^=]*/", $file, $out);
+        preg_match_all("/=head1 ARGUMENTS(\s|.)*\n\=/U", $file, $out);
 		$arguments = split("\n", $out[0][0]);
-        array_shift($arguments);
+        array_shift($arguments);    
+        array_pop($arguments);
         
         //we remove the empty arguments
         foreach($arguments as $arg){
             
-            if($arg != NULL)$argumentsExport[] = $arg;
+            if($arg != NULL){
+            
+                $argumentsExport[] = $arg;
+            }
         }
         
 		return $argumentsExport;
