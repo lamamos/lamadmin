@@ -1,0 +1,16 @@
+#sideBar{
+    float: left;
+    width: 20%;
+    height: 100%;
+    border-style: solid;
+    border-width: 1px;
+    color: black;
+}
+
+
+#mainPannel{
+    overflow: hidden;
+    height:100%;
+    border-style: solid;
+    border-width: 1px;
+}
