@@ -1,3 +1,19 @@
+<?
+//set the garbage coloctor timeout for our session
+ini_set('session.gc_maxlifetime', 3600*24*7);
+session_start();
+
+include_once("include/configObject.php");
+include_once("include/createConfig.php");
+
+
+$config = new Configuration();
+
+
+
+echo "<br><br>fin de echo test<br>";
+?>
+
 <html>
     <head>
 
@@ -8,13 +24,74 @@
     <script src="include/jquery-ui.js"></script>
     <body>
         <div id="sideBar">
-        
-            <? echo "la batte de menu"; ?>
+            Users : <br>
+            <? echo "la liste des utilisateurs"; ?>
+            <br><br>
+            System : <br>
+            <? echo "la liste des services"; ?>
         </div>
     
         <div id="mainPannel">
+            <ul id="tabs">
+                <li><a href="#welkome">Welkome</a></li>
+            </ul>
+            <div id="forms">
         
-            <? echo "le panneau d'amin en lui même <br> et ca roxxx"; ?> 
+                <div id="welkome">
+                        <p>
+                            Proin elit arcu, rutrum commodo, vehicula tempus, commodo a, risus. Curabitur nec arcu. Donec sollicitudin mi sit amet mauris. Nam elementum quam ullamcorper ante. Etiam aliquet massa et lorem. Mauris dapibus lacus auctor risus. Aenean tempor ullamcorper leo. Vivamus sed magna quis ligula eleifend adipiscing. Duis orci. Aliquam sodales tortor vitae ipsum. Aliquam nulla. Duis aliquam molestie erat. Ut et mauris vel pede varius sollicitudin. Sed ut dolor nec orci tincidunt interdum. Phasellus ipsum. Nunc tristique tempus lectus.
+                    </p>
+                </div>
+            </div>
         </div>    
     </body>
+    
+    <script type="text/javascript">
+
+
+        var activeModule = "";
+        var activeSubModule = "";
+        
+        //this function is called at te opening of the page
+        $(function() {
+            $("#mainPannel").tabs({
+                
+                beforeActivate: function(event, ui){
+                    
+                    tabName = ui.newTab.attr('id').substr(1);
+                    activeSubModule = tabName;
+                    
+                    var data = {
+                        moduleName: activeModule,
+                        subModuleName: tabName,
+                    }
+                
+                    request = $.ajax({
+                        url: "/ajax/getFormSubModule.php",
+                        type: "POST",
+                        data: data
+                    });
+                    
+                    request.done(function(response, textStatus, jqXHR){
+                    
+                        //alert(response);
+                        $("#forms #"+tabName).remove();
+                        $("#forms").append("<div id=\""+tabName+"\">"+response+"</div>");
+                    });
+                    
+                    request.fail(function(jqXHR, textStatus, errorThrown){
+                    
+                        alert("error when getting the list of the submodule");
+                    });
+                    
+                    request.always(function(){});
+                }
+            
+            });
+        });
+        
+        
+        
+    </script>
+
 </html>
