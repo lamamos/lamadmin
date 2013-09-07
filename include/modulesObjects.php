@@ -6,6 +6,7 @@ abstract class Module{
 	//TODO : remove this variable it should be useless
 	protected $instanceName;
 	protected $instances;
+    protected $nameVarInstance; //the name of the variables which is the name of this module
 	protected $pathToConfigFolder;
 	protected $pathToConfigFile;
 	protected $arguments;
@@ -27,14 +28,26 @@ abstract class Module{
         
         //we remove the empty arguments
         foreach($arguments as $arg){
-            
             if($arg != NULL){
-            
                 $argumentsExport[] = $arg;
             }
         }
+        $this->arguments = $argumentsExport;
         
-		return $argumentsExport;
+        
+        //we now search for the argument which correspond to the instance name
+        preg_match_all("/=head1 INSTANCENAME(\s|.)*\n\=/U", $file, $out);
+        $linesName = split("\n", $out[0][0]);        
+        array_shift($linesName);    
+        array_pop($linesName);
+
+        foreach($linesName as $nameVar){
+            if(!preg_match("/^\s*$/", $nameVar) ){
+                $nameVarExport[] = $nameVar;
+            }
+        }
+        
+        if($nameVarExport != NULL)$this->nameVarInstance = $nameVarExport[0];
 	}
 
 
@@ -57,6 +70,8 @@ abstract class Module{
 	//TODO : remove this two function, they chould be useless
 	public function getInstanceName(){return $this->instanceName;}
 	public function setInstanceName($name){$this->instanceName = $name;}
+    
+    public function getNameVarInstance(){return $this->nameVarInstance;}
 }
 
 
@@ -73,7 +88,7 @@ class MainModule extends Module{
 
 			$this->pathToConfigFolder = $configFolder;
 			$this->pathToConfigFile = $configFolder."/__module__.pm";
-			$this->arguments = $this->readConfigurationFile();
+			$this->readConfigurationFile();
 
 			foreach(getListOfAvalableSubModules($name) as $subModule){	//crete the list of submodules
 
@@ -112,7 +127,7 @@ class SubModule extends Module{
 		$this->pathToConfigFolder = $configFolder;
 		$this->pathToConfigFile = $configFolder."/".$name.".pm";
 		$this->parentModule = $parentModule;
-		$this->arguments = $this->readConfigurationFile();
+		$this->readConfigurationFile();
 	}
 }
 

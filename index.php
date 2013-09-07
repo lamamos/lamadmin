@@ -9,9 +9,6 @@ include_once("include/createConfig.php");
 
 $config = new Configuration();
 
-
-
-echo "<br><br>fin de echo test<br>";
 ?>
 
 <html>
@@ -25,10 +22,25 @@ echo "<br><br>fin de echo test<br>";
     <body>
         <div id="sideBar">
             Users : <br>
-            <? echo "la liste des utilisateurs"; ?>
+            <?  //list the users on the system
+                $module = $config->getModule("user");
+                foreach($module->getInstances() as $instance){
+
+                    echo "<div class=\"user\">".$instance->getName()."</div><br>";
+                }
+            ?>
             <br><br>
             System : <br>
-            <? echo "la liste des services"; ?>
+            <?
+                foreach($config->getAvalableModules() as $module){
+                    if(!preg_match("/".$module->getName()."/", "user")){
+                        foreach($module->getInstances() as $instance){
+                            echo "<div class=\"mainModule\">".$instance->getName()."</div><br>";
+                        }
+                    }
+                }
+                
+            ?>
         </div>
     
         <div id="mainPannel">

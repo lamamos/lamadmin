@@ -89,25 +89,26 @@ class Configuration{
             }
             
             //we now create the object corresponding to this instance
-            $type->addInstance(new Instance("instance", $keyValue));
-            
+            //we first find the name of the instance
+            $nameVar = $type->getNameVarInstance();
+            unset($name);
+            foreach($keyValue as $tmp){
+                
+                if($tmp[0] == $nameVar){
+                 
+                    $name = $tmp[1];
+                }
+            }
+            if($name == NULL)if($names[1] != NULL)$name = $names[1]; else $name = $names[0];
+
+            //we then create the instance
+            $type->addInstance(new Instance($name, $keyValue));
         }
 	}
 
 
 	function initialisation(){
 
-		//we create the user module
-		$userArguments[] = "ensure";
-		$userArguments[] = "uid";
-		$userArguments[] = "gid";
-		$userArguments[] = "shell";
-		$userArguments[] = "home";
-		$userArguments[] = "managehome";
-		$userModule = new MainModule("user", NULL);
-		$userModule->setArguments($userArguments);
-
-		$this->availableModules[] = $userModule;
 	}
 
 
