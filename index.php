@@ -102,7 +102,118 @@ $config = new Configuration();
             });
         });
         
+        $(".user").click(function(){
         
+            activeModule = $(this).text();
+        
+            var data = {
+                name: $(this).text(),
+            }
+        
+            request = $.ajax({
+                url: "/ajax/getFormUser.php",
+                type: "POST",
+                data: data
+            });
+        
+            request.done(function(response, textStatus, jqXHR){
+                $("#tabs").remove();
+                $("#forms").remove();
+                $("#mainPannel").append("<div id=\"forms\">"+response+"</div>");
+            });
+        
+            request.fail(function(jqXHR, textStatus, errorThrown){
+        
+                alert("error when getting the form for the user");
+            });
+        
+            request.always(function(){});
+        });
+        
+        
+        
+
+        $(".mainModule").click(function(){
+        
+        
+            activeModule = $(this).text();
+        
+            var data = {
+                name: $(this).text(),
+            }
+        
+            request = $.ajax({
+                url: "/ajax/getListSubModule.php",
+                type: "POST",
+                data: data
+            });
+        
+            request.done(function(response, textStatus, jqXHR){
+        
+                var tabs= response.split(","); 
+        
+                $("#tabs").remove();
+                $("#forms").remove();
+                $("#mainPannel").append("<ul id=\"tabs\"></ul>\n<div id=\"forms\"></div>");
+        
+                //alert(response);
+        
+                for(i=0; i<tabs.length; i++){
+        
+                    $("#tabs").append("<li id=\"#"+tabs[i]+"\"><a href=\"#"+tabs[i]+"\">"+tabs[i]+"</a></li>");
+        
+                    //TODO : put the ajax fetcher into the div.
+                    $("#forms").append("<div id=\""+tabs[i]+"\"></div>");
+                }
+        
+                $("#mainPannel").tabs("refresh");
+            });
+        
+            request.fail(function(jqXHR, textStatus, errorThrown){
+        
+                alert("error when getting the liste of the tabs");
+            });
+        
+            request.always(function(){});
+        });
+        
+
+        $("#mainPannel").on("change", ".instanceSelector", function(){
+        
+            $(".instanceSelector option:selected").each(function(){	//they should be only one element here
+        
+                instanceName = $(this).text();
+        
+                if(instanceName == "Add new")return;
+            
+                var data = {
+                    moduleName: activeModule,
+                    subModuleName: activeSubModule,
+                    instanceName: instanceName,
+                }
+        
+                request = $.ajax({
+                    url: "/ajax/getFormInstance.php",
+                    type: "POST",
+                    data: data
+                });
+        
+                request.done(function(response, textStatus, jqXHR){
+        
+                    //alert(response);
+                    $("#forms #"+activeSubModule+" #instanceForm").remove();
+                    $("#forms #"+activeSubModule).append("<div id=\"instanceForm\" stryle=\"float: right;\">"+response+"</div>");
+                });
+        
+                request.fail(function(jqXHR, textStatus, errorThrown){
+        
+                    alert("error when getting the form of the instance");
+                });
+        
+                request.always(function(){});
+        
+            });
+        });
         
     </script>
 
