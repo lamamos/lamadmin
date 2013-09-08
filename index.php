@@ -17,6 +17,7 @@ $config = new Configuration();
     </head>
     <link rel="stylesheet" href="include/jquery-ui.css">
     <link rel="stylesheet" href="include/style.css">
+    <link rel="stylesheet" href="include/magic.css">
     <script type="text/javascript" src="include/jquery-2.0.3.min.js"></script>
     <script src="include/jquery-ui.js"></script>
     <body>
@@ -51,7 +52,7 @@ $config = new Configuration();
         
                 <div id="welkome">
                         <p>
-                            Proin elit arcu, rutrum commodo, vehicula tempus, commodo a, risus. Curabitur nec arcu. Donec sollicitudin mi sit amet mauris. Nam elementum quam ullamcorper ante. Etiam aliquet massa et lorem. Mauris dapibus lacus auctor risus. Aenean tempor ullamcorper leo. Vivamus sed magna quis ligula eleifend adipiscing. Duis orci. Aliquam sodales tortor vitae ipsum. Aliquam nulla. Duis aliquam molestie erat. Ut et mauris vel pede varius sollicitudin. Sed ut dolor nec orci tincidunt interdum. Phasellus ipsum. Nunc tristique tempus lectus.
+                            Proin elit arcu, rutrum commodo, vehicula tempus, commodo a, risus. Curabitur nec arcu. Donec sollicitudin mi sit amet mauris. Nam elementum quam ullamcorper ante. Etiam aliquet massa et lorem. Mauris dapibus lacus auctor risus. Aenean tempor ullamcorper leo. Vivamus sed magna quis ligula eleifend adipiscing. Duis orci. Aliquam sodales tortor vitae ipsum. Aliquam nulla. Duis aliquam molestie erat. Ut et mauris vel pede varius sollicitudin. Sed dolor nec orci tincidunt interdum. Phasellus ipsum. Nunc tristique tempus lectus.
                     </p>
                 </div>
             </div>
@@ -63,6 +64,17 @@ $config = new Configuration();
 
         var activeModule = "";
         var activeSubModule = "";
+
+        //on page load, when make the parts of the page slide in        
+        $("#sideBar").ready(function () { 
+        
+            $("#sideBar").addClass('magictime slideLeftRetourn');
+        });
+        
+        $("#mainPannel").ready(function () { 
+        
+            $("#mainPannel").addClass('magictime slideUpRetourn');
+        });
         
         //this function is called at te opening of the page
         $(function() {
@@ -130,9 +142,6 @@ $config = new Configuration();
             request.always(function(){});
         });
         
-        
-        
-
         $(".mainModule").click(function(){
         
         
@@ -177,7 +186,6 @@ $config = new Configuration();
             request.always(function(){});
         });
         
-
         $("#mainPannel").on("change", ".instanceSelector", function(){
         
             $(".instanceSelector option:selected").each(function(){	//they should be only one element here
