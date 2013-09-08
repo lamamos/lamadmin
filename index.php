@@ -6,7 +6,6 @@ session_start();
 include_once("include/configObject.php");
 include_once("include/createConfig.php");
 
-
 $config = new Configuration();
 
 ?>
@@ -35,9 +34,8 @@ $config = new Configuration();
             <?
                 foreach($config->getAvalableModules() as $module){
                     if(!preg_match("/".$module->getName()."/", "user")){
-                        foreach($module->getInstances() as $instance){
-                            echo "<div class=\"mainModule\">".$instance->getName()."</div><br>";
-                        }
+
+                        echo "<div class=\"mainModule\">".$module->getName()."</div><br>";
                     }
                 }
                 
@@ -60,7 +58,6 @@ $config = new Configuration();
     </body>
     
     <script type="text/javascript">
-
 
         var activeModule = "";
         var activeSubModule = "";
