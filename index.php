@@ -61,6 +61,7 @@ $config = new Configuration();
 
         var activeModule = "";
         var activeSubModule = "";
+        
 
         //on page load, when make the parts of the page slide in        
         $("#sideBar").ready(function () { 
@@ -129,6 +130,10 @@ $config = new Configuration();
                 $("#tabs").remove();
                 $("#forms").remove();
                 $("#mainPannel").append("<div id=\"forms\">"+response+"</div>");
+                $('.userForm').ajaxForm(function() {
+            
+                    alert("Thank you for your comment!"); 
+                });
             });
         
             request.fail(function(jqXHR, textStatus, errorThrown){

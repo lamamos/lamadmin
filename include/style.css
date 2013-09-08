@@ -12,3 +12,20 @@
     overflow: hidden;
     height:100%;
 }
+
+#instanceForm{
+    overflow: hidden;
+    height:100%;    
+}
+
+.instanceSelector{
+    
+    float:left;
+    height: 93%;
+}
+
+#instanceForm{
+    
+    overflow: hidden;
+    height:100%;    
+}
