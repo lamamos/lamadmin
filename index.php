@@ -130,9 +130,19 @@ $config = new Configuration();
                 $("#tabs").remove();
                 $("#forms").remove();
                 $("#mainPannel").append("<div id=\"forms\">"+response+"</div>");
-                $('.userForm').ajaxForm(function() {
-            
-                    alert("Thank you for your comment!"); 
+                $(".userForm").submit(function (){            
+                    $.ajax({
+                        type    : "POST",
+                        url     : "/ajax/setFormUser.php",
+                        data    : $(this).serialize(),
+                        success : function(data) {
+                            //alert("done");
+                            //opts.onSuccess.call(FORM[0], data);
+                        },
+                        error   : function() {
+                            //opts.onError.call(FORM[0]);
+                        }
+                    });
                 });
             });
         

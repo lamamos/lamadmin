@@ -147,6 +147,13 @@ class Instance{
 	public function setName($name){$this->name = $name;}
 	public function getArguments(){return $this->arguments;}
 	public function setArguments($arguments){$this->arguments = $arguments;}
+    public function setArgument($argument, $value){
+        
+        for($i=0; $i<count($this->arguments); $i++){
+            
+            if($this->arguments[$i][0] == $argument)$this->arguments[$i][1] = $value;
+        }
+    }
 }
 
 
