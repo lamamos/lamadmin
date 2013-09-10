@@ -163,8 +163,15 @@ class Instance{
         
         for($i=0; $i<count($this->arguments); $i++){
             
-            if($this->arguments[$i][0] == $argument)$this->arguments[$i][1] = $value;
+            if($this->arguments[$i][0] == $argument){
+                
+                $this->arguments[$i][1] = $value;
+                return 0;
+            }
         }
+        
+        //if we are still here it's that the argument didn't already exist, so we cretae it
+        $this->arguments[] = [$argument, $value];        
     }
 }
 
