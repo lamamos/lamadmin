@@ -63,6 +63,7 @@ abstract class Module{
 			}
 		}
 	}
+    public function clearInstances(){$this->instances = NULL;}
 	public function getName(){return $this->name;}
     public function getArguments(){return $this->arguments;}
 	public function setArguments($arguments){$this->arguments = $arguments;}

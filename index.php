@@ -38,7 +38,7 @@ $config = new Configuration();
                 foreach($config->getAvalableModules() as $module){
                     if(!preg_match("/".$module->getName()."/", "user")){
 
-                        echo "<div class=\"sideBarLine\">";
+                        echo "<div class=\"sideBarLine\" id=\"".$module->getName()."\">";
                         echo "<div class=\"mainModule\">".$module->getName()."</div>";
                         if($module->isActivated()){echo "<div class=\"bool-slider true\"> <div class=\"inset\"> <div class=\"control\"></div> </div> </div>";}
                         else{echo "<div class=\"bool-slider false\"> <div class=\"inset\"> <div class=\"control\"></div> </div> </div>";}                        
@@ -80,19 +80,7 @@ $config = new Configuration();
         });
         
         //this function is called at te opening of the page
-        $(function() {
-            
-            $('.bool-slider .inset .control').click(function() {
-                if (!$(this).parent().parent().hasClass('disabled')) {
-                        if ($(this).parent().parent().hasClass('true')) {
-                            $(this).parent().parent().addClass('false').removeClass('true');
-                        } else {
-                            $(this).parent().parent().addClass('true').removeClass('false');
-                        }
-                }
-            });
-            
-            
+        $(function() {  
             $("#mainPannel").tabs({
                 
                 beforeActivate: function(event, ui){
@@ -229,50 +217,6 @@ $config = new Configuration();
         
             request.always(function(){});
             
-            
-            
-        /*
-            var data2 = {
-                moduleName: activeModule,
-            }
-    
-            request2 = $.ajax({
-                url: "/ajax/getFormInstance.php",
-                type: "POST",
-                data: data2
-            });
-    
-            request2.done(function(response, textStatus, jqXHR){
-    
-                alert(response);
-                $("#forms #"+activeSubModule+" #instanceForm").remove();
-                $("#forms #"+activeSubModule).append(response);
-                $(".instanceForm").submit(function (){       
-
-                    var data = $(this).serialize();
-                    data += "&moduleName="+activeModule;
-
-                    $.ajax({
-                        type    : "POST",
-                        url     : "/ajax/setFormInstance.php",
-                        data    : data,
-                        success : function(data) {
-                            //alert("done");
-                            //opts.onSuccess.call(FORM[0], data);
-                        },
-                        error   : function() {
-                            //opts.onError.call(FORM[0]);
-                        }
-                    });
-                });
-            });
-    
-            request2.fail(function(jqXHR, textStatus, errorThrown){
-    
-                alert("error when getting the form of the instance");
-            });
-    
-            request2.always(function(){});*/
         });
         
         $("#mainPannel").on("change", ".instanceSelector", function(){
@@ -330,6 +274,39 @@ $config = new Configuration();
                 request.always(function(){});
         
             });
+        });
+        
+        $(".bool-slider").click(function(){
+            
+            if (!$(this).hasClass('disabled')) {
+                    if ($(this).hasClass('true')) {
+                        $(this).addClass('false').removeClass('true');
+                    } else {
+                        $(this).addClass('true').removeClass('false');
+                    }
+            }
+            
+
+
+            
+            var data = {
+                moduleToggled: $(this).parent().attr('id'),
+            }
+        
+            request = $.ajax({
+                url: "/ajax/toggleModule.php",
+                type: "POST",
+                data: data
+            });
+        
+            request.done(function(response, textStatus, jqXHR){ });
+        
+            request.fail(function(jqXHR, textStatus, errorThrown){
+        
+                alert("error chile changing the state of the module.");
+            });
+        
+            request.always(function(){});
         });
         
         
