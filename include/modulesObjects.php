@@ -50,7 +50,7 @@ abstract class Module{
         if($nameVarExport != NULL)$this->nameVarInstance = $nameVarExport[0];
 	}
 
-
+    public function isActivated(){if(count($this->instances) == 0)return 0;else return 1;}
 	public function addInstance($instance){$this->instances[] = $instance;}
 	public function getInstances(){return $this->instances;}
 	public function getInstance($name){
@@ -79,7 +79,6 @@ abstract class Module{
 class MainModule extends Module{
 
 	protected $subModules;
-
 
 	function __construct($name, $configFolder, $parentModule=NULL){
 

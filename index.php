@@ -40,8 +40,8 @@ $config = new Configuration();
 
                         echo "<div class=\"sideBarLine\">";
                         echo "<div class=\"mainModule\">".$module->getName()."</div>";
-                        echo "<div class=\"bool-slider true\"> <div class=\"inset\"> <div class=\"control\"></div> </div> </div>";
-                        
+                        if($module->isActivated()){echo "<div class=\"bool-slider true\"> <div class=\"inset\"> <div class=\"control\"></div> </div> </div>";}
+                        else{echo "<div class=\"bool-slider false\"> <div class=\"inset\"> <div class=\"control\"></div> </div> </div>";}                        
                         echo "</div><br>";
                     }
                 }
