@@ -29,3 +29,15 @@
     overflow: hidden;
     height:100%;    
 }
+
+.sideBarLine{
+    
+    float:left;
+    width:100%;
+}
+
+.mainModule{
+    
+    float:left;
+    margin-right:60px;
+}

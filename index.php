@@ -17,8 +17,11 @@ $config = new Configuration();
     <link rel="stylesheet" href="include/jquery-ui.css">
     <link rel="stylesheet" href="include/style.css">
     <link rel="stylesheet" href="include/magic.css">
+    <link rel="stylesheet" href="include/animate.css">
+    <link rel="stylesheet" href="include/on_off_button.css">
     <script type="text/javascript" src="include/jquery-2.0.3.min.js"></script>
     <script src="include/jquery-ui.js"></script>
+    <script src="include/on_off_button.js"></script>
     <body>
         <div id="sideBar">
             Users : <br>
@@ -35,7 +38,11 @@ $config = new Configuration();
                 foreach($config->getAvalableModules() as $module){
                     if(!preg_match("/".$module->getName()."/", "user")){
 
-                        echo "<div class=\"mainModule\">".$module->getName()."</div><br>";
+                        echo "<div class=\"sideBarLine\">";
+                        echo "<div class=\"mainModule\">".$module->getName()."</div>";
+                        echo "<div class=\"bool-slider true\"> <div class=\"inset\"> <div class=\"control\"></div> </div> </div>";
+                        
+                        echo "</div><br>";
                     }
                 }
                 
@@ -61,8 +68,7 @@ $config = new Configuration();
 
         var activeModule = "";
         var activeSubModule = "";
-        
-
+                
         //on page load, when make the parts of the page slide in        
         $("#sideBar").ready(function () { 
         
@@ -75,6 +81,18 @@ $config = new Configuration();
         
         //this function is called at te opening of the page
         $(function() {
+            
+            $('.bool-slider .inset .control').click(function() {
+                if (!$(this).parent().parent().hasClass('disabled')) {
+                        if ($(this).parent().parent().hasClass('true')) {
+                            $(this).parent().parent().addClass('false').removeClass('true');
+                        } else {
+                            $(this).parent().parent().addClass('true').removeClass('false');
+                        }
+                }
+            });
+            
+            
             $("#mainPannel").tabs({
                 
                 beforeActivate: function(event, ui){
@@ -102,9 +120,7 @@ $config = new Configuration();
 
                             var data = $(this).serialize();
                             data += "&moduleName="+activeModule;
-                            /*data += "&subModuleName="+activeSubModule;
-                            data += "&instanceName="+instanceName;*/
-    
+
                             $.ajax({
                                 type    : "POST",
                                 url     : "/ajax/setFormInstance.php",
@@ -175,8 +191,7 @@ $config = new Configuration();
             request.always(function(){});
         });
         
-        $(".mainModule").click(function(){
-        
+        $(".mainModule").click(function(){ 
         
             activeModule = $(this).text();
         
@@ -316,6 +331,7 @@ $config = new Configuration();
         
             });
         });
+        
         
     </script>
 
