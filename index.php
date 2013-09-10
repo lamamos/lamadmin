@@ -222,7 +222,27 @@ $config = new Configuration();
         
                     //alert(response);
                     $("#forms #"+activeSubModule+" #instanceForm").remove();
-                    $("#forms #"+activeSubModule).append("<div id=\"instanceForm\" stryle=\"float: right;\">"+response+"</div>");
+                    $("#forms #"+activeSubModule).append(response);
+                    $(".instanceForm").submit(function (){       
+
+                        var data = $(this).serialize();
+                        data += "&moduleName="+activeModule;
+                        data += "&subModuleName="+activeSubModule;
+                        data += "&instanceName="+instanceName;
+
+                        $.ajax({
+                            type    : "POST",
+                            url     : "/ajax/setFormInstance.php",
+                            data    : data,
+                            success : function(data) {
+                                //alert("done");
+                                //opts.onSuccess.call(FORM[0], data);
+                            },
+                            error   : function() {
+                                //opts.onError.call(FORM[0]);
+                            }
+                        });
+                    });
                 });
         
                 request.fail(function(jqXHR, textStatus, errorThrown){

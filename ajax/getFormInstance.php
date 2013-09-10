@@ -11,7 +11,7 @@ $instance = $subModule->getInstance($_POST['instanceName']);
 
 
 $response = "salut il y a : ".count($instance->getArguments())." arguments.<br>";
-$response .= "<form onsubmit=\"return false;\" method=\"post\">";
+$response .= "<form class=\"instanceForm\" onsubmit=\"return false;\" method=\"post\">";
 
 foreach($instance->getArguments() as $argument){
 

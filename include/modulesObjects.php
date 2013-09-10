@@ -58,7 +58,7 @@ abstract class Module{
 		foreach($this->instances as $instance){
 
 			if(preg_match("/".$instance->getName()."/", $name)){
-
+                
 				return $instance;
 			}
 		}
