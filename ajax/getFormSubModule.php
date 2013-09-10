@@ -15,13 +15,12 @@ if($_POST['subModuleName'] == "general"){	//we need to generate the config of th
 	//TODO : we consider that a module is loaded only once, it may be false, need to check that in the config file
 	$instance = $module->getInstances()[0];
 
+	$response = "salut il y a : ".count($module->getArguments())." arguments.<br>";    
+	$response .= "<form class=\"instanceForm\" onsubmit=\"return false;\" method=\"post\">";
 
-	$response = "salut il y a : ".count($instance->getArguments())." arguments.<br>";
-	$response .= "<form onsubmit=\"return false;\" method=\"post\">";
-
-	foreach($instance->getArguments() as $argument){
-
-		$response .= $argument[0]." : <input type=\"text\" name=\"".$argument[0]."\" value=\"".$argument[1]."\"><br>";
+	foreach($module->getArguments() as $argument){
+        
+        $response .= $argument." : <input type=\"text\" name=\"".$argument."\" value=\"".$instance->getArgument($argument)."\"><br>";
 	}
 	$response .= "<input type=\"submit\" value=\"Save\">";
 	$response .= "</form>";

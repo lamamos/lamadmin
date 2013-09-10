@@ -7,14 +7,14 @@ include_once("../include/createConfig.php");
 $config = new Configuration();
 
 
+$module = $config->getModule($_POST['moduleName']);
+
+
 if($_POST['subModuleName'] == NULL){
     
-    $module = $config->getModule($_POST['moduleName']);
     $instance = $module->getInstances()[0];
-
 }else{    //if we are editing a submodul
     
-    $module = $config->getModule($_POST['moduleName']);
     $subModule = $module->getSubModule($_POST['subModuleName']);
     $instance = $subModule->getInstance($_POST['instanceName']);
 }

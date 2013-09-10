@@ -64,6 +64,7 @@ abstract class Module{
 		}
 	}
 	public function getName(){return $this->name;}
+    public function getArguments(){return $this->arguments;}
 	public function setArguments($arguments){$this->arguments = $arguments;}
 
 
@@ -146,6 +147,17 @@ class Instance{
 	public function getName(){return $this->name;}
 	public function setName($name){$this->name = $name;}
 	public function getArguments(){return $this->arguments;}
+    public function getArgument($name){
+    
+        foreach($this->arguments as $argument){
+            
+            if($argument[0] == $name){
+                
+                return $argument[1];
+            }
+        }
+        return "";
+    }
 	public function setArguments($arguments){$this->arguments = $arguments;}
     public function setArgument($argument, $value){
         

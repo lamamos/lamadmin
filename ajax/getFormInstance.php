@@ -6,8 +6,17 @@ include_once("../include/createConfig.php");
 $config = new Configuration();
 
 $module = $config->getModule($_POST['moduleName']);
-$subModule = $module->getSubModule($_POST['subModuleName']);
-$instance = $subModule->getInstance($_POST['instanceName']);
+
+if($_POST['subModuleName'] == "general"){
+
+    $instance = $module->getInstances()[0];
+    //echo "kikooo";
+}else{
+    
+    //echo "submodule";
+    $subModule = $module->getSubModule($_POST['subModuleName']);
+    $instance = $subModule->getInstance($_POST['instanceName']);
+}
 
 
 $response = "salut il y a : ".count($instance->getArguments())." arguments.<br>";
@@ -24,6 +33,5 @@ $response .= "<input type=\"submit\" value=\"Save\">";
 $response .= "</form>";
 
 echo $response;
-
 
 ?>

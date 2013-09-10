@@ -68,7 +68,6 @@ $config = new Configuration();
         
             $("#sideBar").addClass('magictime slideLeftRetourn');
         });
-        
         $("#mainPannel").ready(function () { 
         
             $("#mainPannel").addClass('magictime slideUpRetourn');
@@ -99,6 +98,28 @@ $config = new Configuration();
                         //alert(response);
                         $("#forms #"+tabName).remove();
                         $("#forms").append("<div id=\""+tabName+"\">"+response+"</div>");
+                        $(".instanceForm").submit(function (){       
+
+                            var data = $(this).serialize();
+                            data += "&moduleName="+activeModule;
+                            /*data += "&subModuleName="+activeSubModule;
+                            data += "&instanceName="+instanceName;*/
+    
+                            $.ajax({
+                                type    : "POST",
+                                url     : "/ajax/setFormInstance.php",
+                                data    : data,
+                                success : function(data) {
+                                    //alert("done");
+                                    //opts.onSuccess.call(FORM[0], data);
+                                },
+                                error   : function() {
+                                    //opts.onError.call(FORM[0]);
+                                }
+                            });
+                        });
+                        
+                        
                     });
                     
                     request.fail(function(jqXHR, textStatus, errorThrown){
@@ -177,13 +198,9 @@ $config = new Configuration();
                 $("#forms").remove();
                 $("#mainPannel").append("<ul id=\"tabs\"></ul>\n<div id=\"forms\"></div>");
         
-                //alert(response);
-        
                 for(i=0; i<tabs.length; i++){
         
                     $("#tabs").append("<li id=\"#"+tabs[i]+"\"><a href=\"#"+tabs[i]+"\">"+tabs[i]+"</a></li>");
-        
-                    //TODO : put the ajax fetcher into the div.
                     $("#forms").append("<div id=\""+tabs[i]+"\"></div>");
                 }
         
@@ -196,6 +213,51 @@ $config = new Configuration();
             });
         
             request.always(function(){});
+            
+            
+            
+        /*
+            var data2 = {
+                moduleName: activeModule,
+            }
+    
+            request2 = $.ajax({
+                url: "/ajax/getFormInstance.php",
+                type: "POST",
+                data: data2
+            });
+    
+            request2.done(function(response, textStatus, jqXHR){
+    
+                alert(response);
+                $("#forms #"+activeSubModule+" #instanceForm").remove();
+                $("#forms #"+activeSubModule).append(response);
+                $(".instanceForm").submit(function (){       
+
+                    var data = $(this).serialize();
+                    data += "&moduleName="+activeModule;
+
+                    $.ajax({
+                        type    : "POST",
+                        url     : "/ajax/setFormInstance.php",
+                        data    : data,
+                        success : function(data) {
+                            //alert("done");
+                            //opts.onSuccess.call(FORM[0], data);
+                        },
+                        error   : function() {
+                            //opts.onError.call(FORM[0]);
+                        }
+                    });
+                });
+            });
+    
+            request2.fail(function(jqXHR, textStatus, errorThrown){
+    
+                alert("error when getting the form of the instance");
+            });
+    
+            request2.always(function(){});*/
         });
         
         $("#mainPannel").on("change", ".instanceSelector", function(){
