@@ -38,7 +38,7 @@ if($_POST['instanceName'] == "Add new"){    //if we are creating a new instance
     }
     
     
-    $response = "salut il y a : ".count($instance->getArguments())." arguments.<br>";
+    $response = "salut il y a : ".count($subModule->getArguments())." arguments.<br>";
     $response .= "<form class=\"instanceForm\" onsubmit=\"return false;\" method=\"post\">";
     
     foreach($subModule->getArguments() as $argument){
