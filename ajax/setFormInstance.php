@@ -10,9 +10,17 @@ $config = new Configuration();
 $module = $config->getModule($_POST['moduleName']);
 
 
-if($_POST['subModuleName'] == NULL){
+if($_POST['subModuleName'] == NULL){    //we are editing a mainModule instance
     
     $instance = $module->getInstances()[0];
+    
+}elseif($_POST['instanceName'] == "Add new"){    //we are adding a new subModule instance
+    
+    echo "enregistree";
+    $subModule = $module->getSubModule($_POST['subModuleName']);
+    $subModule->addInstance(new Instance("new_subModule", NULL));
+    $instance = $subModule->getInstance("new_subModule");
+    
 }else{    //if we are editing a submodul
     
     $subModule = $module->getSubModule($_POST['subModuleName']);

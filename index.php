@@ -101,7 +101,8 @@ $config = new Configuration();
                     
                         //alert(response);
                         $("#forms #"+tabName).remove();
-                        $("#forms").append("<div id=\""+tabName+"\">"+response+"</div>");
+                        $("#forms").append("<div id=\""+tabName+"\">"+response+"</div>");                        
+                        
                         $(".instanceForm").submit(function (){       
 
                             var data = $(this).serialize();
@@ -229,7 +230,7 @@ $config = new Configuration();
         
                 instanceName = $(this).text();
         
-                if(instanceName == "Add new")return;
+                //if(instanceName == "Add new")return;
             
                 var data = {
                     moduleName: activeModule,
@@ -254,13 +255,13 @@ $config = new Configuration();
                         data += "&moduleName="+activeModule;
                         data += "&subModuleName="+activeSubModule;
                         data += "&instanceName="+instanceName;
-
+                        
                         $.ajax({
                             type    : "POST",
                             url     : "/ajax/setFormInstance.php",
                             data    : data,
                             success : function(data) {
-                                //alert("done");
+                                alert(data);
                                 //opts.onSuccess.call(FORM[0], data);
                             },
                             error   : function() {
