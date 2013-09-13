@@ -21,7 +21,6 @@ $config = new Configuration();
     <link rel="stylesheet" href="include/on_off_button.css">
     <script type="text/javascript" src="include/jquery-2.0.3.min.js"></script>
     <script src="include/jquery-ui.js"></script>
-    <script src="include/on_off_button.js"></script>
     <body>
         <div id="sideBar">
             Users : <br>
@@ -45,7 +44,6 @@ $config = new Configuration();
                         echo "</div><br>";
                     }
                 }
-                
             ?>
         </div>
     
@@ -139,6 +137,9 @@ $config = new Configuration();
         
         $(".user").click(function(){
         
+            $("#sideBar div").removeClass('selected');
+            $(this).addClass('selected');
+
             activeModule = $(this).text();
         
             var data = {
@@ -181,6 +182,9 @@ $config = new Configuration();
         
         $(".mainModule").click(function(){ 
         
+            $("#sideBar div").removeClass('selected');
+            $(this).parent().addClass('selected');
+            
             activeModule = $(this).text();
         
             var data = {
@@ -285,9 +289,6 @@ $config = new Configuration();
                         $(this).addClass('true').removeClass('false');
                     }
             }
-            
-
-
             
             var data = {
                 moduleToggled: $(this).parent().attr('id'),

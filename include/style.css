@@ -30,10 +30,20 @@
     height:100%;    
 }
 
+.user.selected{
+    
+        background-color:orange;
+}
+
 .sideBarLine{
     
     float:left;
     width:100%;
+}
+
+.sideBarLine.selected{
+
+        background-color:orange;
 }
 
 .mainModule{
