@@ -12,9 +12,9 @@ if($_POST['instanceName'] == "Add new"){    //if we are creating a new instance
     
     $subModule = $module->getSubModule($_POST['subModuleName']);
 
-    $response = "salut il y a : ".count($subModule->getArguments())." arguments.<br>";
-    $response .= "<form class=\"instanceForm\" onsubmit=\"return false;\" method=\"post\">";
-    
+    $response = "<form class=\"instanceForm\" onsubmit=\"return false;\" method=\"post\">";
+    $response .= "salut il y a : ".count($subModule->getArguments())." arguments.<br>";
+
     foreach($subModule->getArguments() as $argument){
     
         $response .= $argument." : <input type=\"text\" name=\"".$argument."\" value=\"\"><br>";    
@@ -38,9 +38,9 @@ if($_POST['instanceName'] == "Add new"){    //if we are creating a new instance
     }
     
     
-    $response = "salut il y a : ".count($subModule->getArguments())." arguments.<br>";
-    $response .= "<form class=\"instanceForm\" onsubmit=\"return false;\" method=\"post\">";
-    
+    $response = "<form class=\"instanceForm\" onsubmit=\"return false;\" method=\"post\">";
+    $response .= "salut il y a : ".count($subModule->getArguments())." arguments.<br>";
+
     foreach($subModule->getArguments() as $argument){
     
         $response .= $argument." : <input type=\"text\" name=\"".$argument."\" value=\"".$instance->getArgument($argument)."\"><br>";    

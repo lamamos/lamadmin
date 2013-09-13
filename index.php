@@ -229,9 +229,7 @@ $config = new Configuration();
             $(".instanceSelector option:selected").each(function(){	//they should be only one element here
         
                 instanceName = $(this).text();
-        
-                //if(instanceName == "Add new")return;
-            
+                
                 var data = {
                     moduleName: activeModule,
                     subModuleName: activeSubModule,
@@ -247,7 +245,7 @@ $config = new Configuration();
                 request.done(function(response, textStatus, jqXHR){
         
                     //alert(response);
-                    $("#forms #"+activeSubModule+" #instanceForm").remove();
+                    $("#forms #"+activeSubModule+" .instanceForm").remove();
                     $("#forms #"+activeSubModule).append(response);
                     $(".instanceForm").submit(function (){       
 
