@@ -23,7 +23,7 @@ $config = new Configuration();
     <script src="include/jquery-ui.js"></script>
     <body>
         <div id="sideBar">
-            Users : <br>
+            <div class="sectionTitle">Users : </div><br>
             <?  //list the users on the system
                 $module = $config->getModule("user");
                 foreach($module->getInstances() as $instance){
@@ -32,7 +32,7 @@ $config = new Configuration();
                 }
             ?>
             <br><br>
-            System : <br>
+            <div class="sectionTitle">Services : </div><br>
             <?
                 foreach($config->getAvalableModules() as $module){
                     if(!preg_match("/".$module->getName()."/", "user")){
@@ -138,8 +138,8 @@ $config = new Configuration();
         
         $(".user").click(function(){
         
-            $("#sideBar div").removeClass('selected');
-            $(this).addClass('selected');
+            $("#sideBar div").removeClass('moduleSelected');
+            $(this).addClass('moduleSelected');
 
             activeModule = $(this).text();
         
@@ -183,8 +183,8 @@ $config = new Configuration();
         
         $(".mainModule").click(function(){ 
         
-            $("#sideBar div").removeClass('selected');
-            $(this).parent().addClass('selected');
+            $("#sideBar div").removeClass('moduleSelected');
+            $(this).parent().addClass('moduleSelected');
             
             activeModule = $(this).text();
         
