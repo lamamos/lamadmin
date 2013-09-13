@@ -83,6 +83,7 @@ $config = new Configuration();
                 
                 beforeActivate: function(event, ui){
                     
+                    try{if(tabName){oldTabName = tabName;}}catch(e){oldTabName = "general";}
                     tabName = ui.newTab.attr('id').substr(1);
                     activeSubModule = tabName;
                     
@@ -98,10 +99,32 @@ $config = new Configuration();
                     });
                     
                     request.done(function(response, textStatus, jqXHR){
-                    
-                        //alert(response);
-                        $("#forms #"+tabName).remove();
-                        $("#forms").append("<div id=\""+tabName+"\">"+response+"</div>");                        
+                        
+                        
+                        if(oldTabName){
+                            $("#forms #"+oldTabName).attr("id",oldTabName+"_old");
+                            //This line is useless as far as we commented the line 14380 in jquery-ui.js
+                            //Now jquery don't hide the old tab, we do it with this animation.
+                            //$("#forms #"+oldTabName+"_old").show();
+                            $("#forms #"+oldTabName+"_old").addClass("pt-page-flipOutLeft");
+                            $("#forms #"+oldTabName+"_old").one('webkitAnimationEnd oanimationend msAnimationEnd animationend', function(e) {
+            
+                                    //alert("delete");
+                                    $("#forms #"+oldTabName+"_old").removeClass("pt-page-flipOutLeft");
+                                    $("#forms #"+oldTabName+"_old").remove();
+                            });
+                        }
+                        
+                        $("#forms").append("<div id=\""+tabName+"\" class=\"subModuleForm\">"+response+"</div>");
+                        $("#forms #"+tabName).addClass("pt-page-flipInRight pt-page-delay500");
+                        $("#forms #"+tabName).one('webkitAnimationEnd oanimationend msAnimationEnd animationend', function(e) {
+        
+                                $("#forms #"+tabName).removeClass("pt-page-flipInRight pt-page-delay500");
+                        });
+                        
+                        
+                        
+                        
                         
                         $(".instanceForm").submit(function (){       
 

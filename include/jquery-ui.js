@@ -14377,7 +14377,7 @@ $.widget( "ui.tabs", {
 			});
 		} else {
 			eventData.oldTab.closest( "li" ).removeClass( "ui-tabs-active ui-state-active" );
-			toHide.hide();
+			//toHide.hide();
 			show();
 		}
 
