@@ -12,6 +12,7 @@
     
     position:absolute;
     right:5px;
+    margin-top:1px;
 }
 
 .bool-slider.true .inset {
