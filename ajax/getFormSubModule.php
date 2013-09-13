@@ -33,7 +33,7 @@ if($_POST['subModuleName'] == "general"){	//we need to generate the config of th
 	$subModule = $module->getSubModule($_POST['subModuleName']);
 
 
-	$response = "<select name=\"select".$_POST['subModuleName']."\" class=\"instanceSelector\" size=\"10\">";
+	$response = "<select name=\"select".$_POST['subModuleName']."\" class=\"instanceSelector\" size=\"2\">";
 
 	foreach($subModule->getInstances() as $instance){
 

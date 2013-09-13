@@ -259,7 +259,7 @@ $config = new Configuration();
                             url     : "/ajax/setFormInstance.php",
                             data    : data,
                             success : function(data) {
-                                alert(data);
+                                //alert(data);
                                 //opts.onSuccess.call(FORM[0], data);
                             },
                             error   : function() {

@@ -16,7 +16,6 @@ if($_POST['subModuleName'] == NULL){    //we are editing a mainModule instance
     
 }elseif($_POST['instanceName'] == "Add new"){    //we are adding a new subModule instance
     
-    echo "enregistree";
     $subModule = $module->getSubModule($_POST['subModuleName']);
     $subModule->addInstance(new Instance("new_subModule", NULL));
     $instance = $subModule->getInstance("new_subModule");

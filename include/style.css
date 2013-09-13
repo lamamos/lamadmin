@@ -14,18 +14,27 @@ body {
 
 #mainPannel{
     overflow: hidden;
-    height:100%;
+
+    background-color:transparent;
 }
 
-#instanceForm{
+#forms{
+    
+    padding-top:10px;
+    padding-left:10px;
+}
+
+.instanceForm{
     overflow: hidden;
-    height:100%;    
+    padding-left:5px;
 }
 
 .instanceSelector{
     
     float:left;
-    height: 93%;
+    background-color:transparent;
+    color:#e6e6e6;
+    /*height: 90%;*/
 }
 
 #instanceForm{
