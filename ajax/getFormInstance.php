@@ -27,10 +27,11 @@ if($_POST['instanceName'] == "Add new"){    //if we are creating a new instance
     
 }else{  //if we are editing an existing instance
     
-    if($_POST['subModuleName'] == "general"){
+    if($_POST['subModuleName'] == "general"){   //if we are editing the mainModule
     
+        $subModule = $module;
         $instance = $module->getInstances()[0];        
-    }else{
+    }else{  //if we are editing a subModule
         
         $subModule = $module->getSubModule($_POST['subModuleName']);
         $instance = $subModule->getInstance($_POST['instanceName']);
@@ -40,10 +41,11 @@ if($_POST['instanceName'] == "Add new"){    //if we are creating a new instance
     $response = "salut il y a : ".count($instance->getArguments())." arguments.<br>";
     $response .= "<form class=\"instanceForm\" onsubmit=\"return false;\" method=\"post\">";
     
-    foreach($instance->getArguments() as $argument){
+    foreach($subModule->getArguments() as $argument){
     
-        $response .= $argument[0]." : <input type=\"text\" name=\"".$argument[0]."\" value=\"".$argument[1]."\"><br>";    
+        $response .= $argument." : <input type=\"text\" name=\"".$argument."\" value=\"".$instance->getArgument($argument)."\"><br>";    
     }
+    
     $response .= "<input type=\"submit\" value=\"Save\">";
     $response .= "</form>";
     
