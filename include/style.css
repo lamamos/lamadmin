@@ -19,16 +19,16 @@ body {
 
 #forms{
     
-    position:relative;
+    /*position:relative;*/
     padding-top:10px;
     padding-left:10px;
-    height:90%;
+    /*height:90%;*/
 }
 
 .subModuleForm{
     
-    position:absolute;
-    top:0; left:0;
+    /*position:absolute;
+    top:0; left:0;*/
     width:100%;
 }
 
