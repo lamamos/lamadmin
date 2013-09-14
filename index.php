@@ -100,34 +100,23 @@ $config = new Configuration();
                     
                     request.done(function(response, textStatus, jqXHR){
                         
-                        
-                        //if(oldTabName){
-                            $("#forms #"+oldTabName).attr("id",oldTabName+"_old");
-                            //This line is useless as far as we commented the line 14380 in jquery-ui.js
-                            //Now jquery don't hide the old tab, we do it with this animation.
-                            //$("#forms #"+oldTabName+"_old").show();
-                            $("#forms #"+oldTabName+"_old").addClass("pt-page-flipOutLeft");
-                            $("#forms #"+oldTabName+"_old").one('webkitAnimationEnd oanimationend msAnimationEnd animationend', function(e) {
-            
-                                //alert("delete");
-                                $("#forms #"+oldTabName+"_old").removeClass("pt-page-flipOutLeft");
-                                $("#forms #"+oldTabName+"_old").remove();
-                                $("#forms").append("<div id=\""+tabName+"\" class=\"subModuleForm\">"+response+"</div>");
-                                $("#forms #"+tabName).addClass("pt-page-flipInRight");
-                                $("#forms #"+tabName).one('webkitAnimationEnd oanimationend msAnimationEnd animationend', function(e) {
-                
-                                        $("#forms #"+tabName).removeClass("pt-page-flipInRight");
-                                });
-                            });
-                        //}
-                        
-                        /*$("#forms").append("<div id=\""+tabName+"\" class=\"subModuleForm\">"+response+"</div>");
-                        $("#forms #"+tabName).addClass("pt-page-flipInRight pt-page-delay500");
-                        $("#forms #"+tabName).one('webkitAnimationEnd oanimationend msAnimationEnd animationend', function(e) {
+
+                        //This line is useless as far as we commented the line 14380 in jquery-ui.js
+                        //Now jquery don't hide the old tab, we do it with this animation.
+                        //$("#forms #"+oldTabName+"_old").show();
+                        $("#forms div").addClass("pt-page-flipOutLeft");
+                        $("#forms div").one('webkitAnimationEnd oanimationend msAnimationEnd animationend', function(e) {
         
-                                $("#forms #"+tabName).removeClass("pt-page-flipInRight pt-page-delay500");
-                        });*/
-                        
+                            //alert("delete");
+                            $("#forms div").removeClass("pt-page-flipOutLeft");
+                            $("#forms div").remove();
+                            $("#forms").append("<div id=\""+tabName+"\" class=\"subModuleForm\">"+response+"</div>");
+                            $("#forms #"+tabName).addClass("pt-page-flipInRight");
+                            $("#forms #"+tabName).one('webkitAnimationEnd oanimationend msAnimationEnd animationend', function(e) {
+            
+                                    $("#forms #"+tabName).removeClass("pt-page-flipInRight");
+                            });
+                        });
                         
                         
                         
@@ -238,11 +227,9 @@ $config = new Configuration();
                 for(i=0; i<tabs.length; i++){
         
                     $("#tabs").append("<li id=\"#"+tabs[i]+"\"><a href=\"#"+tabs[i]+"\">"+tabs[i]+"</a></li>");
+                    $("#forms").append("<div id=\""+tabs[i]+"\"></div>");
                 }
-                //we only display the first form, the animation will take care of the rest
-                $("#forms").append("<div id=\""+tabs[0]+"\"></div>");
 
-        
                 $("#mainPannel").tabs("refresh");
             });
         

@@ -19,16 +19,12 @@ body {
 
 #forms{
     
-    /*position:relative;*/
     padding-top:10px;
     padding-left:10px;
-    /*height:90%;*/
 }
 
 .subModuleForm{
-    
-    /*position:absolute;
-    top:0; left:0;*/
+
     width:100%;
 }
 
@@ -42,7 +38,6 @@ body {
     float:left;
     background-color:transparent;
     color:#e6e6e6;
-    /*height: 90%;*/
 }
 
 #instanceForm{
