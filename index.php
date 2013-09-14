@@ -245,8 +245,7 @@ $config = new Configuration();
         
                 request.done(function(response, textStatus, jqXHR){
         
-                    //alert(response);
-                    $("#forms #"+activeSubModule+" .instanceForm").remove();
+                    /*$("#forms #"+activeSubModule+" .instanceForm").remove();
                     $("#forms #"+activeSubModule).append(response);
                     $(".instanceForm").submit(function (){       
 
@@ -259,15 +258,59 @@ $config = new Configuration();
                             type    : "POST",
                             url     : "/ajax/setFormInstance.php",
                             data    : data,
-                            success : function(data) {
-                                //alert(data);
-                                //opts.onSuccess.call(FORM[0], data);
-                            },
-                            error   : function() {
-                                //opts.onError.call(FORM[0]);
-                            }
+                            success : function(data) {changeTab(activeSubModule);},
+                            error   : function() {}
                         });
-                    });
+                    });*/
+                    
+                    
+                    
+                    
+                    //if there is an instance forme
+                    if($("#forms #"+activeSubModule+" .instanceForm").length > 0){
+                        
+                        $("#forms #"+activeSubModule+" .instanceForm").addClass("pt-page-moveToBottom");
+                        $("#forms").one('webkitAnimationEnd oanimationend msAnimationEnd animationend', function(e) {
+                            
+                            $("#forms #"+activeSubModule+" .instanceForm").remove();
+                            displayInstanceForm(response);
+                        });
+                    }else{
+                        
+                        displayInstanceForm(response);
+                    }
+                    
+                    
+                    
+                    function displayInstanceForm(response){
+                        
+                        $("#forms #"+activeSubModule).append(response);
+                        $(".instanceForm").addClass("pt-page-moveFromBottom");
+                        
+                        $(".instanceForm").submit(function (){       
+    
+                            var data = $(this).serialize();
+                            data += "&moduleName="+activeModule;
+                            data += "&subModuleName="+activeSubModule;
+                            data += "&instanceName="+instanceName;
+                            
+                            $.ajax({
+                                type    : "POST",
+                                url     : "/ajax/setFormInstance.php",
+                                data    : data,
+                                success : function(data) {changeTab(activeSubModule);},
+                                error   : function() {}
+                            });
+                        });
+                        
+                        $(".instanceForm").one('webkitAnimationEnd oanimationend msAnimationEnd animationend', function(e) {
+
+                            $(".instanceForm").removeClass("pt-page-moveFromBottom");
+                        });
+                    }
+                    
+                    
+                    
                 });
         
                 request.fail(function(jqXHR, textStatus, errorThrown){
