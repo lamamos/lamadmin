@@ -1,3 +1,3 @@
 <?
-    $PathToRexConfiguration = "/home/karlito/Desktop/rex";
+    $PathToRexConfiguration = "/home/karlito/creation/tiranos/rex/";
 ?>

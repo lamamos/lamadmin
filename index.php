@@ -23,6 +23,7 @@ $config = new Configuration();
     <script src="include/jquery-ui.js"></script>
     <body>
         <div id="sideBar">
+            <div id="logo">Home</div><br>
             <div class="sectionTitle">Users : </div><br>
             <?  //list the users on the system
                 $module = $config->getModule("user");
@@ -48,16 +49,9 @@ $config = new Configuration();
         </div>
     
         <div id="mainPannel">
-            <ul id="tabs">
-                <li><a href="#welkome">Welkome</a></li>
-            </ul>
             <div id="forms">
-        
-                <div id="welkome">
-                        <p>
-                            Proin elit arcu, rutrum commodo, vehicula tempus, commodo a, risus. Curabitur nec arcu. Donec sollicitudin mi sit amet mauris. Nam elementum quam ullamcorper ante. Etiam aliquet massa et lorem. Mauris dapibus lacus auctor risus. Aenean tempor ullamcorper leo. Vivamus sed magna quis ligula eleifend adipiscing. Duis orci. Aliquam sodales tortor vitae ipsum. Aliquam nulla. Duis aliquam molestie erat. Ut et mauris vel pede varius sollicitudin. Sed dolor nec orci tincidunt interdum. Phasellus ipsum. Nunc tristique tempus lectus.
-                    </p>
-                </div>
+                
+                
             </div>
         </div>    
     </body>
@@ -78,7 +72,10 @@ $config = new Configuration();
         });
         
         //this function is called at te opening of the page
-        $(function() {  
+        $(function() {
+                    
+            displayHome();
+            
             $("#mainPannel").tabs({
                 beforeActivate: function(event, ui){
                     
@@ -86,6 +83,11 @@ $config = new Configuration();
                     changeTab(tabName);
                 }
             });
+        });
+        
+        $("#sideBar #logo").click(function(){
+            
+            displayHome(); 
         });
         
         $(".user").click(function(){
@@ -245,24 +247,7 @@ $config = new Configuration();
         
                 request.done(function(response, textStatus, jqXHR){
         
-                    /*$("#forms #"+activeSubModule+" .instanceForm").remove();
-                    $("#forms #"+activeSubModule).append(response);
-                    $(".instanceForm").submit(function (){       
 
-                        var data = $(this).serialize();
-                        data += "&moduleName="+activeModule;
-                        data += "&subModuleName="+activeSubModule;
-                        data += "&instanceName="+instanceName;
-                        
-                        $.ajax({
-                            type    : "POST",
-                            url     : "/ajax/setFormInstance.php",
-                            data    : data,
-                            success : function(data) {changeTab(activeSubModule);},
-                            error   : function() {}
-                        });
-                    });*/
-                    
                     
                     
                     
@@ -353,9 +338,8 @@ $config = new Configuration();
             request.always(function(){});
         });
         
-        function changeTab(tabname){
+        function changeTab(tabName){
     
-            //alert("tab");
             try{if(tabName){oldTabName = tabName;}}catch(e){oldTabName = "general";}
             //tabName = ui.newTab.attr('id').substr(1);
             activeSubModule = tabName;
@@ -364,6 +348,8 @@ $config = new Configuration();
                 moduleName: activeModule,
                 subModuleName: tabName,
             }
+            
+            //alert(data);
                     
             request = $.ajax({
                 url: "/ajax/getFormSubModule.php",
@@ -373,6 +359,7 @@ $config = new Configuration();
             
             request.done(function(response, textStatus, jqXHR){
                 
+                //alert("reçu");
                 //This line is useless as far as we commented the line 14380 in jquery-ui.js
                 //Now jquery don't hide the old tab, we do it with this animation.
                 //$("#forms #"+oldTabName+"_old").show();
@@ -419,6 +406,58 @@ $config = new Configuration();
             });
             
             request.always(function(){});
+        }
+        
+        function displayHome(){
+            
+            request = $.ajax({
+                url: "/ajax/getHome.php",
+                type: "POST"
+            });
+        
+            request.done(function(response, textStatus, jqXHR){
+                
+                leftToDeseaper = 0;
+                
+                //if there are some tabs to remove
+                if($("#mainPannel #tabs").length > 0){
+                    leftToDeseaper++;
+                    $("#mainPannel #tabs").addClass("pt-page-moveToTop");
+                    $("#mainPannel #tabs").one('webkitAnimationEnd oanimationend msAnimationEnd animationend', function(e) {
+                        
+                        $("#mainPannel #tabs").remove();
+                        leftToDeseaper--;
+                        if(leftToDeseaper == 0){appearHome();}
+                    });
+                }
+                
+                //if there are some forms to remove
+                if($("#mainPannel div").length > 0){
+                    leftToDeseaper++;
+                    $("#mainPannel div").addClass("pt-page-moveToBottom");
+                    $("#mainPannel div").one('webkitAnimationEnd oanimationend msAnimationEnd animationend', function(e) {
+                        
+                        $("#mainPannel div").remove();
+                        leftToDeseaper--;
+                        if(leftToDeseaper == 0){appearHome();}
+                    });
+                }
+                
+                //if the page is already empty
+                if(leftToDeseaper == 0){appearHome();}
+                
+                
+                function appearHome(){
+                    
+                    $("#mainPannel").append("<div id=\"forms\">"+response+"</div>");
+                    $("#mainPannel #forms").addClass("pt-page-moveFromTop");
+                    $("#mainPannel #forms").one('webkitAnimationEnd oanimationend msAnimationEnd animationend', function(e) {
+                        
+                            $("#mainPannel #forms").addClass("pt-page-moveFromTop");
+                    });
+
+                }
+            });
         }
         
     </script>
