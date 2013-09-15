@@ -151,6 +151,8 @@ $config = new Configuration();
         
         $(".mainModule").click(function(){ 
         
+            if($(this).parent().find(".bool-slider").hasClass("false")){return;}
+            
             $("#sideBar div").removeClass('moduleSelected');
             $(this).parent().addClass('moduleSelected');
             
@@ -318,8 +320,12 @@ $config = new Configuration();
                     }
             }
             
+            var moduleChanged = $(this).parent().attr('id');
+            var newState = "undefined";
+            if($(this).hasClass('true'))newState = "on";else newState = "off";
+            
             var data = {
-                moduleToggled: $(this).parent().attr('id'),
+                moduleToggled: moduleChanged,
             }
         
             request = $.ajax({
@@ -328,7 +334,16 @@ $config = new Configuration();
                 data: data
             });
         
-            request.done(function(response, textStatus, jqXHR){ });
+            request.done(function(response, textStatus, jqXHR){
+            
+                if( (activeModule == moduleChanged) && (newState == "off") ){
+                    
+                    displayHome();
+                    //the fact of not having a space between the selector in the next line is normal, we selecte an element by it's class and ID
+                    $("#"+moduleChanged+".sideBarLine").removeClass("moduleSelected");
+                }
+            
+            });
         
             request.fail(function(jqXHR, textStatus, errorThrown){
         
