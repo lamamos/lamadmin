@@ -63,6 +63,19 @@ abstract class Module{
 			}
 		}
 	}
+    public function deleteInstance($name){
+                
+        for($i=0; $i<count($this->instances); $i++){
+
+            $instance = $this->instances[$i];
+			if(preg_match("/".$instance->getName()."/", $name)){
+                
+				//return $instance;
+                array_splice($this->instances, $i, 1);
+                return "done";
+			}
+		}        
+    }
     public function clearInstances(){$this->instances = NULL;}
 	public function getName(){return $this->name;}
     public function getArguments(){return $this->arguments;}

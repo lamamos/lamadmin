@@ -47,6 +47,7 @@ if($_POST['instanceName'] == "Add new"){    //if we are creating a new instance
     }
     
     $response .= "<input type=\"submit\" value=\"Save\">";
+    $response .= "<input class=\"deleteInstance\" type=\"button\" value=\"Delete\">";
     $response .= "</form>";
     
     echo $response;

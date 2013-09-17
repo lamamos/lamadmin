@@ -60,6 +60,7 @@ $config = new Configuration();
 
         var activeModule = "";
         var activeSubModule = "";
+        var instanceName = "";
                 
         //on page load, when make the parts of the page slide in        
         $("#sideBar").ready(function () { 
@@ -88,8 +89,6 @@ $config = new Configuration();
         $("#sideBar #logo").click(function(){
             
             displayHome();
-            $("#sideBar .user").removeClass("moduleSelected");
-            $("#sideBar .sideBarLine").removeClass("moduleSelected");
         });
         
         $(".user").click(function(){
@@ -97,8 +96,10 @@ $config = new Configuration();
             $("#sideBar div").removeClass('moduleSelected');
             $(this).addClass('moduleSelected');
 
-            activeModule = $(this).text();
-        
+            activeModule = "user";
+            activeSubModule = "";
+            instanceName = $(this).text();
+
             var data = {
                 name: $(this).text(),
             }
@@ -140,6 +141,7 @@ $config = new Configuration();
                             error   : function() {}
                         });
                     });
+                    $(".deleteInstance").click(function(){deleteInstance();});
                 });
             });
         
@@ -250,10 +252,6 @@ $config = new Configuration();
                 });
         
                 request.done(function(response, textStatus, jqXHR){
-        
-
-                    
-                    
                     
                     //if there is an instance forme
                     if($("#forms #"+activeSubModule+" .instanceForm").length > 0){
@@ -291,6 +289,8 @@ $config = new Configuration();
                                 error   : function() {}
                             });
                         });
+                                        
+                        $(".deleteInstance").click(function(){deleteInstance();});
                         
                         $(".instanceForm").one('webkitAnimationEnd oanimationend msAnimationEnd animationend', function(e) {
 
@@ -354,6 +354,37 @@ $config = new Configuration();
         
             request.always(function(){});
         });
+        
+        function deleteInstance(){
+            
+            var data = {
+                moduleName: activeModule,
+                subModuleName: activeSubModule,
+                instanceName: instanceName,
+            }
+        
+            request = $.ajax({
+                url: "/ajax/deleteInstance.php",
+                type: "POST",
+                data: data
+            });
+        
+            request.done(function(response, textStatus, jqXHR){});
+        
+            request.fail(function(jqXHR, textStatus, errorThrown){alert("error when getting the form for the user");});
+        
+            request.always(function(){
+            
+                if(activeModule=="user"){
+                
+                    displayHome();
+                }else{
+                    
+                    changeTab(activeSubModule);
+                }
+                
+            });
+        }
         
         function changeTab(tabName){
     
@@ -426,6 +457,9 @@ $config = new Configuration();
         }
         
         function displayHome(){
+                        
+            $("#sideBar .user").removeClass("moduleSelected");
+            $("#sideBar .sideBarLine").removeClass("moduleSelected");
             
             request = $.ajax({
                 url: "/ajax/getHome.php",

@@ -19,6 +19,7 @@ foreach($instance->getArguments() as $argument){
 	$response .= $argument[0]." : <input type=\"text\" name=\"".$argument[0]."\" value=\"".$argument[1]."\"><br>";
 }
 $response .= "<input type=\"submit\" value=\"Save\">";
+$response .= "<input class=\"deleteInstance\" type=\"button\" value=\"Delete\">";
 $response .= "</form>";
 
 
