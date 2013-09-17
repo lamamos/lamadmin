@@ -25,30 +25,12 @@ $config = new Configuration();
         <div id="sideBar">
             <div id="logo">Home</div><br>
             <div class="sectionTitle">Users : </div><br>
-            <?  //list the users on the system
-                $module = $config->getModule("user");
-                foreach($module->getInstances() as $instance){
-
-                    echo "<div class=\"user\">".$instance->getName()."</div><br>";
-                }
-            ?>
+            <div id="listUsers"></div>
             <br><br>
             <div class="sectionTitle">Services : </div><br>
             <div id="listServices"></div>
-            <?
-                foreach($config->getAvalableModules() as $module){
-                    if(!preg_match("/".$module->getName()."/", "user")){
-
-                        echo "<div class=\"sideBarLine\" id=\"".$module->getName()."\">";
-                        echo "<div class=\"mainModule\">".$module->getName()."</div>";
-                        if($module->isActivated()){echo "<div class=\"bool-slider true\"> <div class=\"inset\"> <div class=\"control\"></div> </div> </div>";}
-                        else{echo "<div class=\"bool-slider false\"> <div class=\"inset\"> <div class=\"control\"></div> </div> </div>";}                        
-                        echo "</div><br>";
-                    }
-                }
-            ?>
             <br><br>
-            <div class="sectionTitle test">Test</div>
+            <div class="sectionTitle test">Refresh</div>
         </div>
     
         <div id="mainPannel">
@@ -78,7 +60,9 @@ $config = new Configuration();
         
         //this function is called at te opening of the page
         $(function() {
-                    
+            
+            displayListUsers();
+            displayListServices();
             displayHome();
             
             $("#mainPannel").tabs({
@@ -88,229 +72,13 @@ $config = new Configuration();
                     changeTab(tabName);
                 }
             });
+            
+            redefineComportements();
         });
         
         $("#sideBar #logo").click(function(){
             
             displayHome();
-        });
-        
-        $(".user").click(function(){
-         
-            activePage = "config";
-            activeModule = "user";
-            activeSubModule = "";
-            activeInstance = $(this).text();
-            
-            $("#sideBar div").removeClass('moduleSelected');
-            $(this).addClass('moduleSelected');
-            
-            displayUser($(this).text());
-        });
-        
-        $(".mainModule").click(function(){ 
-        
-            if($(this).parent().find(".bool-slider").hasClass("false")){return;}
-            
-            $("#sideBar div").removeClass('moduleSelected');
-            $(this).parent().addClass('moduleSelected');
-            
-            activePage = "config";
-            activeModule = $(this).text();
-            activeSubModule = "";
-            activeInstance = "";
-                    
-            var data = {
-                name: $(this).text(),
-            }
-        
-            request = $.ajax({
-                url: "/ajax/getListSubModule.php",
-                type: "POST",
-                data: data
-            });
-        
-            request.done(function(response, textStatus, jqXHR){
-        
-                var tabs= response.split(",");                 
-                
-                if($("#mainPannel #tabs").length > 0){   //if we have a tabs element
-                    
-                    $("#tabs li").addClass("pt-page-moveToBottom"); //we make the tab deseapear
-                    //when the tabs have desapeared
-                    $("#tabs li").one('webkitAnimationEnd oanimationend msAnimationEnd animationend', function(e) {
-                        
-                        $("#tabs li").remove(); //we delete them
-                        appearTabs(tabs);   //we make the new one appear
-                    });
-                }else{   //if we don't have any tabs
-                    
-                    //we create some new one
-                    $("#mainPannel").prepend("<ul id=\"tabs\"></ul>\n");
-                    $("#tabs").addClass("pt-page-moveFromTop"); //we make the tabs background appear smoothly
-                    appearTabs(tabs);
-                }
-                
-                $("#forms").addClass("pt-page-moveToBottom");
-                $("#forms").one('webkitAnimationEnd oanimationend msAnimationEnd animationend', function(e) {
-                    
-                    $("#mainPannel #forms").remove();   //we delete every thing in the mainPannel
-                    $("#mainPannel").append("<div id=\"forms\"></div>"); //we recrate the tabs and forms
-                    for(i=0; i<tabs.length; i++){
-            
-                        $("#forms").append("<div id=\""+tabs[i]+"\"></div>");
-                    }
-                    //we have to launche the subModuleForm event by hand (don't know why)
-                    changeTab("general");
-                });
-
-                
-                
-                
-                function appearTabs(tabs){
-                    
-                    for(i=0; i<tabs.length; i++){
-            
-                        $("#tabs").append("<li id=\"#"+tabs[i]+"\"><a href=\"#"+tabs[i]+"\">"+tabs[i]+"</a></li>");
-                        $("#forms").append("<div id=\""+tabs[i]+"\"></div>");
-                    }
-                    $("#tabs li").addClass("pt-page-moveFromTop");
-                    $("#mainPannel").tabs("refresh");
-                }
-
-         
-                                  
-            });
-        
-            request.fail(function(jqXHR, textStatus, errorThrown){
-        
-                alert("error when getting the liste of the tabs");
-            });
-        
-            request.always(function(){});
-            
-        });
-        
-        $("#mainPannel").on("change", ".instanceSelector", function(){
-        
-            $(".instanceSelector option:selected").each(function(){	//they should be only one element here
-        
-                activeInstance = $(this).text();
-                
-                var data = {
-                    moduleName: activeModule,
-                    subModuleName: activeSubModule,
-                    instanceName: activeInstance,
-                }
-        
-                request = $.ajax({
-                    url: "/ajax/getFormInstance.php",
-                    type: "POST",
-                    data: data
-                });
-        
-                request.done(function(response, textStatus, jqXHR){
-                    
-                    //if there is an instance forme
-                    if($("#forms #"+activeSubModule+" .instanceForm").length > 0){
-                        
-                        $("#forms #"+activeSubModule+" .instanceForm").addClass("pt-page-moveToBottom");
-                        $("#forms").one('webkitAnimationEnd oanimationend msAnimationEnd animationend', function(e) {
-                            
-                            $("#forms #"+activeSubModule+" .instanceForm").remove();
-                            displayInstanceForm(response);
-                        });
-                    }else{
-                        
-                        displayInstanceForm(response);
-                    }
-                    
-                    
-                    
-                    function displayInstanceForm(response){
-                        
-                        $("#forms #"+activeSubModule).append(response);
-                        $(".instanceForm").addClass("pt-page-moveFromBottom");
-                        
-                        $(".instanceForm").submit(function (){       
-    
-                            var data = $(this).serialize();
-                            data += "&moduleName="+activeModule;
-                            data += "&subModuleName="+activeSubModule;
-                            data += "&instanceName="+activeInstance;
-                            
-                            $.ajax({
-                                type    : "POST",
-                                url     : "/ajax/setFormInstance.php",
-                                data    : data,
-                                success : function(data) {changeTab(activeSubModule);},
-                                error   : function() {}
-                            });
-                        });
-                                        
-                        $(".deleteInstance").click(function(){deleteInstance();});
-                        
-                        $(".instanceForm").one('webkitAnimationEnd oanimationend msAnimationEnd animationend', function(e) {
-
-                            $(".instanceForm").removeClass("pt-page-moveFromBottom");
-                        });
-                    }
-                    
-                    
-                    
-                });
-        
-                request.fail(function(jqXHR, textStatus, errorThrown){
-        
-                    alert("error when getting the form of the instance");
-                });
-        
-                request.always(function(){});
-        
-            });
-        });
-        
-        $(".bool-slider").click(function(){
-            
-            if (!$(this).hasClass('disabled')) {
-                    if ($(this).hasClass('true')) {
-                        $(this).addClass('false').removeClass('true');
-                    } else {
-                        $(this).addClass('true').removeClass('false');
-                    }
-            }
-            
-            var moduleChanged = $(this).parent().attr('id');
-            var newState = "undefined";
-            if($(this).hasClass('true'))newState = "on";else newState = "off";
-            
-            var data = {
-                moduleToggled: moduleChanged,
-            }
-        
-            request = $.ajax({
-                url: "/ajax/toggleModule.php",
-                type: "POST",
-                data: data
-            });
-        
-            request.done(function(response, textStatus, jqXHR){
-            
-                if( (activeModule == moduleChanged) && (newState == "off") ){
-                    
-                    displayHome();
-                    //the fact of not having a space between the selector in the next line is normal, we selecte an element by it's class and ID
-                    $("#"+moduleChanged+".sideBarLine").removeClass("moduleSelected");
-                }
-            
-            });
-        
-            request.fail(function(jqXHR, textStatus, errorThrown){
-        
-                alert("error chile changing the state of the module.");
-            });
-        
-            request.always(function(){});
         });
         
         function deleteInstance(){
@@ -530,27 +298,76 @@ $config = new Configuration();
         }
         
         function displayListServices(){
-            
-            /*foreach($config->getAvalableModules() as $module){
-                if(!preg_match("/".$module->getName()."/", "user")){
         
-                    echo "<div class=\"sideBarLine\" id=\"".$module->getName()."\">";
-                    echo "<div class=\"mainModule\">".$module->getName()."</div>";
-                    if($module->isActivated()){echo "<div class=\"bool-slider true\"> <div class=\"inset\"> <div class=\"control\"></div> </div> </div>";}
-                    else{echo "<div class=\"bool-slider false\"> <div class=\"inset\"> <div class=\"control\"></div> </div> </div>";}                        
-                    echo "</div><br>";
-                }
-            }*/
+            request = $.ajax({
+                url: "/ajax/getListServices.php",
+                type: "POST"
+            });
+        
+            request.done(function(response, textStatus, jqXHR){
+        
+                var services= response.split(",");                 
+
+                $("#listServices div").remove();
             
+                for(i=0; i<services.length; i++){
+                    //var service = services[i];
+                    var service= services[i].split(";");
+                    var name = service[0];
+                    var activated = service[1];
+                    
+                    var element = "<div class=\"sideBarLine\" id=\""+name+"\">";
+                        element += "<div class=\"mainModule\">"+name+"</div>";
+                        if(activated == "1"){element += "<div class=\"bool-slider true\"> <div class=\"inset\"> <div class=\"control\"></div> </div> </div>";}
+                        else{element += "<div class=\"bool-slider false\"> <div class=\"inset\"> <div class=\"control\"></div> </div> </div>";}
+                    
+                    element += "<br></div>";
+        
+                    $("#listServices").append(element);
+                }
+                                      
+            });
+        
+            request.fail(function(jqXHR, textStatus, errorThrown){
+        
+                alert("error when getting the liste of the services");
+            });
+        
+            request.always(function(){});
+        }
+        
+        function displayListUsers(){
+            
+            request = $.ajax({
+                url: "/ajax/getListUsers.php",
+                type: "POST"
+            });
+        
+            request.done(function(response, textStatus, jqXHR){
+        
+                var users= response.split(",");     
+
+                $("#listUsers div").remove();
+            
+                for(i=0; i<users.length; i++){
+
+                    var user = users[i];
+                    var element = "<div class=\"user\">"+user+"<br></div>";
+                    $("#listUsers").append(element);
+                }
+                                      
+            });
+        
+            request.fail(function(jqXHR, textStatus, errorThrown){
+        
+                alert("error when getting the liste of the services");
+            });
+        
+            request.always(function(){});
         }
         
         function refresh(){
-            
-            /*activePage = "home/config";
-            activeModule = "";
-            activeSubModule = "";
-            activeInstance = "";*/
-            
+
             if(activePage == "home"){displayHome();}
             else if(activePage == "config"){
                 if(activeModule == "user"){
@@ -563,7 +380,239 @@ $config = new Configuration();
             }
             
             //refresh the sideBarre
+            displayListServices();
+            displayListUsers();
             
+            redefineComportements();
+        }
+        
+        function redefineComportements(){
+
+            //we need to put a timeout, if we call the function right away, the DOM is not yet constructed
+            //and it's useless
+            setTimeout(function(){reredefineComportements();}, 500);
+        }
+        
+        function reredefineComportements(){
+            
+            $(".bool-slider").click(function(){
+                                
+                if (!$(this).hasClass('disabled')) {
+                        if ($(this).hasClass('true')) {
+                            $(this).addClass('false').removeClass('true');
+                        } else {
+                            $(this).addClass('true').removeClass('false');
+                        }
+                }
+                
+                var moduleChanged = $(this).parent().attr('id');
+                var newState = "undefined";
+                if($(this).hasClass('true'))newState = "on";else newState = "off";
+                
+                var data = {
+                    moduleToggled: moduleChanged,
+                }
+            
+                request = $.ajax({
+                    url: "/ajax/toggleModule.php",
+                    type: "POST",
+                    data: data
+                });
+            
+                request.done(function(response, textStatus, jqXHR){
+                
+                    if( (activeModule == moduleChanged) && (newState == "off") ){
+                        
+                        displayHome();
+                        //the fact of not having a space between the selector in the next line is normal, we selecte an element by it's class and ID
+                        $("#"+moduleChanged+".sideBarLine").removeClass("moduleSelected");
+                    }
+                
+                });
+            
+                request.fail(function(jqXHR, textStatus, errorThrown){
+            
+                    alert("error chile changing the state of the module.");
+                });
+            
+                request.always(function(){});
+            });
+            
+            $(".user").click(function(){
+             
+                activePage = "config";
+                activeModule = "user";
+                activeSubModule = "";
+                activeInstance = $(this).text();
+                
+                $("#sideBar div").removeClass('moduleSelected');
+                $(this).addClass('moduleSelected');
+                
+                displayUser($(this).text());
+            });
+            
+            $(".mainModule").click(function(){ 
+            
+                if($(this).parent().find(".bool-slider").hasClass("false")){return;}
+                
+                $("#sideBar div").removeClass('moduleSelected');
+                $(this).parent().addClass('moduleSelected');
+                
+                activePage = "config";
+                activeModule = $(this).text();
+                activeSubModule = "";
+                activeInstance = "";
+                        
+                var data = {
+                    name: $(this).text(),
+                }
+            
+                request = $.ajax({
+                    url: "/ajax/getListSubModule.php",
+                    type: "POST",
+                    data: data
+                });
+            
+                request.done(function(response, textStatus, jqXHR){
+            
+                    var tabs= response.split(",");                 
+                    
+                    if($("#mainPannel #tabs").length > 0){   //if we have a tabs element
+                        
+                        $("#tabs li").addClass("pt-page-moveToBottom"); //we make the tab deseapear
+                        //when the tabs have desapeared
+                        $("#tabs li").one('webkitAnimationEnd oanimationend msAnimationEnd animationend', function(e) {
+                            
+                            $("#tabs li").remove(); //we delete them
+                            appearTabs(tabs);   //we make the new one appear
+                        });
+                    }else{   //if we don't have any tabs
+                        
+                        //we create some new one
+                        $("#mainPannel").prepend("<ul id=\"tabs\"></ul>\n");
+                        $("#tabs").addClass("pt-page-moveFromTop"); //we make the tabs background appear smoothly
+                        appearTabs(tabs);
+                    }
+                    
+                    $("#forms").addClass("pt-page-moveToBottom");
+                    $("#forms").one('webkitAnimationEnd oanimationend msAnimationEnd animationend', function(e) {
+                        
+                        $("#mainPannel #forms").remove();   //we delete every thing in the mainPannel
+                        $("#mainPannel").append("<div id=\"forms\"></div>"); //we recrate the tabs and forms
+                        for(i=0; i<tabs.length; i++){
+                
+                            $("#forms").append("<div id=\""+tabs[i]+"\"></div>");
+                        }
+                        //we have to launche the subModuleForm event by hand (don't know why)
+                        changeTab("general");
+                    });
+    
+                    
+                    
+                    
+                    function appearTabs(tabs){
+                        
+                        for(i=0; i<tabs.length; i++){
+                
+                            $("#tabs").append("<li id=\"#"+tabs[i]+"\"><a href=\"#"+tabs[i]+"\">"+tabs[i]+"</a></li>");
+                            $("#forms").append("<div id=\""+tabs[i]+"\"></div>");
+                        }
+                        $("#tabs li").addClass("pt-page-moveFromTop");
+                        $("#mainPannel").tabs("refresh");
+                    }
+    
+             
+                                      
+                });
+            
+                request.fail(function(jqXHR, textStatus, errorThrown){
+            
+                    alert("error when getting the liste of the tabs");
+                });
+            
+                request.always(function(){});
+                
+            });
+            
+            $("#mainPannel").on("change", ".instanceSelector", function(){
+            
+                $(".instanceSelector option:selected").each(function(){	//they should be only one element here
+            
+                    activeInstance = $(this).text();
+                    
+                    var data = {
+                        moduleName: activeModule,
+                        subModuleName: activeSubModule,
+                        instanceName: activeInstance,
+                    }
+            
+                    request = $.ajax({
+                        url: "/ajax/getFormInstance.php",
+                        type: "POST",
+                        data: data
+                    });
+            
+                    request.done(function(response, textStatus, jqXHR){
+                        
+                        //if there is an instance forme
+                        if($("#forms #"+activeSubModule+" .instanceForm").length > 0){
+                            
+                            $("#forms #"+activeSubModule+" .instanceForm").addClass("pt-page-moveToBottom");
+                            $("#forms").one('webkitAnimationEnd oanimationend msAnimationEnd animationend', function(e) {
+                                
+                                $("#forms #"+activeSubModule+" .instanceForm").remove();
+                                displayInstanceForm(response);
+                            });
+                        }else{
+                            
+                            displayInstanceForm(response);
+                        }
+                        
+                        
+                        
+                        function displayInstanceForm(response){
+                            
+                            $("#forms #"+activeSubModule).append(response);
+                            $(".instanceForm").addClass("pt-page-moveFromBottom");
+                            
+                            $(".instanceForm").submit(function (){       
+        
+                                var data = $(this).serialize();
+                                data += "&moduleName="+activeModule;
+                                data += "&subModuleName="+activeSubModule;
+                                data += "&instanceName="+activeInstance;
+                                
+                                $.ajax({
+                                    type    : "POST",
+                                    url     : "/ajax/setFormInstance.php",
+                                    data    : data,
+                                    success : function(data) {changeTab(activeSubModule);},
+                                    error   : function() {}
+                                });
+                            });
+                                            
+                            $(".deleteInstance").click(function(){deleteInstance();});
+                            
+                            $(".instanceForm").one('webkitAnimationEnd oanimationend msAnimationEnd animationend', function(e) {
+    
+                                $(".instanceForm").removeClass("pt-page-moveFromBottom");
+                            });
+                        }
+                        
+                        
+                        
+                    });
+            
+                    request.fail(function(jqXHR, textStatus, errorThrown){
+            
+                        alert("error when getting the form of the instance");
+                    });
+            
+                    request.always(function(){});
+            
+                });
+            });
+     
         }
         
         $(".test").click(function(){
