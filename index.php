@@ -34,6 +34,7 @@ $config = new Configuration();
             ?>
             <br><br>
             <div class="sectionTitle">Services : </div><br>
+            <div id="listServices"></div>
             <?
                 foreach($config->getAvalableModules() as $module){
                     if(!preg_match("/".$module->getName()."/", "user")){
@@ -46,6 +47,8 @@ $config = new Configuration();
                     }
                 }
             ?>
+            <br><br>
+            <div class="sectionTitle test">Test</div>
         </div>
     
         <div id="mainPannel">
@@ -58,9 +61,10 @@ $config = new Configuration();
     
     <script type="text/javascript">
 
+        var activePage = "";
         var activeModule = "";
         var activeSubModule = "";
-        var instanceName = "";
+        var activeInstance = "";
                 
         //on page load, when make the parts of the page slide in        
         $("#sideBar").ready(function () { 
@@ -92,65 +96,16 @@ $config = new Configuration();
         });
         
         $(".user").click(function(){
-        
-            $("#sideBar div").removeClass('moduleSelected');
-            $(this).addClass('moduleSelected');
-
+         
+            activePage = "config";
             activeModule = "user";
             activeSubModule = "";
-            instanceName = $(this).text();
-
-            var data = {
-                name: $(this).text(),
-            }
-        
-            request = $.ajax({
-                url: "/ajax/getFormUser.php",
-                type: "POST",
-                data: data
-            });
-        
-            request.done(function(response, textStatus, jqXHR){
+            activeInstance = $(this).text();
             
-                if($("#mainPannel #tabs").length > 0){   //if we have a tabs element
-                    
-                    $("#tabs").addClass("pt-page-moveToTop"); //we make the tab deseapear
-                    $("#tabs li").addClass("pt-page-moveToTop"); //we make the tab deseapear
-                    //when the tabs have desapeared
-                    $("#tabs li").one('webkitAnimationEnd oanimationend msAnimationEnd animationend', function(e) {
-                        
-                        $("#tabs").remove(); //we delete them
-                        $("#tabs li").remove(); //we delete them                        
-                    });
-                }
-                
-                //we make the forms deseapear
-                $("#mainPannel #forms").addClass("pt-page-moveToBottom");
-                //when they are not anymore on the screen
-                $("#mainPannel #forms").one('webkitAnimationEnd oanimationend msAnimationEnd animationend', function(e) {
-                
-                    $("#mainPannel #forms").remove();   //we delete them
-                    $("#mainPannel").append("<div id=\"forms\">"+response+"</div>");    //we add the user form
-                    $("#mainPannel #forms").addClass("pt-page-moveFromTop");    //we make it appeare
-                    $(".userForm").submit(function (){  //we make it a proper user form with an ajax handle
-                        $.ajax({
-                            type    : "POST",
-                            url     : "/ajax/setFormUser.php",
-                            data    : $(this).serialize(),
-                            success : function(data) {},
-                            error   : function() {}
-                        });
-                    });
-                    $(".deleteInstance").click(function(){deleteInstance();});
-                });
-            });
-        
-            request.fail(function(jqXHR, textStatus, errorThrown){
-        
-                alert("error when getting the form for the user");
-            });
-        
-            request.always(function(){});
+            $("#sideBar div").removeClass('moduleSelected');
+            $(this).addClass('moduleSelected');
+            
+            displayUser($(this).text());
         });
         
         $(".mainModule").click(function(){ 
@@ -160,8 +115,11 @@ $config = new Configuration();
             $("#sideBar div").removeClass('moduleSelected');
             $(this).parent().addClass('moduleSelected');
             
+            activePage = "config";
             activeModule = $(this).text();
-        
+            activeSubModule = "";
+            activeInstance = "";
+                    
             var data = {
                 name: $(this).text(),
             }
@@ -237,12 +195,12 @@ $config = new Configuration();
         
             $(".instanceSelector option:selected").each(function(){	//they should be only one element here
         
-                instanceName = $(this).text();
+                activeInstance = $(this).text();
                 
                 var data = {
                     moduleName: activeModule,
                     subModuleName: activeSubModule,
-                    instanceName: instanceName,
+                    instanceName: activeInstance,
                 }
         
                 request = $.ajax({
@@ -279,7 +237,7 @@ $config = new Configuration();
                             var data = $(this).serialize();
                             data += "&moduleName="+activeModule;
                             data += "&subModuleName="+activeSubModule;
-                            data += "&instanceName="+instanceName;
+                            data += "&instanceName="+activeInstance;
                             
                             $.ajax({
                                 type    : "POST",
@@ -360,7 +318,7 @@ $config = new Configuration();
             var data = {
                 moduleName: activeModule,
                 subModuleName: activeSubModule,
-                instanceName: instanceName,
+                instanceName: activeInstance,
             }
         
             request = $.ajax({
@@ -389,7 +347,7 @@ $config = new Configuration();
         function changeTab(tabName){
     
             try{if(tabName){oldTabName = tabName;}}catch(e){oldTabName = "general";}
-            //tabName = ui.newTab.attr('id').substr(1);
+
             activeSubModule = tabName;
             
             var data = {
@@ -457,7 +415,12 @@ $config = new Configuration();
         }
         
         function displayHome(){
-                        
+            
+            activePage = "home";
+            activeModule = "";
+            activeSubModule = "";
+            activeInstance = "";
+              
             $("#sideBar .user").removeClass("moduleSelected");
             $("#sideBar .sideBarLine").removeClass("moduleSelected");
             
@@ -511,6 +474,102 @@ $config = new Configuration();
             });
         }
         
+        function displayUser(name){
+
+            var data = {
+                name: name,
+            }
+        
+            request = $.ajax({
+                url: "/ajax/getFormUser.php",
+                type: "POST",
+                data: data
+            });
+        
+            request.done(function(response, textStatus, jqXHR){
+            
+                if($("#mainPannel #tabs").length > 0){   //if we have a tabs element
+                    
+                    $("#tabs").addClass("pt-page-moveToTop"); //we make the tab deseapear
+                    $("#tabs li").addClass("pt-page-moveToTop"); //we make the tab deseapear
+                    //when the tabs have desapeared
+                    $("#tabs li").one('webkitAnimationEnd oanimationend msAnimationEnd animationend', function(e) {
+                        
+                        $("#tabs").remove(); //we delete them
+                        $("#tabs li").remove(); //we delete them                        
+                    });
+                }
+                
+                //we make the forms deseapear
+                $("#mainPannel #forms").addClass("pt-page-moveToBottom");
+                //when they are not anymore on the screen
+                $("#mainPannel #forms").one('webkitAnimationEnd oanimationend msAnimationEnd animationend', function(e) {
+                
+                    $("#mainPannel #forms").remove();   //we delete them
+                    $("#mainPannel").append("<div id=\"forms\">"+response+"</div>");    //we add the user form
+                    $("#mainPannel #forms").addClass("pt-page-moveFromTop");    //we make it appeare
+                    $(".userForm").submit(function (){  //we make it a proper user form with an ajax handle
+                        $.ajax({
+                            type    : "POST",
+                            url     : "/ajax/setFormUser.php",
+                            data    : $(this).serialize(),
+                            success : function(data) {},
+                            error   : function() {}
+                        });
+                    });
+                    $(".deleteInstance").click(function(){deleteInstance();});
+                });
+            });
+        
+            request.fail(function(jqXHR, textStatus, errorThrown){
+        
+                alert("error when getting the form for the user");
+            });
+        
+            request.always(function(){});
+        }
+        
+        function displayListServices(){
+            
+            /*foreach($config->getAvalableModules() as $module){
+                if(!preg_match("/".$module->getName()."/", "user")){
+        
+                    echo "<div class=\"sideBarLine\" id=\"".$module->getName()."\">";
+                    echo "<div class=\"mainModule\">".$module->getName()."</div>";
+                    if($module->isActivated()){echo "<div class=\"bool-slider true\"> <div class=\"inset\"> <div class=\"control\"></div> </div> </div>";}
+                    else{echo "<div class=\"bool-slider false\"> <div class=\"inset\"> <div class=\"control\"></div> </div> </div>";}                        
+                    echo "</div><br>";
+                }
+            }*/
+            
+        }
+        
+        function refresh(){
+            
+            /*activePage = "home/config";
+            activeModule = "";
+            activeSubModule = "";
+            activeInstance = "";*/
+            
+            if(activePage == "home"){displayHome();}
+            else if(activePage == "config"){
+                if(activeModule == "user"){
+                    
+                    displayUser(activeInstance);
+                }else{
+                    
+                    changeTab(activeSubModule);
+                }
+            }
+            
+            //refresh the sideBarre
+            
+        }
+        
+        $(".test").click(function(){
+            
+            refresh();
+        });
     </script>
 
 </html>
