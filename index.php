@@ -87,7 +87,9 @@ $config = new Configuration();
         
         $("#sideBar #logo").click(function(){
             
-            displayHome(); 
+            displayHome();
+            $("#sideBar .user").removeClass("moduleSelected");
+            $("#sideBar .sideBarLine").removeClass("moduleSelected");
         });
         
         $(".user").click(function(){
