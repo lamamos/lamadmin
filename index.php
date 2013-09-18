@@ -668,7 +668,6 @@ $config = new Configuration();
             });
         }
         
-        
         function formatInstanceMenu(choise){
             
             activeAfterInput.val(choise);

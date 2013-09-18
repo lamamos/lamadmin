@@ -82,7 +82,10 @@ abstract class Module{
 	public function getName(){return $this->name;}
     public function getArguments(){return $this->arguments;}
 	public function setArguments($arguments){$this->arguments = $arguments;}
-
+    public function addArgument($argument){
+        
+        $this->arguments[] = $argument;
+    }
 
 	//TODO : remove this two function, they chould be useless
 	public function getInstanceName(){return $this->instanceName;}
@@ -144,6 +147,8 @@ class SubModule extends Module{
 		$this->pathToConfigFile = $configFolder."/".$name.".pm";
 		$this->parentModule = $parentModule;
 		$this->readConfigurationFile();
+        
+        $this->addArgument("after");
 	}
 }
 

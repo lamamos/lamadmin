@@ -17,7 +17,8 @@ if($_POST['instanceName'] == "Add new"){    //if we are creating a new instance
 
     foreach($subModule->getArguments() as $argument){
     
-        $response .= $argument." : <input type=\"text\" name=\"".$argument."\" value=\"\"><br>";    
+        if($argument == "after"){$response .= $argument." : <input type=\"text\" name=\"".$argument."\" class=\"instanceMenu\" value=\"\"><br>";}
+        else{$response .= $argument." : <input type=\"text\" name=\"".$argument."\" value=\"\"><br>";}
     }
     $response .= "<input type=\"submit\" value=\"Save\">";
     $response .= "</form>";
@@ -41,11 +42,10 @@ if($_POST['instanceName'] == "Add new"){    //if we are creating a new instance
 
     foreach($subModule->getArguments() as $argument){
     
-        $response .= $argument." : <input type=\"text\" name=\"".$argument."\" value=\"".$instance->getArgument($argument)."\"><br>";    
+        if($argument == "after"){$response .= $argument." : <input type=\"text\" name=\"".$argument."\" class=\"instanceMenu\" value=\"".$instance->getArgument($argument)."\"><br>";}
+        else{$response .= $argument." : <input type=\"text\" name=\"".$argument."\" value=\"".$instance->getArgument($argument)."\"><br>";}
     }
-    
-    $response .= "After : <input type=\"text\" class=\"instanceMenu\" value=\"\"><br>";
-    
+        
     $response .= "<input type=\"submit\" value=\"Save\">";
     $response .= "<input class=\"deleteInstance\" type=\"button\" value=\"Delete\">";
     $response .= "</form>";
