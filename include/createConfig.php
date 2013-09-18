@@ -58,30 +58,90 @@ function writeConfigFile($config){
     
     fwrite($file, "\ntask \"configure\", group => martobre, sub{\n\n");
     
+    
+    
+    
+    
+    $config = createAfterLinks($config);
+    
+    while($config->isCompletlyWritten() == false){
+        
+        foreach($config->getAvalableModules() as $module){
+            
+            foreach($module->getInstances() as $moduleInstance){
+                
+                if( ($moduleInstance->getHasBeenWritten() == false) && ($moduleInstance->isReadyToBeWritten() == true) ){
+                    fwrite($file, "\tService::".$module->getName()."::define({\n\n");
+                    foreach($moduleInstance->getArguments() as $argument)fwrite($file, "\t\t'".$argument[0]."' => '".$argument[1]."',\n");
+                    fwrite($file, "\t});\n\n");
+                                        
+                    $moduleInstance->setHasBeenWritten(true);
+                }
+            }        
+            
+            foreach($module->getSubModules() as $subModule){
+                foreach($subModule->getInstances() as $subModuleInstance){
+    
+                if( ($subModuleInstance->getHasBeenWritten() == false) && ($subModuleInstance->isReadyToBeWritten() == true) ){
+                        fwrite($file, "\tService::".$module->getName()."::".$subModule->getName()."::define({\n\n");
+                        foreach($subModuleInstance->getArguments() as $argument)fwrite($file, "\t\t'".$argument[0]."' => '".$argument[1]."',\n");
+                        fwrite($file, "\t});\n\n");
+                        
+                        $subModuleInstance->setHasBeenWritten(true);
+                    }
+                }
+            }
+        }        
+    }
+    
+
+    fwrite($file, "};\n\n");
+ 
+    fclose($file);
+}
+
+
+
+function createAfterLinks($config){
+    
     foreach($config->getAvalableModules() as $module){
         
         foreach($module->getInstances() as $moduleInstance){
             
-            fwrite($file, "\tService::".$module->getName()."::define({\n\n");
-            foreach($moduleInstance->getArguments() as $argument)fwrite($file, "\t\t'".$argument[0]."' => '".$argument[1]."',\n");
-            fwrite($file, "\t});\n\n");
+            if(!($moduleInstance->getArgument("after") === "")){
+                
+                $object = getInstanceFromString($moduleInstance->getArgument("after"), $config);
+                $moduleInstance->addAfterObject($object);
+            }
         }        
         
         foreach($module->getSubModules() as $subModule){
             foreach($subModule->getInstances() as $subModuleInstance){
 
-                //fwrite($file, "require Service::".$module->getName()."::".$subModule->getName().";\n");
-                fwrite($file, "\tService::".$module->getName()."::".$subModule->getName()."::define({\n\n");
-                foreach($subModuleInstance->getArguments() as $argument)fwrite($file, "\t\t'".$argument[0]."' => '".$argument[1]."',\n");
-                fwrite($file, "\t});\n\n");
+                if(!($subModuleInstance->getArgument("after") === "")){
+                    
+                    $object = getInstanceFromString($subModuleInstance->getArgument("after"), $config);
+                    $subModuleInstance->addAfterObject($object);
+                }
             }
         }
     }
     
-    fwrite($file, "};\n\n");
-    
-    
-    fclose($file);
+    return $config;
 }
+
+
+function getInstanceFromString($string, $config){
+    
+    $names = explode("::", $string);
+    
+    $module = $config->getModule($names[0]);
+    $subModule = $module->getSubModule($names[1]);
+    $instance = $subModule->getInstance($names[2]);
+
+    return $instance;
+}
+
+
 
 ?>

@@ -157,11 +157,15 @@ class Instance{
 
 	private $name;
 	private $arguments;
+    private $hasBeenWritten;
+    private $afterObjects;
 
 	function __construct($name, $arguments){
 
+        $this->hasBeenWritten = false;
 		$this->name = $name;
 		$this->arguments = $arguments;
+        $this->afterObjects = [];
 	}
 
 	public function getName(){return $this->name;}
@@ -192,6 +196,21 @@ class Instance{
         
         //if we are still here it's that the argument didn't already exist, so we create it
         $this->arguments[] = [$argument, $value];        
+    }
+    
+    public function getHasBeenWritten(){return $this->hasBeenWritten;}
+    public function setHasBeenWritten($val){$this->hasBeenWritten = val;}
+    
+    public function getAfterObjects(){return $this->afterObjects;}
+    public function addAfterObject($object){$this->afterObjects[] = $object;}
+    public function isReadyToBeWritten(){
+        
+        foreach($this->afterObjects as $object){
+            
+            if($object->getHasBeenWritten() == false){return false;}
+        }
+        
+        return true;
     }
 }
 

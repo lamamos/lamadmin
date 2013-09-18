@@ -127,6 +127,25 @@ class Configuration{
 
 	function getAvalableModules(){return $this->availableModules;}
 	function ping(){return "kikoo";}
+    
+    function isCompletlyWritten(){
+        
+        foreach($this->getAvalableModules() as $module){
+            foreach($module->getInstances() as $moduleInstance){
+                
+                if($moduleInstance->getHasBeenWritten() == false){return false;}
+            }        
+            
+            foreach($module->getSubModules() as $subModule){
+                foreach($subModule->getInstances() as $subModuleInstance){
+    
+                    if($subModuleInstance->getHasBeenWritten() == false){return false;}
+                }
+            }
+        }
+        
+        return true;
+    }
 }
 
 ?>
