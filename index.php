@@ -99,13 +99,17 @@ $config = new Configuration();
         
             request.done(function(response, textStatus, jqXHR){});
         
-            request.fail(function(jqXHR, textStatus, errorThrown){alert("error when getting the form for the user");});
+            request.fail(function(jqXHR, textStatus, errorThrown){alert("error when deleting the user");});
         
             request.always(function(){
             
                 if(activeModule=="user"){
                 
-                    displayHome();
+                    activePage = "home";
+                    activeModule = "";
+                    activeSubModule = "";
+                    activeInstance = "";
+                    refresh();
                 }else{
                     
                     changeTab(activeSubModule);
@@ -283,7 +287,7 @@ $config = new Configuration();
                             type    : "POST",
                             url     : "/ajax/setFormUser.php",
                             data    : $(this).serialize(),
-                            success : function(data) {},
+                            success : function(data) {refresh();},
                             error   : function() {}
                         });
                     });
