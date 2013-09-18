@@ -21,9 +21,7 @@ if($_POST['instanceName'] == "Add new"){    //if we are creating a new instance
     }
     $response .= "<input type=\"submit\" value=\"Save\">";
     $response .= "</form>";
-    
-    echo $response;
-    return;
+
     
 }else{  //if we are editing an existing instance
     
@@ -46,12 +44,17 @@ if($_POST['instanceName'] == "Add new"){    //if we are creating a new instance
         $response .= $argument." : <input type=\"text\" name=\"".$argument."\" value=\"".$instance->getArgument($argument)."\"><br>";    
     }
     
+    $response .= "After : <input type=\"text\" class=\"instanceMenu\" value=\"\"><br>";
+    
     $response .= "<input type=\"submit\" value=\"Save\">";
     $response .= "<input class=\"deleteInstance\" type=\"button\" value=\"Delete\">";
     $response .= "</form>";
     
-    echo $response;
-    return;
 }
+
+
+
+echo $response;
+return;
 
 ?>

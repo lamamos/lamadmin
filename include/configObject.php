@@ -113,7 +113,7 @@ class Configuration{
 
 
 
-
+	function getModules(){return $this->availableModules;}
 	function getModule($moduleName){
 
 		foreach($this->availableModules as $module){

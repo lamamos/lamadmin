@@ -49,6 +49,8 @@ $config = new Configuration();
         var activeModule = "";
         var activeSubModule = "";
         var activeInstance = "";
+        
+        var activeAfterInput;
                 
         //on page load, when make the parts of the page slide in        
         $("#sideBar").ready(function () { 
@@ -74,6 +76,8 @@ $config = new Configuration();
                     changeTab(tabName);
                 }
             });
+            
+             $("#menu").menu();
             
             redefineComportements();
         });
@@ -597,6 +601,12 @@ $config = new Configuration();
                                     error   : function() {}
                                 });
                             });
+                            
+                                        
+                            $(".instanceMenu").click(function(){
+                                
+                                displayInstanceMenu($(this));
+                            });
                                             
                             $(".deleteInstance").click(function(){deleteInstance();});
                             
@@ -620,7 +630,6 @@ $config = new Configuration();
                 });
             });
             
-            
             $("#addUser").click(function(){
                 
                 //alert("kikoo");
@@ -636,6 +645,34 @@ $config = new Configuration();
                 
             });
      
+        }
+        
+        function displayInstanceMenu(source){
+                        
+            activeAfterInput = source;
+            
+            request = $.ajax({
+                url: "/ajax/getInstanceMenu.php",
+                type: "POST"
+            });
+        
+            request.done(function(response, textStatus, jqXHR){
+        
+                $("#mainPannel").append(response);
+                $(".menu").menu();
+                
+                //we position this menu on the irght of the text input we just clicked
+                var position = activeAfterInput.offset();
+                position.left += activeAfterInput.width() + 5;
+                $(".menu").offset({ top: position.top, left: position.left})
+            });
+        }
+        
+        
+        function formatInstanceMenu(choise){
+            
+            activeAfterInput.val(choise);
+            $(".menu").remove();
         }
         
         $(".test").click(function(){
