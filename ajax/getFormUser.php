@@ -7,19 +7,29 @@ $config = new Configuration();
 
 $module = $config->getModule("user");
 
-$instance = $module->getInstance($_POST['name']);
+if(!($_POST['name'] === "Add new")){$instance = $module->getInstance($_POST['name']);}
 
-
-
-$response = "salut il y a : ".count($instance->getArguments())." arguments.<br>";
+$response = "salut il y a : ".count($module->getArguments())." arguments.<br>";
 $response .= "<form class=\"userForm\" onsubmit=\"return false;\" method=\"post\">";
 
-foreach($instance->getArguments() as $argument){
+if($_POST['name'] === "Add new"){
 
-	$response .= $argument[0]." : <input type=\"text\" name=\"".$argument[0]."\" value=\"".$argument[1]."\"><br>";
+    foreach($module->getArguments() as $argument){
+    
+        $response .= $argument." : <input type=\"text\" name=\"".$argument."\" value=\"\"><br>";
+    }
+    $response .= "<input type=\"submit\" value=\"Save\">";
+
+}else{
+    
+    foreach($module->getArguments() as $argument){
+    
+        $response .= $argument." : <input type=\"text\" name=\"".$argument."\" value=\"".$instance->getArgument($argument)."\"><br>";
+    }
+    $response .= "<input type=\"submit\" value=\"Save\">";
+    $response .= "<input class=\"deleteInstance\" type=\"button\" value=\"Delete\">";
 }
-$response .= "<input type=\"submit\" value=\"Save\">";
-$response .= "<input class=\"deleteInstance\" type=\"button\" value=\"Delete\">";
+
 $response .= "</form>";
 
 

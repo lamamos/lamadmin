@@ -62,6 +62,8 @@ abstract class Module{
 				return $instance;
 			}
 		}
+        
+        return NULL;
 	}
     public function deleteInstance($name){
                 
@@ -183,7 +185,7 @@ class Instance{
             }
         }
         
-        //if we are still here it's that the argument didn't already exist, so we cretae it
+        //if we are still here it's that the argument didn't already exist, so we create it
         $this->arguments[] = [$argument, $value];        
     }
 }

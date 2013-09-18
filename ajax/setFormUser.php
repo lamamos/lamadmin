@@ -10,10 +10,19 @@ $module = $config->getModule("user");
 $instance = $module->getInstance($_POST['name']);
 
 
+if($instance != NULL){  //if the user exist, we change it's arguments
 
-foreach($_POST as $key => $value){
+    foreach($_POST as $key => $value){
+        
+        $instance->setArgument($key, $value);
+    }
+}else{  //if it doesn't existe, we create it
     
-    $instance->setArgument($key, $value);
+    foreach($_POST as $key => $value){
+        
+        $variables[] = [$key, $value];
+    }
+    $module->addInstance(new Instance($name, $variables));
 }
 
 writeConfigFile($config);

@@ -26,6 +26,8 @@ $config = new Configuration();
             <div id="logo">Home</div><br>
             <div class="sectionTitle">Users : </div><br>
             <div id="listUsers"></div>
+            <br>
+            <div class="sectionTitle" id="addUser">Add user</div>
             <br><br>
             <div class="sectionTitle">Services : </div><br>
             <div id="listServices"></div>
@@ -247,7 +249,7 @@ $config = new Configuration();
             var data = {
                 name: name,
             }
-        
+                    
             request = $.ajax({
                 url: "/ajax/getFormUser.php",
                 type: "POST",
@@ -391,6 +393,7 @@ $config = new Configuration();
             //we need to put a timeout, if we call the function right away, the DOM is not yet constructed
             //and it's useless
             setTimeout(function(){reredefineComportements();}, 500);
+            //$(document).ready(function(){reredefineComportements();});
         }
         
         function reredefineComportements(){
@@ -611,6 +614,22 @@ $config = new Configuration();
                     request.always(function(){});
             
                 });
+            });
+            
+            
+            $("#addUser").click(function(){
+                
+                //alert("kikoo");
+                activePage = "config";
+                activeModule = "user";
+                activeSubModule = "";
+                activeInstance = "Add new";
+                
+                $("#sideBar div").removeClass('moduleSelected');
+                $(this).addClass('moduleSelected');
+                
+                displayUser("Add new");
+                
             });
      
         }
