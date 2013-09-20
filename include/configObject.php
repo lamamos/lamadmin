@@ -146,6 +146,28 @@ class Configuration{
         
         return true;
     }
+    
+    
+    function numberInstanceStillToWrite(){
+        
+        $count = 0;
+        
+        foreach($this->getAvalableModules() as $module){
+            foreach($module->getInstances() as $moduleInstance){
+                
+                if($moduleInstance->getHasBeenWritten() == false){$count++;}
+            }        
+            
+            foreach($module->getSubModules() as $subModule){
+                foreach($subModule->getInstances() as $subModuleInstance){
+    
+                    if($subModuleInstance->getHasBeenWritten() == false){$count++;}
+                }
+            }
+        }
+        
+        return $count;
+    }
 }
 
 ?>

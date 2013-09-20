@@ -62,9 +62,11 @@ function writeConfigFile($config){
     
     
     
-    $config = createAfterLinks($config);
+    $config = createAfterLinks($config);        
+    $stillToWritte = 0;
     
-    while($config->isCompletlyWritten() == false){
+    do{
+        $stillToWritte = $config->numberInstanceStillToWrite();
         
         foreach($config->getAvalableModules() as $module){
             
@@ -92,6 +94,12 @@ function writeConfigFile($config){
                 }
             }
         }        
+    }while($stillToWritte != $config->numberInstanceStillToWrite());    //when we don't write anything anymore in the file
+    
+    
+    if($config->numberInstanceStillToWrite() != 0){ //if there is still instances that has not been written, it's that there is a loop
+        
+        //TODO : Send error message saying the elements still to write are wrong
     }
     
 
