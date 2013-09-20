@@ -159,31 +159,30 @@ $config = new Configuration();
     
                             $("#forms #"+tabName).removeClass("pt-page-flipInRight");
                     });
-                });
-                
-                
-                $(".instanceForm").submit(function (){       
-    
-                    alert("kikoo");
-                    var data = $(this).serialize();
-                    data += "&moduleName="+activeModule;
-    
-                    $.ajax({
-                        type    : "POST",
-                        url     : "/ajax/setFormInstance.php",
-                        data    : data,
-                        success : function(data) {
-                            alert("done");
-                            //opts.onSuccess.call(FORM[0], data);
-                        },
-                        error   : function() {
-                            alert("Error when commitin the modif on this module.");
-                            //opts.onError.call(FORM[0]);
-                        }
+                    
+                    
+                    $(".instanceForm").submit(function (){       
+        
+                        var data = $(this).serialize();
+                        data += "&moduleName="+activeModule;
+        
+                        $.ajax({
+                            type    : "POST",
+                            url     : "/ajax/setFormInstance.php",
+                            data    : data,
+                            success : function(data) {
+                                refresh();
+                                //opts.onSuccess.call(FORM[0], data);
+                            },
+                            error   : function() {
+                                alert("Error when commitin the modif on this module.");
+                                //opts.onError.call(FORM[0]);
+                            }
+                        });
                     });
-                });
-                
-                
+                    
+                    
+                });            
             });
             
             request.fail(function(jqXHR, textStatus, errorThrown){
