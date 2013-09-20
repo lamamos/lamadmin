@@ -77,7 +77,13 @@ $config = new Configuration();
                 }
             });
             
-             $("#menu").menu();
+            $("#menu").menu();
+            
+            $(document).ajaxComplete(function(){
+                
+                //function called when a jaxrequest is done
+                //alert("kikoo");   
+            });
             
             redefineComportements();
         });
