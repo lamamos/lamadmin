@@ -17,6 +17,13 @@ body {
     background-color:transparent;
 }
 
+#logo{
+    
+    font-weight:bold;
+    color:white;
+    font-size:25;
+}
+
 #tabs{
     
     overflow:hidden;

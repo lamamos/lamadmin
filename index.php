@@ -349,9 +349,14 @@ $config = new Configuration();
         
         function displayListUsers(){
             
+            var data = {
+                moduleName: "user",
+            }
+            
             request = $.ajax({
-                url: "/ajax/getListUsers.php",
-                type: "POST"
+                url: "/ajax/getListInstances.php",
+                type: "POST",
+                data: data
             });
         
             request.done(function(response, textStatus, jqXHR){
