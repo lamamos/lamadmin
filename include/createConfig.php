@@ -118,6 +118,9 @@ function createAfterLinks($config){
         foreach($module->getSubModules() as $subModule){
             foreach($subModule->getInstances() as $subModuleInstance){
 
+                //a submodule must always be defined after the mainModule it is associated to
+                $subModuleInstance->addAfterObjects($module->getInstances());
+                
                 if(!($subModuleInstance->getArgument("after") === "")){
                     
                     $object = getInstanceFromString($subModuleInstance->getArgument("after"), $config);

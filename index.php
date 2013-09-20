@@ -164,6 +164,7 @@ $config = new Configuration();
                 
                 $(".instanceForm").submit(function (){       
     
+                    alert("kikoo");
                     var data = $(this).serialize();
                     data += "&moduleName="+activeModule;
     
@@ -172,10 +173,11 @@ $config = new Configuration();
                         url     : "/ajax/setFormInstance.php",
                         data    : data,
                         success : function(data) {
-                            //alert("done");
+                            alert("done");
                             //opts.onSuccess.call(FORM[0], data);
                         },
                         error   : function() {
+                            alert("Error when commitin the modif on this module.");
                             //opts.onError.call(FORM[0]);
                         }
                     });

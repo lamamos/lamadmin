@@ -203,6 +203,7 @@ class Instance{
     
     public function getAfterObjects(){return $this->afterObjects;}
     public function addAfterObject($object){$this->afterObjects[] = $object;}
+    public function addAfterObjects($objects){$this->afterObjects = array_merge($this->afterObjects, $objects);}
     public function isReadyToBeWritten(){
         
         foreach($this->afterObjects as $object){
