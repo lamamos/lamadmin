@@ -255,12 +255,18 @@ $config = new Configuration();
         
         function displayUser(name){
 
+            activePage = "config";
+            activeModule = "user";
+            activeSubModule = "";
+            activeInstance = name;
+            
             var data = {
-                name: name,
+                moduleName: "user",
+                instanceName: name
             }
                     
             request = $.ajax({
-                url: "/ajax/getFormUser.php",
+                url: "/ajax/getFormInstance.php",
                 type: "POST",
                 data: data
             });
@@ -287,13 +293,23 @@ $config = new Configuration();
                     $("#mainPannel #forms").remove();   //we delete them
                     $("#mainPannel").append("<div id=\"forms\">"+response+"</div>");    //we add the user form
                     $("#mainPannel #forms").addClass("pt-page-moveFromTop");    //we make it appeare
-                    $(".userForm").submit(function (){  //we make it a proper user form with an ajax handle
+                    $(".instanceForm").submit(function (){       
+        
+                        var data = $(this).serialize();
+                        data += "&moduleName=user&instanceName="+activeInstance;
+        
                         $.ajax({
                             type    : "POST",
-                            url     : "/ajax/setFormUser.php",
-                            data    : $(this).serialize(),
-                            success : function(data) {refresh();},
-                            error   : function() {}
+                            url     : "/ajax/setFormInstance.php",
+                            data    : data,
+                            success : function(data) {
+                                refresh();
+                                //opts.onSuccess.call(FORM[0], data);
+                            },
+                            error   : function() {
+                                alert("Error when commitin the modif on this module.");
+                                //opts.onError.call(FORM[0]);
+                            }
                         });
                     });
                     $(".deleteInstance").click(function(){deleteInstance();});

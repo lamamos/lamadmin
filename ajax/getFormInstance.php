@@ -26,10 +26,16 @@ if($_POST['instanceName'] == "Add new"){    //if we are creating a new instance
     
 }else{  //if we are editing an existing instance
     
-    if($_POST['subModuleName'] == "general"){   //if we are editing the mainModule
+    if($_POST['subModuleName'] == "general"){   //if we are editing mainModule with on ly one instance
     
         $subModule = $module;
-        $instance = $module->getInstances()[0];        
+        $instance = $module->getInstances()[0];  
+        
+    }else if($_POST['subModuleName'] == NULL){  //if we are eiting a mainModule with multiple instances (user for exemple)
+        
+        $subModule = $module;
+        $instance = $module->getInstance($_POST['instanceName']);  
+        
     }else{  //if we are editing a subModule
         
         $subModule = $module->getSubModule($_POST['subModuleName']);

@@ -12,7 +12,8 @@ $module = $config->getModule($_POST['moduleName']);
 
 if($_POST['subModuleName'] == NULL){    //we are editing a mainModule instance
     
-    $instance = $module->getInstances()[0];
+    if($_POST['instanceName'] == NULL){$instance = $module->getInstances()[0];}
+    else{$instance = $module->getInstance($_POST['instanceName']);}
     
 }elseif($_POST['instanceName'] == "Add new"){    //we are adding a new subModule instance
     
