@@ -116,6 +116,14 @@ function createAfterLinks($config){
         
         foreach($module->getInstances() as $moduleInstance){
             
+            //add the after statement in the description of the module (after section)
+            foreach($module->getAfterModules() as $afterModule){
+                
+                $afterModuleObject = $config->getModule($afterModule);
+                $afterModuleInstances = getMainAndSubInstances($afterModuleObject);
+                $moduleInstance->addAfterObjects($afterModuleInstances);
+            }
+            
             if(!($moduleInstance->getArgument("after") === "")){
                 
                 $object = getInstanceFromString($moduleInstance->getArgument("after"), $config);
@@ -129,6 +137,14 @@ function createAfterLinks($config){
                 //a submodule must always be defined after the mainModule it is associated to
                 $subModuleInstance->addAfterObjects($module->getInstances());
                 
+                //add the after statement in the description of the module (after section)
+                foreach($subModule->getAfterModules() as $afterModule){
+                    
+                    $afterModuleObject = $config->getModule($afterModule);
+                    $afterModuleInstances = getMainAndSubInstances($afterModuleObject);
+                    $subModuleInstance->addAfterObjects($afterModuleInstances);
+                }
+                
                 if(!($subModuleInstance->getArgument("after") === "")){
                     
                     $object = getInstanceFromString($subModuleInstance->getArgument("after"), $config);
@@ -139,6 +155,21 @@ function createAfterLinks($config){
     }
     
     return $config;
+}
+
+
+//function return an array containing all the instances of the module
+//and all the instances of the suModulles associated to it
+function getMainAndSubInstances($module){
+    
+    $instances = $module->getInstances();
+    
+    foreach($module->getSubModules() as $subModule){
+        
+        $instances = array_merge(instances, $subModule->getInstances());
+    }
+
+    return $instances;
 }
 
 

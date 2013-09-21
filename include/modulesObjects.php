@@ -11,6 +11,7 @@ abstract class Module{
 	protected $pathToConfigFile;
 	protected $arguments;
 	protected $userRelated = false;
+    protected $afterModules;
 
 
 	abstract function __construct($name, $configFolder, $parentModule);
@@ -46,12 +47,25 @@ abstract class Module{
                 $nameVarExport[] = $nameVar;
             }
         }
-        
         if($nameVarExport != NULL)$this->nameVarInstance = $nameVarExport[0];
+        
+        
+        //we now search for the after statement. The list of module after which this module mult be defined
+        preg_match_all("/=head1 AFTER(\s|.)*\n\=/U", $file, $out);
+        $afterNames = split("\n", $out[0][0]);        
+        array_shift($afterNames);    
+        array_pop($afterNames);
+        
+        foreach($afterNames as $nameVar){
+            if(!preg_match("/^\s*$/", $nameVar) ){
+                $this->afterModules[] = $nameVar;
+            }
+        }
 	}
 
     public function isActivated(){if(count($this->instances) == 0)return 0;else return 1;}
 	public function addInstance($instance){$this->instances[] = $instance;}
+    public function getAfterModules(){return $this->afterModules;}
 	public function getInstances(){return $this->instances;}
 	public function getInstance($name){
 
