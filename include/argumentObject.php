@@ -21,7 +21,6 @@ class StringArg extends Argument{
 
     private $value;
     
-    
     function __construct($name, $value){
     
         $this->type = "string";

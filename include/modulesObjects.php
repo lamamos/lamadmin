@@ -199,26 +199,26 @@ class Instance{
 	private $arguments;
     private $hasBeenWritten;
     private $afterObjects;
-    private $moduleType;
+    private $motherModule;
 
-	function __construct($name, $arguments, $moduleType){
+	function __construct($name, $arguments, $motherModule){
 
         $this->hasBeenWritten = false;
 		$this->name = $name;
-        $this->moduleType = $moduleType;
-        if($arguments != NULL) $this->createArguments($arguments, $moduleType);
+        $this->motherModule = $motherModule;
+        if($arguments != NULL) $this->createArguments($arguments, $motherModule);
         $this->afterObjects = [];
 	}
     
     
-    private function createArguments($arguments, $moduleType){
+    private function createArguments($arguments, $motherModule){
         
         foreach($arguments as $argument){
         
             $argName = $argument[0];
             $argVal = $argument[1];
             
-            //$type = $moduleType->getArgType($argName);    //the function needs to be implemented
+            //$type = $motherModule->getArgType($argName);    //the function needs to be implemented
             
             $this->arguments[] = new StringArg($argName, $argVal);
         }
@@ -238,6 +238,17 @@ class Instance{
         }
         return "";
     }
+    public function getArgumentObject($name){
+    
+        foreach($this->arguments as $argument){
+            
+            if($argument->getName() == $name){
+                
+                return $argument;
+            }
+        }
+        return "";
+    }
 	public function setArguments($arguments){$this->arguments = $arguments;}
     public function setArgument($argumentName, $value){
         
@@ -252,6 +263,37 @@ class Instance{
         
         //if we are still here it's that the argument didn't already exist, so we create it
         $this->arguments[] = new StringArg($argumentName, $value);
+    }
+    
+    
+    public function toForm(){
+        
+        $form = "<form class=\"instanceForm\" onsubmit=\"return false;\" method=\"post\">";
+        $form .= "salut il y a : ".count($this->motherModule->getArguments())." arguments.<br>";
+    
+        foreach($this->motherModule->getArguments() as $argument){
+            
+            if($argument == "after"){
+                
+                $form .= $argument." : <input type=\"text\" name=\"".$argument."\" class=\"instanceMenu\" value=\"".$this->getArgument($argument)."\">";
+                
+                $form .= "<br>";
+            }else{
+                
+                $form .= $argument->getName()." : ";
+                
+                $instanceArg = $this->getArgumentObject($argument->getName());
+                $form .= $instanceArg->toForm()."<br>";
+            }
+        }
+        
+        
+        $form .= "<input type=\"submit\" value=\"Save\">";
+        $form .= "<input class=\"deleteInstance\" type=\"button\" value=\"Delete\">";
+        $form .= "</form>";
+        
+        
+        return $form;
     }
     
     public function getHasBeenWritten(){return $this->hasBeenWritten;}
