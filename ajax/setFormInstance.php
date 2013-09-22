@@ -35,6 +35,6 @@ foreach($_POST as $key => $value){
     }
 }
 
-writeConfigFile($config);
+$config->writeConfigFile($config);
 
 ?>

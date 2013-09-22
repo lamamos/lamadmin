@@ -129,6 +129,7 @@ abstract class Module{
         return NULL;
     }
 
+    
 	//TODO : remove this two function, they chould be useless
 	public function getInstanceName(){return $this->instanceName;}
 	public function setInstanceName($name){$this->instanceName = $name;}
@@ -173,6 +174,21 @@ class MainModule extends Module{
     
 	public function getSubModules(){return $this->subModules;}
 
+    //function return an array containing all the instances of the module
+    //and all the instances of the suModulles associated to it
+    public function getMainAndSubInstances(){
+        
+        $instances = $this->getInstances();
+        
+        foreach($this->getSubModules() as $subModule){
+            
+            $instances = array_merge(instances, $subModule->getInstances());
+        }
+    
+        return $instances;
+    }
+    
+    
 }
 
 

@@ -16,6 +16,6 @@ if($module->isActivated()){
     $module->addInstance(new Instance($_POST['moduleToggled'], NULL, $module));
 }
 
-writeConfigFile($config);
+$config->writeConfigFile($config);
 
 ?>

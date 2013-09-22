@@ -26,6 +26,6 @@ if($_POST['moduleName'] === "user"){
 
 
 
-writeConfigFile($config);
+$config->writeConfigFile($config);
 
 ?>

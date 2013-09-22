@@ -171,6 +171,158 @@ class Configuration{
         
         return $count;
     }
+    
+    
+    
+    
+    
+    
+    function writeConfigFile(){
+    
+        global $PathToRexConfiguration;
+        $file = fopen($PathToRexConfiguration."/Rexfile", 'w') or die("can't open file");
+    
+        fwrite($file, "user \"root\";\n");
+        fwrite($file, "private_key \"/root/.ssh/id_rsa\";\n");
+        fwrite($file, "public_key \"/root/.ssh/id_rsa.pub\";\n");
+        fwrite($file, "key_auth;\n\n");
+        
+        fwrite($file, "group martobre => \"192.168.0.151\";\n\n");
+        
+        fwrite($file, "require Rex::Logger;\n");
+        foreach($this->getAvalableModules() as $module){
+            
+            fwrite($file, "require Service::".$module->getName().";\n");
+            foreach($module->getSubModules() as $subModule){
+                
+                fwrite($file, "require Service::".$module->getName()."::".$subModule->getName().";\n");
+            }
+        }
+        
+        fwrite($file, "\ntask \"configure\", group => martobre, sub{\n\n");
+        
+        
+        
+        
+        
+        $this->createAfterLinks();        
+        $stillToWritte = 0;
+        
+        do{
+            $stillToWritte = $this->numberInstanceStillToWrite();
+            
+            foreach($this->getAvalableModules() as $module){
+                
+                foreach($module->getInstances() as $moduleInstance){
+                    
+                    if( ($moduleInstance->getHasBeenWritten() == false) && ($moduleInstance->isReadyToBeWritten() == true) ){
+                        fwrite($file, "\tService::".$module->getName()."::define({\n\n");
+                        foreach($moduleInstance->getArguments() as $argument){
+                            
+                            $argumentInString = $argument->toConfigFile();
+                            fwrite($file, "\t\t".$argumentInString."\n"); //fwrite($file, "\t\t'".$argument[0]."' => '".$argument[1]."',\n");
+                            
+                        }
+                        fwrite($file, "\t});\n\n");
+                                            
+                        $moduleInstance->setHasBeenWritten(true);
+                    }
+                }        
+                
+                foreach($module->getSubModules() as $subModule){
+                    foreach($subModule->getInstances() as $subModuleInstance){
+        
+                    if( ($subModuleInstance->getHasBeenWritten() == false) && ($subModuleInstance->isReadyToBeWritten() == true) ){
+                            fwrite($file, "\tService::".$module->getName()."::".$subModule->getName()."::define({\n\n");
+                            foreach($subModuleInstance->getArguments() as $argument){
+                                
+                                $argumentInString = $argument->toConfigFile();
+                                fwrite($file, "\t\t".$argumentInString."\n");
+                            }
+                            fwrite($file, "\t});\n\n");
+                            
+                            $subModuleInstance->setHasBeenWritten(true);
+                        }
+                    }
+                }
+            }        
+        }while($stillToWritte != $this->numberInstanceStillToWrite());    //when we don't write anything anymore in the file
+        
+        
+        if($this->numberInstanceStillToWrite() != 0){ //if there is still instances that has not been written, it's that there is a loop
+            
+            //TODO : Send error message saying the elements still to write are wrong
+        }
+        
+    
+        fwrite($file, "};\n\n");
+     
+        fclose($file);
+    }
+    
+    
+    
+    function createAfterLinks(){
+        
+        foreach($this->getAvalableModules() as $module){
+            
+            foreach($module->getInstances() as $moduleInstance){
+                
+                //add the after statement in the description of the module (after section)
+                foreach($module->getAfterModules() as $afterModule){
+                    
+                    $afterModuleObject = $this->getModule($afterModule);
+                    $afterModuleInstances = $afterModuleObject->getMainAndSubInstances();
+                    $moduleInstance->addAfterObjects($afterModuleInstances);
+                }
+                
+                if(!($moduleInstance->getArgument("after") === "")){
+                    
+                    $object = $this->getInstanceFromString($moduleInstance->getArgument("after"));
+                    $moduleInstance->addAfterObject($object);
+                }
+            }        
+            
+            foreach($module->getSubModules() as $subModule){
+                foreach($subModule->getInstances() as $subModuleInstance){
+    
+                    //a submodule must always be defined after the mainModule it is associated to
+                    $subModuleInstance->addAfterObjects($module->getInstances());
+                    
+                    //add the after statement in the description of the module (after section)
+                    foreach($subModule->getAfterModules() as $afterModule){
+                        
+                        $afterModuleObject = $this->getModule($afterModule);
+                        $afterModuleInstances = $afterModuleObject->getMainAndSubInstances();
+                        $subModuleInstance->addAfterObjects($afterModuleInstances);
+                    }
+                    
+                    if(!($subModuleInstance->getArgument("after") === "")){
+                        
+                        $object = $this->getInstanceFromString($subModuleInstance->getArgument("after"));
+                        $subModuleInstance->addAfterObject($object);
+                    }
+                }
+            }
+        }
+    }
+    
+    
+    
+    function getInstanceFromString($string){
+        
+        $names = explode("::", $string);
+        
+        $module = $this->getModule($names[0]);
+        $subModule = $module->getSubModule($names[1]);
+        $instance = $subModule->getInstance($names[2]);
+    
+        return $instance;
+    }
+
+    
+    
+    
 }
 
 ?>
