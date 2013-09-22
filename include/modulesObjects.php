@@ -44,10 +44,10 @@ abstract class Module{
                 
                 if($type === "string"){
                     
-                    $argumentsExport[] = new StringArg($name);
+                    $argumentsExport[] = new StringArg($name, NULL);
                 }elseif($type === "after"){
                     
-                    $argumentsExport[] = new AfterArg();
+                    $argumentsExport[] = new AfterArg(NULL);
                 }
             }
         }
@@ -74,6 +74,7 @@ abstract class Module{
         array_shift($afterNames);    
         array_pop($afterNames);
         
+        $this->afterModules = array();
         foreach($afterNames as $nameVar){
             if(!preg_match("/^\s*$/", $nameVar) ){
                 $this->afterModules[] = $nameVar;
@@ -150,6 +151,7 @@ class MainModule extends Module{
 			$this->pathToConfigFile = $configFolder."/__module__.pm";
 			$this->readConfigurationFile();
 
+            $this->subModules = array();
 			foreach(getListOfAvalableSubModules($name) as $subModule){	//crete the list of submodules
 
 				$this->subModules[] = new SubModule($subModule, $configFolder, $this);
@@ -189,7 +191,7 @@ class SubModule extends Module{
 		$this->parentModule = $parentModule;
 		$this->readConfigurationFile();
         
-        $this->addArgument(new AfterArg());
+        $this->addArgument(new AfterArg(NULL));
 	}
 }
 
@@ -207,8 +209,9 @@ class Instance{
         $this->hasBeenWritten = false;
 		$this->name = $name;
         $this->motherModule = $motherModule;
+        $this->arguments = array();
         if($arguments != NULL) $this->createArguments($arguments, $motherModule);
-        $this->afterObjects = [];
+        $this->afterObjects = array();
 	}
     
     
@@ -308,7 +311,7 @@ class Instance{
     }
     
     public function getHasBeenWritten(){return $this->hasBeenWritten;}
-    public function setHasBeenWritten($val){$this->hasBeenWritten = val;}
+    public function setHasBeenWritten($val){$this->hasBeenWritten = $val;}
     
     public function getAfterObjects(){return $this->afterObjects;}
     public function addAfterObject($object){$this->afterObjects[] = $object;}

@@ -6,7 +6,7 @@ include_once("../include/createConfig.php");
 $config = new Configuration();
 
 
-if($_POST['subModuleName'] != NULL){
+if( (isset($_POST['subModuleName'])) && ($_POST['subModuleName'] != NULL) ){
         
     $module = $config->getModule($_POST['moduleName']);
     $subject = $module->getSubModule($_POST['subModuleName']);
@@ -14,6 +14,8 @@ if($_POST['subModuleName'] != NULL){
 
     $subject = $config->getModule($_POST['moduleName']);
 }
+
+$response = "";
 
 foreach($subject->getInstances() as $instance){
 

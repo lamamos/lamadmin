@@ -74,6 +74,7 @@ class Configuration{
             $args = $args[0];
             
             unset($keyValue);
+            $keyValue = array();
             foreach($args as $argument){
                 
                 $argument = explode("=>", $argument);
@@ -93,6 +94,7 @@ class Configuration{
             //we first find the name of the instance
             $nameVar = $type->getNameVarInstance();
             unset($name);
+            $name = "";
             foreach($keyValue as $tmp){
                 
                 if($tmp[0] == $nameVar){
@@ -100,7 +102,7 @@ class Configuration{
                     $name = $tmp[1];
                 }
             }
-            if($name == NULL)if($names[1] != NULL)$name = $names[1]; else $name = $names[0];
+            if($name == NULL){if( (isset($names[1])) && ($names[1] != NULL) )$name = $names[1]; else $name = $names[0];}
 
             //we then create the instance
             $type->addInstance(new Instance($name, $keyValue, $type));

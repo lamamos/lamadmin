@@ -19,6 +19,7 @@ function getListOfAvalableSubModules($moduleName){
     $subModules = scandir($PathToRexConfiguration."/lib/Service/".$moduleName);
     $subModules = array_slice($subModules, 2);
     
+    $subModulesClear = array();
     foreach($subModules as $tmp){
         
         //We get only the .pm files

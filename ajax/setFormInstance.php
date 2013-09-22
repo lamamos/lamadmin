@@ -11,7 +11,7 @@ $module = $config->getModule($_POST['moduleName']);
 
 
 //get the right subModule
-if($_POST['subModuleName'] == NULL){$subModule = $module;}
+if(!isset($_POST['subModuleName'])){$subModule = $module;}
 else{$subModule = $module->getSubModule($_POST['subModuleName']);}
 
 //get the right instance
