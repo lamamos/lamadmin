@@ -20,6 +20,10 @@ if($_POST['instanceName'] == "Add new"){    //we are adding a new subModule inst
     $instance = new Instance("new_subModule", NULL, $subModule);
     $subModule->addInstance($instance);
     
+}elseif(!isset($_POST['subModuleName'])){
+    
+    $instance = $subModule->getInstances()[0];
+    
 }else{    //if we are editing a submodul
     
     $instance = $subModule->getInstance($_POST['instanceName']);

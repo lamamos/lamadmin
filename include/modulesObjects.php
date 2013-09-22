@@ -226,7 +226,7 @@ class Instance{
 		$this->name = $name;
         $this->motherModule = $motherModule;
         $this->arguments = array();
-        if($arguments != NULL) $this->createArguments($arguments, $motherModule);
+        if( (isset($arguments)) && ($arguments != NULL) ) $this->createArguments($arguments, $motherModule);
         $this->afterObjects = array();
 	}
     
@@ -276,7 +276,7 @@ class Instance{
                 return $argument;
             }
         }
-        return "";
+        return NULL;
     }
 	public function setArguments($arguments){$this->arguments = $arguments;}
     public function setArgument($argumentName, $value){
@@ -314,7 +314,9 @@ class Instance{
             $form .= $argument->getName()." : ";
             
             $instanceArg = $this->getArgumentObject($argument->getName());
-            $form .= $instanceArg->toForm()."<br>";
+            //if the arg is not defined in this instance, we ask the module to display the form
+            if(isset($instanceArg))$form .= $instanceArg->toForm()."<br>";
+            else $form .= $argument->toForm()."<br>";
         }
         
         
