@@ -10,7 +10,8 @@ $module = $config->getModule($_POST['moduleName']);
 
 if($_POST['instanceName'] == "Add new"){    //if we are creating a new instance
     
-    $subModule = $module->getSubModule($_POST['subModuleName']);
+    if($_POST['subModuleName'] != NULL)$subModule = $module->getSubModule($_POST['subModuleName']);
+    else $subModule = $module;
 
     $response = "<form class=\"instanceForm\" onsubmit=\"return false;\" method=\"post\">";
     $response .= "salut il y a : ".count($subModule->getArguments())." arguments.<br>";
@@ -18,7 +19,9 @@ if($_POST['instanceName'] == "Add new"){    //if we are creating a new instance
     foreach($subModule->getArguments() as $argument){
     
         if($argument == "after"){$response .= $argument." : <input type=\"text\" name=\"".$argument."\" class=\"instanceMenu\" value=\"\"><br>";}
-        else{$response .= $argument." : <input type=\"text\" name=\"".$argument."\" value=\"\"><br>";}
+        //else{$response .= $argument." : <input type=\"text\" name=\"".$argument."\" value=\"\"><br>";}
+        else{$response .= $argument->getName()." : <input type=\"text\" name=\"".$argument->getName()."\" value=\"\"><br>";}
+    
     }
     $response .= "<input type=\"submit\" value=\"Save\">";
     $response .= "</form>";
@@ -49,7 +52,7 @@ if($_POST['instanceName'] == "Add new"){    //if we are creating a new instance
     foreach($subModule->getArguments() as $argument){
     
         if($argument == "after"){$response .= $argument." : <input type=\"text\" name=\"".$argument."\" class=\"instanceMenu\" value=\"".$instance->getArgument($argument)."\"><br>";}
-        else{$response .= $argument." : <input type=\"text\" name=\"".$argument."\" value=\"".$instance->getArgument($argument)."\"><br>";}
+        else{$response .= $argument->getName()." : <input type=\"text\" name=\"".$argument->getName()."\" value=\"".$instance->getArgument($argument->getName())."\"><br>";}
     }
         
     $response .= "<input type=\"submit\" value=\"Save\">";

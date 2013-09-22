@@ -21,7 +21,7 @@ if($_POST['subModuleName'] == "general"){	//we need to generate the config of th
     
         foreach($module->getArguments() as $argument){
             
-            $response .= $argument." : <input type=\"text\" name=\"".$argument."\" value=\"".$instance->getArgument($argument)."\"><br>";
+            $response .= $argument->getName()." : <input type=\"text\" name=\"".$argument->getName()."\" value=\"".$instance->getArgument($argument)."\"><br>";
         }
         $response .= "<input type=\"submit\" value=\"Save\">";
         $response .= "</form>";

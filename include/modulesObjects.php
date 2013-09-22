@@ -1,4 +1,8 @@
 <?
+
+include_once("argumentObject.php");
+
+
 abstract class Module{
 
 	protected $name;
@@ -24,13 +28,24 @@ abstract class Module{
         //we get the paragraph wich is between =HEAD1 ARGUMENTS and the next =something
         preg_match_all("/=head1 ARGUMENTS(\s|.)*\n\=/U", $file, $out);
 		$arguments = split("\n", $out[0][0]);
-        array_shift($arguments);    
-        array_pop($arguments);
+        array_shift($arguments);    //remode the line with =head1 ARGUMENTS
+        array_pop($arguments);  //remove the line with the next = statement of the file
         
         //we remove the empty arguments
         foreach($arguments as $arg){
             if($arg != NULL){
-                $argumentsExport[] = $arg;
+                
+                $parts = split(" ", $arg);
+                
+                $type = $parts[0];
+                $name = $parts[1];
+
+                //$argumentsExport[] = $name;
+                
+                if($type === "string"){
+                    
+                    $argumentsExport[] = new StringArg($name);
+                }
             }
         }
         $this->arguments = $argumentsExport;
@@ -96,9 +111,20 @@ abstract class Module{
 	public function getName(){return $this->name;}
     public function getArguments(){return $this->arguments;}
 	public function setArguments($arguments){$this->arguments = $arguments;}
-    public function addArgument($argument){
+    public function addArgument($argument){$this->arguments[] = $argument;}
+    public function getArgType($name){
         
-        $this->arguments[] = $argument;
+        foreach($this->arguments as $arg){
+            
+            //TODO
+            //$arg->getName();
+            /*if($argument->getName() === $name){
+                
+                return $argument->getType();
+            }*/
+        }
+        
+        return NULL;
     }
 
 	//TODO : remove this two function, they chould be useless
@@ -173,14 +199,30 @@ class Instance{
 	private $arguments;
     private $hasBeenWritten;
     private $afterObjects;
+    private $moduleType;
 
-	function __construct($name, $arguments){
+	function __construct($name, $arguments, $moduleType){
 
         $this->hasBeenWritten = false;
 		$this->name = $name;
-		$this->arguments = $arguments;
+        $this->moduleType = $moduleType;
+        if($arguments != NULL) $this->createArguments($arguments, $moduleType);
         $this->afterObjects = [];
 	}
+    
+    
+    private function createArguments($arguments, $moduleType){
+        
+        foreach($arguments as $argument){
+        
+            $argName = $argument[0];
+            $argVal = $argument[1];
+            
+            //$type = $moduleType->getArgType($argName);    //the function needs to be implemented
+            
+            $this->arguments[] = new StringArg($argName, $argVal);
+        }
+    }
 
 	public function getName(){return $this->name;}
 	public function setName($name){$this->name = $name;}
@@ -189,27 +231,27 @@ class Instance{
     
         foreach($this->arguments as $argument){
             
-            if($argument[0] == $name){
+            if($argument->getName() == $name){
                 
-                return $argument[1];
+                return $argument->getValue();
             }
         }
         return "";
     }
 	public function setArguments($arguments){$this->arguments = $arguments;}
-    public function setArgument($argument, $value){
+    public function setArgument($argumentName, $value){
         
         for($i=0; $i<count($this->arguments); $i++){
             
-            if($this->arguments[$i][0] == $argument){
+            if($this->arguments[$i]->getName() == $argumentName){
                 
-                $this->arguments[$i][1] = $value;
+                $this->arguments[$i]->setValue($value);
                 return 0;
             }
         }
         
         //if we are still here it's that the argument didn't already exist, so we create it
-        $this->arguments[] = [$argument, $value];        
+        $this->arguments[] = new StringArg($argumentName, $value);
     }
     
     public function getHasBeenWritten(){return $this->hasBeenWritten;}

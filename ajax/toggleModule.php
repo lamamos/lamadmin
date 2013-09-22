@@ -13,7 +13,7 @@ if($module->isActivated()){
     foreach($module->getSubModules() as $submodule)$submodule->clearInstances();
 }else{
     
-    $module->addInstance(new Instance($_POST['moduleToggled'], NULL));
+    $module->addInstance(new Instance($_POST['moduleToggled'], NULL, $module));
 }
 
 writeConfigFile($config);

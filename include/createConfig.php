@@ -74,7 +74,12 @@ function writeConfigFile($config){
                 
                 if( ($moduleInstance->getHasBeenWritten() == false) && ($moduleInstance->isReadyToBeWritten() == true) ){
                     fwrite($file, "\tService::".$module->getName()."::define({\n\n");
-                    foreach($moduleInstance->getArguments() as $argument)fwrite($file, "\t\t'".$argument[0]."' => '".$argument[1]."',\n");
+                    foreach($moduleInstance->getArguments() as $argument){
+                        
+                        $argumentInString = $argument->toConfigFile();
+                        fwrite($file, "\t\t".$argumentInString."\n"); //fwrite($file, "\t\t'".$argument[0]."' => '".$argument[1]."',\n");
+                        
+                    }
                     fwrite($file, "\t});\n\n");
                                         
                     $moduleInstance->setHasBeenWritten(true);
@@ -86,7 +91,11 @@ function writeConfigFile($config){
     
                 if( ($subModuleInstance->getHasBeenWritten() == false) && ($subModuleInstance->isReadyToBeWritten() == true) ){
                         fwrite($file, "\tService::".$module->getName()."::".$subModule->getName()."::define({\n\n");
-                        foreach($subModuleInstance->getArguments() as $argument)fwrite($file, "\t\t'".$argument[0]."' => '".$argument[1]."',\n");
+                        foreach($subModuleInstance->getArguments() as $argument){
+                            
+                            $argumentInString = $argument->toConfigFile();
+                            fwrite($file, "\t\t".$argumentInString."\n");
+                        }
                         fwrite($file, "\t});\n\n");
                         
                         $subModuleInstance->setHasBeenWritten(true);

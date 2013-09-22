@@ -10,22 +10,21 @@ $config = new Configuration();
 $module = $config->getModule($_POST['moduleName']);
 
 
-if($_POST['subModuleName'] == NULL){    //we are editing a mainModule instance
+//get the right subModule
+if($_POST['subModuleName'] == NULL){$subModule = $module;}
+else{$subModule = $module->getSubModule($_POST['subModuleName']);}
+
+//get the right instance
+if($_POST['instanceName'] == "Add new"){    //we are adding a new subModule instance
     
-    if($_POST['instanceName'] == NULL){$instance = $module->getInstances()[0];}
-    else{$instance = $module->getInstance($_POST['instanceName']);}
-    
-}elseif($_POST['instanceName'] == "Add new"){    //we are adding a new subModule instance
-    
-    $subModule = $module->getSubModule($_POST['subModuleName']);
-    $subModule->addInstance(new Instance("new_subModule", NULL));
-    $instance = $subModule->getInstance("new_subModule");
+    $instance = new Instance("new_subModule", NULL, $subModule);
+    $subModule->addInstance($instance);
     
 }else{    //if we are editing a submodul
     
-    $subModule = $module->getSubModule($_POST['subModuleName']);
     $instance = $subModule->getInstance($_POST['instanceName']);
 }
+
 
 
 foreach($_POST as $key => $value){

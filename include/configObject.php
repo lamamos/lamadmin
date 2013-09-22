@@ -2,6 +2,7 @@
 include_once("configuration.php");
 include_once("createConfig.php");
 include_once("modulesObjects.php");
+include_once("argumentObject.php");
 
 class Configuration{
 
@@ -102,7 +103,7 @@ class Configuration{
             if($name == NULL)if($names[1] != NULL)$name = $names[1]; else $name = $names[0];
 
             //we then create the instance
-            $type->addInstance(new Instance($name, $keyValue));
+            $type->addInstance(new Instance($name, $keyValue, $type));
         }
 	}
 
