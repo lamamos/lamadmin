@@ -44,9 +44,38 @@ class StringArg extends Argument{
     public function setName($name){$this->name = $name;}
     public function getValue(){return $this->value;}
     public function setValue($value){$this->value = $value;}
-
 }
 
 
+
+
+class AfterArg extends Argument{
+
+    private $value;
+    
+    function __construct($value){
+    
+        $this->type = "after";
+        $this->name = "after";
+        $this->value = $value;
+    }
+    
+    
+    public function toForm(){
+        
+        return "<input type=\"text\" class=\"instanceMenu\" name=\"".$this->name."\" value=\"".$this->value."\">";
+    }
+    
+    public function toConfigFile(){
+        
+        
+        return "'".$this->name."' => '".$this->value."',";
+    }
+    
+    public function getName(){return $this->name;}
+    public function setName($name){$this->name = $name;}
+    public function getValue(){return $this->value;}
+    public function setValue($value){$this->value = $value;}
+}
 
 ?>

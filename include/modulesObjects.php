@@ -45,6 +45,9 @@ abstract class Module{
                 if($type === "string"){
                     
                     $argumentsExport[] = new StringArg($name);
+                }elseif($type === "after"){
+                    
+                    $argumentsExport[] = new AfterArg();
                 }
             }
         }
@@ -114,14 +117,12 @@ abstract class Module{
     public function addArgument($argument){$this->arguments[] = $argument;}
     public function getArgType($name){
         
-        foreach($this->arguments as $arg){
+        foreach($this->arguments as $argument){
             
-            //TODO
-            //$arg->getName();
-            /*if($argument->getName() === $name){
+            if($argument->getName() == $name){
                 
                 return $argument->getType();
-            }*/
+            }
         }
         
         return NULL;
@@ -188,7 +189,7 @@ class SubModule extends Module{
 		$this->parentModule = $parentModule;
 		$this->readConfigurationFile();
         
-        $this->addArgument("after");
+        $this->addArgument(new AfterArg());
 	}
 }
 
@@ -211,16 +212,25 @@ class Instance{
 	}
     
     
-    private function createArguments($arguments, $motherModule){
+    private function createArguments($arguments){
         
         foreach($arguments as $argument){
         
             $argName = $argument[0];
             $argVal = $argument[1];
             
-            //$type = $motherModule->getArgType($argName);    //the function needs to be implemented
             
-            $this->arguments[] = new StringArg($argName, $argVal);
+            $type = $this->motherModule->getArgType($argName);
+            
+            if($type === "string"){
+                
+                $this->arguments[] = new StringArg($argName, $argVal);
+            }elseif($type === "after"){
+                
+                $this->arguments[] = new AfterArg($argVal);
+            }
+                
+            
         }
     }
 
@@ -262,7 +272,16 @@ class Instance{
         }
         
         //if we are still here it's that the argument didn't already exist, so we create it
-        $this->arguments[] = new StringArg($argumentName, $value);
+        //first we need to find the type of this arg by checking in the motherModule
+        $type = $this->motherModule->getArgType($argumentName);
+        
+        if($type === "string"){
+            
+            $this->arguments[] = new StringArg($argumentName, $value);
+        }elseif($type === "after"){
+            
+            $this->arguments[] = new AfterArg($value);
+        }
     }
     
     
@@ -272,19 +291,11 @@ class Instance{
         $form .= "salut il y a : ".count($this->motherModule->getArguments())." arguments.<br>";
     
         foreach($this->motherModule->getArguments() as $argument){
+                
+            $form .= $argument->getName()." : ";
             
-            if($argument == "after"){
-                
-                $form .= $argument." : <input type=\"text\" name=\"".$argument."\" class=\"instanceMenu\" value=\"".$this->getArgument($argument)."\">";
-                
-                $form .= "<br>";
-            }else{
-                
-                $form .= $argument->getName()." : ";
-                
-                $instanceArg = $this->getArgumentObject($argument->getName());
-                $form .= $instanceArg->toForm()."<br>";
-            }
+            $instanceArg = $this->getArgumentObject($argument->getName());
+            $form .= $instanceArg->toForm()."<br>";
         }
         
         
