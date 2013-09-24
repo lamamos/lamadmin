@@ -12,18 +12,8 @@ if($_POST['instanceName'] == "Add new"){    //if we are creating a new instance
     
     if( (isset($_POST['subModuleName'])) && ($_POST['subModuleName'] != NULL) )$subModule = $module->getSubModule($_POST['subModuleName']);
     else $subModule = $module;
-
-    $response = "<form class=\"instanceForm\" onsubmit=\"return false;\" method=\"post\">";
-    $response .= "salut il y a : ".count($subModule->getArguments())." arguments.<br>";
-
-    foreach($subModule->getArguments() as $argument){
     
-        if($argument == "after"){$response .= $argument." : <input type=\"text\" name=\"".$argument."\" class=\"instanceMenu\" value=\"\"><br>";}
-        else{$response .= $argument->getName()." : <input type=\"text\" name=\"".$argument->getName()."\" value=\"\"><br>";}
-    
-    }
-    $response .= "<input type=\"submit\" value=\"Save\">";
-    $response .= "</form>";
+    $response = $subModule->toForm();
 
     
 }else{  //if we are editing an existing instance

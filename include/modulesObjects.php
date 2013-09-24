@@ -128,6 +128,25 @@ abstract class Module{
         
         return NULL;
     }
+    
+        
+    public function toForm(){
+        
+        $form = "<form class=\"instanceForm\" onsubmit=\"return false;\" method=\"post\">";
+        $form .= "salut il y a : ".count($this->arguments)." arguments.<br>";
+    
+        foreach($this->arguments as $argument){
+                
+            $form .= $argument->getName()." : ";
+            $form .= $argument->toForm()."<br>";
+        }
+        
+        $form .= "<input type=\"submit\" value=\"Save\">";
+        $form .= "<input class=\"deleteInstance\" type=\"button\" value=\"Delete\">";
+        $form .= "</form>";
+        
+        return $form;
+    }
 
     
 	//TODO : remove this two function, they chould be useless
