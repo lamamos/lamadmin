@@ -39,8 +39,6 @@ abstract class Module{
                 
                 $type = $parts[0];
                 $name = $parts[1];
-
-                //$argumentsExport[] = $name;
                 
                 if($type === "string"){
                     
@@ -48,6 +46,9 @@ abstract class Module{
                 }elseif($type === "after"){
                     
                     $argumentsExport[] = new AfterArg(NULL);
+                }elseif($type === "number"){
+                    
+                    $argumentsExport[] = new NumberArg($name, NULL);
                 }
             }
         }
@@ -266,6 +267,9 @@ class Instance{
             }elseif($type === "after"){
                 
                 $this->arguments[] = new AfterArg($argVal);
+            }elseif($type === "number"){
+                    
+                $this->arguments[] = new NumberArg($argName, $argVal);
             }
                 
             
@@ -319,6 +323,9 @@ class Instance{
         }elseif($type === "after"){
             
             $this->arguments[] = new AfterArg($value);
+        }elseif($type === "number"){
+                    
+            $this->arguments[] = new NumberArg($argumentName, $value);
         }
     }
     
