@@ -38,6 +38,11 @@ class StringArg extends Argument{
         return "'".$this->name."' => '".$this->value."',";
     }
     
+    public function toConfigFileArg(){
+        
+        return "'".$this->value."'";
+    }
+    
     public function getName(){return $this->name;}
     public function setName($name){$this->name = $name;}
     public function getValue(){return $this->value;}
@@ -144,5 +149,122 @@ class BoolArg extends Argument{
     public function getValue(){return $this->value;}
     public function setValue($value){$this->value = $value;}
 }
+
+
+
+class ArrayArg extends Argument{
+
+    private $subType;
+    private $value;
+    
+    function __construct($name, $subType, $value){
+    
+        $this->type = "array";
+        $this->name = $name;
+        $this->subType = $subType;
+        $this->value = $value;
+    }
+    
+    
+    public function toForm(){
+        
+        $form = "";
+        foreach($this->value as $element){
+            
+            $form .= $element->toForm();
+        }
+        
+        return $form;
+    }
+    
+    public function toConfigFile(){
+        
+        $response = "'".$this->name."' => [";
+        
+        
+        foreach($this->value as $element){
+         
+            $response .= $element->toConfigFileArg().", ";
+        }
+        $response = substr($response, 0, -2);   //we remove the laste space and coma
+        $response .= "],";
+        
+        return $response;
+    }
+    
+    public function getName(){return $this->name;}
+    public function setName($name){$this->name = $name;}
+    public function getSubType(){return $this->subType;}
+    public function getValue(){return $this->value;}
+    public function setValue($value){
+
+        for($i=0; $i<count($this->value); $i++){
+                
+            $val = $this->value[$i];
+            $val->setValue($value[$i]);
+
+        }
+    }
+}
+
+
+
+function createObjectArgumentFromString($argObject, $string){
+    
+    $argName = $string[0];
+    $argVal = $string[1];
+    $type = $argObject->getType();
+    
+    if($type === "array"){
+            
+        $subType = $argObject->getSubType();
+        $subArray = array();
+        for($i=0; $i<count($argVal); $i++){
+            
+            $subElement = $argVal[$i];
+            
+            //$stringArg[0] = $argName."_".$i;
+            $stringArg[0] = $argName."[".$i."]";
+            $stringArg[1] = $subElement;
+            $subArray[] = createObjectArgumentBasic($subType, $stringArg);
+        }
+        
+        $object = new ArrayArg($argName, $subType, $subArray);
+        return $object;
+    }else{
+        
+        return createObjectArgumentBasic($type, $string);        
+    }
+    
+    return NULL;
+}
+
+function createObjectArgumentBasic($type, $string){
+    
+    $argName = $string[0];
+    $argVal = $string[1];
+            
+    if($type === "string"){
+        
+        $object = new StringArg($argName, $argVal);
+        return $object;
+    }elseif($type === "after"){
+        
+        $object = new AfterArg($argVal);
+        return $object;
+    }elseif($type === "number"){
+            
+        $object = new NumberArg($argName, $argVal);
+        return $object;
+    }elseif($type === "bool"){
+                    
+        $object = new BoolArg($argName, $argVal);
+        return $object;
+    }
+    
+    return NULL;
+}
+
+
 
 ?>

@@ -35,6 +35,41 @@ function getListOfAvalableSubModules($moduleName){
 }
 
 
+function readArgument($string){
+    
+
+    if(preg_match('/\[.*?\]/', $string, $matches)){   //if we have an array
+        
+        $fullArray = $matches[0];
+        $fullArray = substr($fullArray, 1, -1);
+        
+        //TODO dont split if the "," is in a string or something else
+        $splitArray = explode(",", $fullArray);
+        
+        $array = array();
+        foreach($splitArray as $element){
+            
+            $array[] = readArgument($element);
+        }
+
+        return $array;
+        
+    }else{
+        
+        //we get the value (on the right of the => sign)
+        preg_match_all('/".*?"|\'.*?\'/', $string, $matches);
+        $argument = $matches[0][0];
+        //we remove the ' and ", first and last char of the string
+        //$argument[0] = substr($argument[0], 1, -1);
+        $argument = substr($argument, 1, -1);
+        
+        return $argument;
+    }
+    
+    //return NULL;
+}
+
+
 
 
 ?>

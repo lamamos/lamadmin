@@ -52,6 +52,10 @@ abstract class Module{
                 }elseif($type === "bool"){
                             
                     $argumentsExport[] = new BoolArg($name, NULL);
+                }elseif($type === "array"){
+                    
+                    $subType = $parts[2];
+                    $argumentsExport[] = new ArrayArg($name, $subType, NULL);
                 }
             }
         }
@@ -118,6 +122,19 @@ abstract class Module{
     public function clearInstances(){$this->instances = NULL;}
 	public function getName(){return $this->name;}
     public function getArguments(){return $this->arguments;}
+    public function getArgument($name){
+         
+        foreach($this->arguments as $argument){
+            
+            if($argument->getName() == $name){
+                
+                return $argument;
+            }
+        }
+        
+        return NULL;
+    }
+
 	public function setArguments($arguments){$this->arguments = $arguments;}
     public function addArgument($argument){$this->arguments[] = $argument;}
     public function getArgType($name){
@@ -257,28 +274,10 @@ class Instance{
     private function createArguments($arguments){
         
         foreach($arguments as $argument){
-        
+                
             $argName = $argument[0];
-            $argVal = $argument[1];
-            
-            
-            $type = $this->motherModule->getArgType($argName);
-            
-            if($type === "string"){
-                
-                $this->arguments[] = new StringArg($argName, $argVal);
-            }elseif($type === "after"){
-                
-                $this->arguments[] = new AfterArg($argVal);
-            }elseif($type === "number"){
-                    
-                $this->arguments[] = new NumberArg($argName, $argVal);
-            }elseif($type === "bool"){
-                            
-                $this->arguments[] = new BoolArg($argName, $argVal);
-            }
-                
-            
+            $argObject = $this->motherModule->getArgument($argName);     
+            $this->arguments[] = createObjectArgumentFromString($argObject, $argument);
         }
     }
 
@@ -335,11 +334,10 @@ class Instance{
         }elseif($type === "bool"){
                     
             $this->arguments[] = new BoolArg($argumentName, $value);
-        }
-        
-        
-        
-            
+        }elseif($type === "array"){
+                    
+            //$this->arguments[] = new ArrayArg($argumentName, $value);
+        }    
             
     }
     

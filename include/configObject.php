@@ -70,7 +70,7 @@ class Configuration{
             
             
             //we now gets the arguments given to this element
-            preg_match_all("/\'(\s|.)*\'\s*=>\s*\'(\s|.)*\',/U", $instanceString, $args);
+            preg_match_all("/\'(\s|.)*\'\s*=>\s*(\s|.)*,\n/U", $instanceString, $args);
             $args = $args[0];
             
             unset($keyValue);
@@ -81,12 +81,10 @@ class Configuration{
                 //we get only what is between quotes
                 preg_match_all('/".*?"|\'.*?\'/', $argument[0], $matches);
                 $argument[0] = $matches[0][0];
-                preg_match_all('/".*?"|\'.*?\'/', $argument[1], $matches);
-                $argument[1] = $matches[0][0];
-                //we remove the ' and ", first and last char of the string
                 $argument[0] = substr($argument[0], 1, -1);
-                $argument[1] = substr($argument[1], 1, -1);
-
+                
+                $argument[1] = readArgument($argument[1]);
+                
                 $keyValue[] = $argument;
             }
             
