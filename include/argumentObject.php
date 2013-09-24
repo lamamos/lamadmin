@@ -106,4 +106,43 @@ class NumberArg extends Argument{
     public function setValue($value){$this->value = $value;}
 }
 
+
+
+class BoolArg extends Argument{
+
+    private $value;
+    
+    function __construct($name, $value){
+    
+        $this->type = "bool";
+        $this->name = $name;
+        $this->value = $value;
+    }
+    
+    
+    public function toForm(){
+        
+        $response = "<input type=\"hidden\" name=\"".$this->name."\" value=\"0\" /> <input type=\"checkbox\" name=\"".$this->name."\" value=\"1\"";           
+        if($this->value){$response .= " checked";}
+        $response .= "/>";
+
+        return $response;
+    }
+    
+    public function toConfigFile(){
+        
+        $response = "";
+        
+        if($this->value){$response = "'".$this->name."' => '1',";}
+        else{$response = "'".$this->name."' => '0',";}
+        
+        return $response;
+    }
+    
+    public function getName(){return $this->name;}
+    public function setName($name){$this->name = $name;}
+    public function getValue(){return $this->value;}
+    public function setValue($value){$this->value = $value;}
+}
+
 ?>

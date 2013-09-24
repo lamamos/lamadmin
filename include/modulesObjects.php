@@ -49,6 +49,9 @@ abstract class Module{
                 }elseif($type === "number"){
                     
                     $argumentsExport[] = new NumberArg($name, NULL);
+                }elseif($type === "bool"){
+                            
+                    $argumentsExport[] = new BoolArg($name, NULL);
                 }
             }
         }
@@ -270,6 +273,9 @@ class Instance{
             }elseif($type === "number"){
                     
                 $this->arguments[] = new NumberArg($argName, $argVal);
+            }elseif($type === "bool"){
+                            
+                $this->arguments[] = new BoolArg($argName, $argVal);
             }
                 
             
@@ -326,7 +332,15 @@ class Instance{
         }elseif($type === "number"){
                     
             $this->arguments[] = new NumberArg($argumentName, $value);
+        }elseif($type === "bool"){
+                    
+            $this->arguments[] = new BoolArg($argumentName, $value);
         }
+        
+        
+        
+            
+            
     }
     
     
