@@ -174,6 +174,8 @@ class ArrayArg extends Argument{
             $form .= $element->toForm();
         }
         
+        $form .= "<input type=\"button\" class=\"addElementToArray\" name=\"".$this->name."\" value=\"+\">";
+        
         return $form;
     }
     
@@ -192,6 +194,14 @@ class ArrayArg extends Argument{
         return $response;
     }
     
+    public function createNewElement(){
+        
+        $name = $this->name."[".count($this->value)."]";
+        $element = createObjectArgumentBasic($this->subType, [$name, ""]);
+        $this->value[] = $element;
+        
+        return $element;
+    }
     public function getName(){return $this->name;}
     public function setName($name){$this->name = $name;}
     public function getSubType(){return $this->subType;}
@@ -202,7 +212,6 @@ class ArrayArg extends Argument{
                 
             $val = $this->value[$i];
             $val->setValue($value[$i]);
-
         }
     }
 }

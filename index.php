@@ -187,6 +187,7 @@ $config = new Configuration();
                         });
                     });
                     
+                    $(".addElementToArray").click(function(){addElementToArray($(this));});
                     
                 });            
             });
@@ -424,6 +425,35 @@ $config = new Configuration();
             redefineComportements();
         }
         
+        function addElementToArray(clickedElement){             
+        
+            var data = {
+                moduleName: activeModule,
+                subModuleName: activeSubModule,
+                instanceName: activeInstance,
+                arrayName: clickedElement.attr('name'),
+            }
+        
+            request = $.ajax({
+                url: "/ajax/addElementToArray.php",
+                type: "POST",
+                data: data
+            });
+        
+            request.done(function(response, textStatus, jqXHR){
+
+                clickedElement.before(response);
+                                  
+            });
+        
+            request.fail(function(jqXHR, textStatus, errorThrown){
+        
+                alert("error when adding an element to the array");
+            });
+        
+            request.always(function(){});
+        }
+        
         function redefineComportements(){
 
             //we need to put a timeout, if we call the function right away, the DOM is not yet constructed
@@ -637,6 +667,7 @@ $config = new Configuration();
                             });
                                             
                             $(".deleteInstance").click(function(){deleteInstance();});
+                            $(".addElementToArray").click(function(){addElementToArray("kikooo");});
                             
                             $(".instanceForm").one('webkitAnimationEnd oanimationend msAnimationEnd animationend', function(e) {
     
