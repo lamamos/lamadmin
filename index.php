@@ -188,6 +188,7 @@ $config = new Configuration();
                     });
                     
                     $(".addElementToArray").click(function(){addElementToArray($(this));});
+                    $(".removeElementFromArray").click(function(){removeElementFromArray($(this));});
                     
                 });            
             });
@@ -454,6 +455,46 @@ $config = new Configuration();
             request.always(function(){});
         }
         
+        function removeElementFromArray(clickedElement){            
+            
+            elementName = clickedElement.attr('name').substring(7);
+            
+            //we remove the input in the form            
+            $("input[name='"+elementName+"']").remove();
+            //we remove the remove button
+            clickedElement.remove();
+            
+            
+            arrayName = elementName.match(/.*\[/);
+            arrayName = arrayName[0].substr(0, arrayName[0].length-1);  //we remove the last [
+            
+            argNum = elementName.match(/\[\d+\]/);
+            argNum = argNum[0].substr(1, arrayName[0].length); //we remove the first [ and the last [
+                        
+            var data = {
+                moduleName: activeModule,
+                subModuleName: activeSubModule,
+                instanceName: activeInstance,
+                arrayName: arrayName,
+                argmentNumber : argNum,
+            }
+        
+            request = $.ajax({
+                url: "/ajax/removeElementFromArray.php",
+                type: "POST",
+                data: data
+            });
+        
+            request.done(function(response, textStatus, jqXHR){});
+        
+            request.fail(function(jqXHR, textStatus, errorThrown){
+        
+                alert("error when deletting an element to the array");
+            });
+        
+            request.always(function(){});
+        }
+        
         function redefineComportements(){
 
             //we need to put a timeout, if we call the function right away, the DOM is not yet constructed
@@ -667,8 +708,9 @@ $config = new Configuration();
                             });
                                             
                             $(".deleteInstance").click(function(){deleteInstance();});
-                            $(".addElementToArray").click(function(){addElementToArray("kikooo");});
-                            
+                            $(".addElementToArray").click(function(){addElementToArray($(this));});
+                            $(".removeElementFromArray").click(function(){removeElementFromArray($(this));});
+
                             $(".instanceForm").one('webkitAnimationEnd oanimationend msAnimationEnd animationend', function(e) {
     
                                 $(".instanceForm").removeClass("pt-page-moveFromBottom");

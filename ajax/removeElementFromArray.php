@@ -21,10 +21,8 @@ if($_POST['subModuleName'] == "general"){
 
 $array = $instance->getArgumentObject($_POST['arrayName']);
 
-$newElement = $array->createNewElement();
+$array->removeElementNum($_POST['argmentNumber']);
 
-
-echo $newElement->toForm();
 
 $config->writeConfigFile($config);
 

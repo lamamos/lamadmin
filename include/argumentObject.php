@@ -169,9 +169,12 @@ class ArrayArg extends Argument{
     public function toForm(){
         
         $form = "";
-        foreach($this->value as $element){
+        //foreach($this->value as $element){
+        for($i=0; $i<count($this->value); $i++){
             
+            $element = $this->value[$i];
             $form .= $element->toForm();
+            $form .= "<input type=\"button\" class=\"removeElementFromArray\" name=\"remove_".$this->name."[".$i."]\" value=\"-\">";
         }
         
         $form .= "<input type=\"button\" class=\"addElementToArray\" name=\"".$this->name."\" value=\"+\">";
@@ -201,6 +204,10 @@ class ArrayArg extends Argument{
         $this->value[] = $element;
         
         return $element;
+    }
+    public function removeElementNum($num){
+        
+        unset($this->value[$num]);
     }
     public function getName(){return $this->name;}
     public function setName($name){$this->name = $name;}
