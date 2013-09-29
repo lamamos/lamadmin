@@ -38,23 +38,27 @@ abstract class Module{
                 $parts = split(" ", $arg);
                 
                 $type = $parts[0];
-                $name = $parts[1];
                 
                 if($type === "string"){
                     
+                    $name = $parts[1];
                     $argumentsExport[] = new StringArg($name, NULL);
                 }elseif($type === "after"){
                     
+                    $name = $parts[1];
                     $argumentsExport[] = new AfterArg(NULL);
                 }elseif($type === "number"){
                     
+                    $name = $parts[1];
                     $argumentsExport[] = new NumberArg($name, NULL);
                 }elseif($type === "bool"){
-                            
+                    
+                    $name = $parts[1];
                     $argumentsExport[] = new BoolArg($name, NULL);
                 }elseif($type === "array"){
                     
-                    $subType = $parts[2];
+                    $subType = $parts[1];
+                    $name = $parts[2];
                     $argumentsExport[] = new ArrayArg($name, $subType, NULL);
                 }
             }
