@@ -34,8 +34,7 @@ class StringArg extends Argument{
     
     public function toConfigFile(){
         
-        
-        return "'".$this->name."' => '".$this->value."',";
+        return "'".$this->name."' => ".$this->toConfigFileArg().",";
     }
     
     public function toConfigFileArg(){
@@ -72,7 +71,12 @@ class AfterArg extends Argument{
     public function toConfigFile(){
         
         
-        return "'".$this->name."' => '".$this->value."',";
+        return "'".$this->name."' => ".$this->toConfigFileArg().",";
+    }
+    
+    public function toConfigFileArg(){
+        
+        return "'".$this->value."'";
     }
     
     public function getName(){return $this->name;}
@@ -102,7 +106,12 @@ class NumberArg extends Argument{
     
     public function toConfigFile(){
         
-        return "'".$this->name."' => '".$this->value."',";
+        return "'".$this->name."' => ".$this->toConfigFileArg().",";
+    }
+    
+    public function toConfigFileArg(){
+        
+        return "'".$this->value."'";
     }
     
     public function getName(){return $this->name;}
@@ -136,12 +145,13 @@ class BoolArg extends Argument{
     
     public function toConfigFile(){
         
-        $response = "";
+        return "'".$this->name."' => ".$this->toConfigFileArg().",";
+    }
+    
+    public function toConfigFileArg(){
         
-        if($this->value){$response = "'".$this->name."' => '1',";}
-        else{$response = "'".$this->name."' => '0',";}
-        
-        return $response;
+        if($this->value){return "'1'";}
+        else{return "'0'";}
     }
     
     public function getName(){return $this->name;}
@@ -184,8 +194,12 @@ class ArrayArg extends Argument{
     
     public function toConfigFile(){
         
-        $response = "'".$this->name."' => [";
+        return "'".$this->name."' => ".$this->toConfigFileArg();
+    }
+    
+    public function toConfigFileArg(){
         
+        $response = "[";
         
         foreach($this->value as $element){
          
