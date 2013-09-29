@@ -8,6 +8,7 @@ abstract class Argument{
     
     abstract protected function toForm();
     abstract protected function toConfigFile();
+    abstract protected function toConfigFileArg();
     
     public function getType(){return $this->type;}
     public function getName(){return $this->name;}
