@@ -60,6 +60,14 @@ abstract class Module{
                     $subType = $parts[1];
                     $name = $parts[2];
                     $argumentsExport[] = new ArrayArg($name, $subType, NULL);
+                }elseif($type === "hash"){
+                    
+                    $name = $parts[1];
+                    $endHash = array_search("endhash", $parts);
+                    
+                    $hashDefinition = array_slice($parts, 2, $endHash-2);
+                    
+                    $argumentsExport[] = new HashArg($name, $hashDefinition);
                 }
             }
         }

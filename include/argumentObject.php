@@ -180,7 +180,6 @@ class ArrayArg extends Argument{
     public function toForm(){
         
         $form = "";
-        //foreach($this->value as $element){
         for($i=0; $i<count($this->value); $i++){
             
             $element = $this->value[$i];
@@ -240,6 +239,100 @@ class ArrayArg extends Argument{
 
 
 
+
+class HashArg extends Argument{
+
+    private $subType;
+    private $value;
+    
+    
+    private $hashDef;
+    
+    function __construct($name, $hashDefinition){
+    
+        $this->type = "hash";
+        $this->name = $name;
+        $this->createHashValue($hashDefinition);        
+        
+        $this->hashDef = $hashDefinition;
+    }
+    
+    function createHashValue($hashDefinition){
+        
+        for($i = 0; $i<count($hashDefinition); $i=$i+2){
+            
+            $type = $hashDefinition[$i];
+            $name = $hashDefinition[$i+1];
+            
+            $this->value[] = createObjectArgumentBasic($type, [$name, NULL]);
+        }
+    }
+
+    public function toForm(){
+        
+        $form = "";
+        
+        foreach($this->value as $element){
+            
+            $form .= $element->getName()." : ".$element->toForm();            
+        }
+        
+        return $form;
+    }
+    
+    public function toConfigFile(){
+        
+        //return "'".$this->name."' => ".$this->toConfigFileArg();
+    }
+    
+    public function toConfigFileArg(){
+        
+        /*$response = "[";
+        
+        foreach($this->value as $element){
+         
+            $response .= $element->toConfigFileArg().", ";
+        }
+        $response = substr($response, 0, -2);   //we remove the laste space and coma
+        $response .= "],";
+        
+        return $response;*/
+    }
+    
+    public function createNewElement(){
+        
+        /*$name = $this->name."[".count($this->value)."]";
+        $element = createObjectArgumentBasic($this->subType, [$name, ""]);
+        $this->value[] = $element;
+        
+        return $element;*/
+    }
+    public function removeElementNum($num){
+        
+        //unset($this->value[$num]);
+    }
+    public function getName(){return $this->name;}
+    public function setName($name){$this->name = $name;}
+    public function getSubType(){return $this->subType;}
+    public function getValue(){return $this->value;}
+    public function setValue($value){
+
+        /*for($i=0; $i<count($this->value); $i++){
+                
+            $val = $this->value[$i];
+            $val->setValue($value[$i]);
+        }*/
+    }
+}
+
+
+
+
+
+
+
+
+
 function createObjectArgumentFromString($argObject, $string){
     
     $argName = $string[0];
@@ -254,7 +347,6 @@ function createObjectArgumentFromString($argObject, $string){
             
             $subElement = $argVal[$i];
             
-            //$stringArg[0] = $argName."_".$i;
             $stringArg[0] = $argName."[".$i."]";
             $stringArg[1] = $subElement;
             $subArray[] = createObjectArgumentBasic($subType, $stringArg);
