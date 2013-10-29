@@ -15,15 +15,21 @@ if( (isset($_POST['subModuleName'])) && ($_POST['subModuleName'] != NULL) ){
     $subject = $config->getModule($_POST['moduleName']);
 }
 
-$response = "";
+
+$response = "[";
 
 foreach($subject->getInstances() as $instance){
 
-	$response .= $instance->getName().",";
+	//$response .= $instance->getName().",";
+	$response .= "{\"name\":\"".$instance->getName()."\"},";
 }
 
 $response = substr($response, 0, -1);
+$response .= "]";
 
 echo $response;
+
+
+//echo "module name = ".$_POST['moduleName'];
 
 ?>

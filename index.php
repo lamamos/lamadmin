@@ -28,7 +28,7 @@ $config = new Configuration();
         <div id="sideBar">
             <div id="logo">Home</div><br>
             <div class="sectionTitle">Users : </div><br>
-            <div id="listUsers"></div>
+            <div id="listUsers" ng-controller="userListCtrl"><div class="user" ng-repeat="user in userList">{{user.name}}</div></div>
             <br>
             <div class="sectionTitle" id="addUser">Add user</div>
             <br><br>
@@ -68,7 +68,6 @@ $config = new Configuration();
         //this function is called at te opening of the page
         $(function() {
             
-            displayListUsers();
             displayListServices();
             displayHome();
             
@@ -374,40 +373,7 @@ $config = new Configuration();
             request.always(function(){});
         }
         
-        function displayListUsers(){
-            
-            var data = {
-                moduleName: "user",
-            }
-            
-            request = $.ajax({
-                url: "/ajax/getListInstances.php",
-                type: "POST",
-                data: data
-            });
-        
-            request.done(function(response, textStatus, jqXHR){
-        
-                var users= response.split(",");     
 
-                $("#listUsers div").remove();
-            
-                for(i=0; i<users.length; i++){
-
-                    var user = users[i];
-                    var element = "<div class=\"user\">"+user+"<br></div>";
-                    $("#listUsers").append(element);
-                }
-                                      
-            });
-        
-            request.fail(function(jqXHR, textStatus, errorThrown){
-        
-                alert("error when getting the liste of the services");
-            });
-        
-            request.always(function(){});
-        }
         
         function refresh(){
 
@@ -424,7 +390,6 @@ $config = new Configuration();
             
             //refresh the sideBarre
             displayListServices();
-            displayListUsers();
             
             redefineComportements();
         }
