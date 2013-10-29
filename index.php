@@ -10,7 +10,7 @@ $config = new Configuration();
 
 ?>
 
-<html>
+<html ng-app="App">
     <head>
 
     </head>
@@ -20,7 +20,9 @@ $config = new Configuration();
     <link rel="stylesheet" href="include/animate.css">
     <link rel="stylesheet" href="include/on_off_button.css">
     <script type="text/javascript" src="include/jquery-2.0.3.min.js"></script>
-    <script src="include/jquery-ui.js"></script>
+    <script type="text/javascript" src="include/jquery-ui.js"></script>
+    <script type="text/javascript" src="angular.min.js"></script>
+    <script type="text/javascript" src="angular-animate.min.js"></script>
     <body>
         <div id="sideBar">
             <div id="logo">Home</div><br>
