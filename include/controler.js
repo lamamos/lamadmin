@@ -7,11 +7,7 @@ function userListCtrl($scope, $http) {
 
 	$scope.userList = [];
 
-	var donnees = $.param({
-
-		moduleName: "user"
-	})
-
+	var donnees = $.param({moduleName: "user"});
 
 	$http({
 		method: "POST",
