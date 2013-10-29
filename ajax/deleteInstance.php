@@ -1,4 +1,4 @@
-<?
+<?php
 include_once("../include/configObject.php");
 include_once("../include/createConfig.php");
 

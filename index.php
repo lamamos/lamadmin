@@ -1,4 +1,4 @@
-<?
+<?php
 //set the garbage coloctor timeout for our session
 ini_set('session.gc_maxlifetime', 3600*24*7);
 session_start();

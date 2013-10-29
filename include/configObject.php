@@ -1,4 +1,4 @@
-<?
+<?php
 include_once("configuration.php");
 include_once("createConfig.php");
 include_once("modulesObjects.php");
