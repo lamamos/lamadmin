@@ -29,7 +29,4 @@ $response .= "]";
 
 echo $response;
 
-
-//echo "module name = ".$_POST['moduleName'];
-
 ?>
