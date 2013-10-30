@@ -96,6 +96,11 @@ function serviceListCtrl($scope, $http) {
 		})
 	;
 
+	$scope.clickBoolean = function(module){
+
+		module.activated = !module.activated;
+	}
+
 
 	$scope.click = function(module) {
 

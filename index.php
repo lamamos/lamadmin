@@ -41,7 +41,7 @@ $config = new Configuration();
             <div id="listServices" ng-controller="serviceListCtrl">
 				<div class="sideBarLine" id="{{module.name}}" ng-class="getClass(module.name)" ng-repeat="module in moduleList">
 					<div class="mainModule" ng-click="click(module)">{{module.name}}</div>
-					<div class="bool-slider" ng-class="{true : module.activated, false : !module.activated}"><div class="inset"><div class="control"></div></div></div>
+					<div class="bool-slider" ng-class="{true : module.activated, false : !module.activated}" ng-click="clickBoolean(module)"><div class="inset"><div class="control"></div></div></div>
 				</div>
 			</div>
             <br><br><br><br><br>
@@ -233,14 +233,6 @@ $config = new Configuration();
         function reredefineComportements(){
             
             $(".bool-slider").click(function(){
-                                
-                if (!$(this).hasClass('disabled')) {
-                        if ($(this).hasClass('true')) {
-                            $(this).addClass('false').removeClass('true');
-                        } else {
-                            $(this).addClass('true').removeClass('false');
-                        }
-                }
                 
                 var moduleChanged = $(this).parent().attr('id');
                 var newState = "undefined";

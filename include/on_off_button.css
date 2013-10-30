@@ -10,9 +10,9 @@
 	height: 15px; width: 50px;
 	border-radius: 25px;
     
-    position:absolute;
-    right:5px;
-    margin-top:1px;
+	position:absolute;
+	right:5px;
+	margin-top:1px;
 }
 
 .bool-slider.true .inset {
