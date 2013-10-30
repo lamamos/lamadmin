@@ -25,7 +25,7 @@ function sideBarCtrl($scope){
 		activeInstance = "Add new";
 
 		$scope.selectedLine = "Add new";
-		
+
 		angular.element($("#mainPannel")).scope().loadUser("Add new");
 	}
 }
@@ -99,6 +99,29 @@ function serviceListCtrl($scope, $http) {
 	$scope.clickBoolean = function(module){
 
 		module.activated = !module.activated;
+
+		var donnees = $.param({moduleToggled: module.name});
+
+		$http({
+			method: "POST",
+			url: "/ajax/toggleModule.php",
+			data: donnees,
+			headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+		})
+			.success(function(response){})
+
+			.error(function(data, status, headers, config) {
+
+				alert("error while changing the state of the module");
+			})
+		;
+
+		if( (activeModule == module.name) && (module.activated == false) ){
+
+			$scope.$parent.selectedLine = "";
+        	angular.element($("#mainPannel")).scope().loadHome();
+		}
+
 	}
 
 

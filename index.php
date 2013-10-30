@@ -231,42 +231,7 @@ $config = new Configuration();
         }
         
         function reredefineComportements(){
-            
-            $(".bool-slider").click(function(){
-                
-                var moduleChanged = $(this).parent().attr('id');
-                var newState = "undefined";
-                if($(this).hasClass('true'))newState = "on";else newState = "off";
-                
-                var data = {
-                    moduleToggled: moduleChanged,
-                }
-            
-                request = $.ajax({
-                    url: "/ajax/toggleModule.php",
-                    type: "POST",
-                    data: data
-                });
-            
-                request.done(function(response, textStatus, jqXHR){
-                
-                    if( (activeModule == moduleChanged) && (newState == "off") ){
-                        
-                        angular.element($("#mainPannel")).scope().loadHome();
-                        //the fact of not having a space between the selector in the next line is normal, we selecte an element by it's class and ID
-                        $("#"+moduleChanged+".sideBarLine").removeClass("moduleSelected");
-                    }
-                });
-            
-                request.fail(function(jqXHR, textStatus, errorThrown){
-            
-                    alert("error chile changing the state of the module.");
-                });
-            
-                request.always(function(){});
-            });
-
-            
+           
             $("#mainPannel").on("change", ".instanceSelector", function(){
             
                 $(".instanceSelector option:selected").each(function(){	//they should be only one element here
