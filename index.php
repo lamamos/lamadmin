@@ -50,29 +50,24 @@ $config = new Configuration();
     
         <div id="mainPannel" class="magictime slideUpRetourn" ng-controller="mainPannelCtrl">
 
-			<div id="tabs" ng-controller="tabsControler">
-				<tabset>
-					<tab ng-repeat="tab in tabs" select="changeTab(tab)" heading="{{tab.title}}" active="tab.active" disabled="tab.disabled">
-						<div id="forms" ng-bind-html="tab.content"></div>
-					</tab>
-				</tabset>
+			<div ng-controller="tabsControler">
+				<div id="tabs" ng-show="needTabs">
+					<tabset>
+						<tab ng-repeat="tab in tabs" select="changeTab(tab)" heading="{{tab.title}}" active="tab.active" disabled="tab.disabled">
+							<div id="forms" ng-bind-html="tab.content"></div>
+						</tab>
+					</tabset>
+				</div>
+
+				<div id="unicTab" ng-hide="needTabs" ng-bind-html="unicTabContent"></div>
 			</div>
 
-            <div id="forms">
-                
-                
-            </div>
 
         </div> 
-
-
-
-
-
-
-  
     </body>
     
+
+
     <script type="text/javascript">
 
         var activePage = "";
@@ -85,7 +80,7 @@ $config = new Configuration();
         //this function is called at te opening of the page
         $(function() {
             
-            //displayHome();
+            angular.element($("#mainPannel")).scope().loadHome();
             
             $("#mainPannel").tabs({
                 beforeActivate: function(event, ui){
@@ -108,7 +103,7 @@ $config = new Configuration();
         
         $("#sideBar #logo").click(function(){
             
-            displayHome();
+            angular.element($("#mainPannel")).scope().loadHome();
         });
         
         function deleteInstance(){
@@ -146,71 +141,6 @@ $config = new Configuration();
             });
         }
         
-        
-        function displayHome(){
-            
-			//alert("kikoo");
-			//angular.element("#tabs").scope().clearTabs();
-
-
-
-            /*activePage = "home";
-            activeModule = "";
-            activeSubModule = "";
-            activeInstance = "";
-              
-            $("#sideBar .user").removeClass("moduleSelected");
-            $("#sideBar .sideBarLine").removeClass("moduleSelected");
-            
-            request = $.ajax({
-                url: "/ajax/getHome.php",
-                type: "POST"
-            });
-        
-            request.done(function(response, textStatus, jqXHR){
-                
-                leftToDeseaper = 0;
-                
-                //if there are some tabs to remove
-                if($("#mainPannel #tabs").length > 0){
-                    leftToDeseaper++;
-                    $("#mainPannel #tabs").addClass("pt-page-moveToTop");
-                    $("#mainPannel #tabs").one('webkitAnimationEnd oanimationend msAnimationEnd animationend', function(e) {
-                        
-                        $("#mainPannel #tabs").remove();
-                        leftToDeseaper--;
-                        if(leftToDeseaper == 0){appearHome();}
-                    });
-                }
-                
-                //if there are some forms to remove
-                if($("#mainPannel div").length > 0){
-                    leftToDeseaper++;
-                    $("#mainPannel div").addClass("pt-page-moveToBottom");
-                    $("#mainPannel div").one('webkitAnimationEnd oanimationend msAnimationEnd animationend', function(e) {
-                        
-                        $("#mainPannel div").remove();
-                        leftToDeseaper--;
-                        if(leftToDeseaper == 0){appearHome();}
-                    });
-                }
-                
-                //if the page is already empty
-                if(leftToDeseaper == 0){appearHome();}
-                
-                
-                function appearHome(){
-                    
-                    $("#mainPannel").append("<div id=\"forms\">"+response+"</div>");
-                    $("#mainPannel #forms").addClass("pt-page-moveFromTop");
-                    $("#mainPannel #forms").one('webkitAnimationEnd oanimationend msAnimationEnd animationend', function(e) {
-                        
-                            $("#mainPannel #forms").addClass("pt-page-moveFromTop");
-                    });
-
-                }
-            });*/
-        }
         
         function displayUser(name){
 
@@ -406,7 +336,7 @@ $config = new Configuration();
                 
                     if( (activeModule == moduleChanged) && (newState == "off") ){
                         
-                        displayHome();
+                        angular.element($("#mainPannel")).scope().loadHome();
                         //the fact of not having a space between the selector in the next line is normal, we selecte an element by it's class and ID
                         $("#"+moduleChanged+".sideBarLine").removeClass("moduleSelected");
                     }

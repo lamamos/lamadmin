@@ -49,7 +49,6 @@ function userListCtrl($scope, $http){
 
 		displayUser(user.name);
     }
-
 }
 
 
