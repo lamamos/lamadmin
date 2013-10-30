@@ -16,13 +16,11 @@ $config = new Configuration();
     </head>
     <script type="text/javascript" src="include/angular.min.js"></script>
     <link rel="stylesheet" href="include/bootstrap.min.css">
-    <link rel="stylesheet" href="include/jquery-ui.css">
     <link rel="stylesheet" href="include/style.css">
     <link rel="stylesheet" href="include/magic.css">
     <link rel="stylesheet" href="include/animate.css">
     <link rel="stylesheet" href="include/on_off_button.css">
     <script type="text/javascript" src="include/jquery-2.0.3.min.js"></script>
-    <script type="text/javascript" src="include/jquery-ui.js"></script>
     <script type="text/javascript" src="include/angular-animate.js"></script>
     <script type="text/javascript" src="include/sideBarControlers.js"></script>
     <script type="text/javascript" src="include/mainPannelControlers.js"></script>
