@@ -35,7 +35,12 @@ $config = new Configuration();
             <div class="sectionTitle" id="addUser">Add user</div>
             <br><br>
             <div class="sectionTitle">Services : </div><br>
-            <div id="listServices"></div>
+            <div id="listServices" ng-controller="serviceListCtrl">
+				<div class="sideBarLine" id="{{module.name}}" ng-repeat="module in moduleList">
+					<div class="mainModule">{{module.name}}</div>
+					<div class="bool-slider" ng-class="{true : module.activated, false : !module.activated}"><div class="inset"><div class="control"></div></div></div>
+				</div>
+			</div>
             <br><br><br><br><br>
             <div class="sectionTitle test">Refresh</div>
         </div>
@@ -70,7 +75,6 @@ $config = new Configuration();
         //this function is called at te opening of the page
         $(function() {
             
-            displayListServices();
             displayHome();
             
             $("#mainPannel").tabs({
@@ -336,47 +340,6 @@ $config = new Configuration();
             request.always(function(){});
         }
         
-        function displayListServices(){
-        
-            request = $.ajax({
-                url: "/ajax/getListServices.php",
-                type: "POST"
-            });
-        
-            request.done(function(response, textStatus, jqXHR){
-        
-                var services= response.split(",");                 
-
-                $("#listServices div").remove();
-            
-                for(i=0; i<services.length; i++){
-                    //var service = services[i];
-                    var service= services[i].split(";");
-                    var name = service[0];
-                    var activated = service[1];
-                    
-                    var element = "<div class=\"sideBarLine\" id=\""+name+"\">";
-                        element += "<div class=\"mainModule\">"+name+"</div>";
-                        if(activated == "1"){element += "<div class=\"bool-slider true\"> <div class=\"inset\"> <div class=\"control\"></div> </div> </div>";}
-                        else{element += "<div class=\"bool-slider false\"> <div class=\"inset\"> <div class=\"control\"></div> </div> </div>";}
-                    
-                    element += "<br></div>";
-        
-                    $("#listServices").append(element);
-                }
-                                      
-            });
-        
-            request.fail(function(jqXHR, textStatus, errorThrown){
-        
-                alert("error when getting the liste of the services");
-            });
-        
-            request.always(function(){});
-        }
-        
-
-        
         function refresh(){
 
             if(activePage == "home"){displayHome();}
@@ -389,9 +352,6 @@ $config = new Configuration();
                     changeTab(activeSubModule);
                 }
             }
-            
-            //refresh the sideBarre
-            displayListServices();
             
             redefineComportements();
         }
@@ -690,7 +650,6 @@ $config = new Configuration();
             
             $("#addUser").click(function(){
                 
-                //alert("kikoo");
                 activePage = "config";
                 activeModule = "user";
                 activeSubModule = "";

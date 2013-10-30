@@ -45,8 +45,58 @@ function userListCtrl($scope, $http) {
 		if($scope.selectedUser == user.name)return "moduleSelected";
 		else return "";
 	}
-
 }
+
+
+
+
+
+
+
+
+function serviceListCtrl($scope, $http) {
+
+	$scope.moduleList = [];
+	$scope.selectedService = "";
+
+
+	$http({
+		method: "POST",
+		url: "/ajax/getListServices.php",
+		headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+	})
+		.success(function(response){
+
+			$scope.moduleList = response;
+		})
+
+		.error(function(data, status, headers, config) {
+
+			alert("error when getting the liste of the services");
+		})
+	;
+
+	/*$scope.click = function(user) {
+
+		activePage = "config";
+		activeModule = "user";
+		activeSubModule = "";
+		activeInstance = user.name;
+
+		$scope.selectedUser = user.name;
+
+		displayUser(user.name);
+        }
+
+
+	$scope.getClass = function(user){
+
+		if($scope.selectedUser == user.name)return "moduleSelected";
+		else return "";
+	}*/
+}
+
+
 
 
 
