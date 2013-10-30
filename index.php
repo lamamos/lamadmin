@@ -25,7 +25,7 @@ $config = new Configuration();
     <script type="text/javascript" src="include/angular-animate.js"></script>
     <script type="text/javascript" src="include/controler.js"></script>
     <body>
-        <div id="sideBar" ng-controller="sideBarCtrl">
+        <div id="sideBar" class="magictime slideLeftRetourn" ng-controller="sideBarCtrl">
             <div id="logo">Home</div><br>
             <div class="sectionTitle">Users : </div><br>
             <div id="listUsers" ng-controller="userListCtrl">
@@ -45,7 +45,7 @@ $config = new Configuration();
             <div class="sectionTitle test">Refresh</div>
         </div>
     
-        <div id="mainPannel">
+        <div id="mainPannel" class="magictime slideUpRetourn">
             <div id="forms">
                 
                 
@@ -61,16 +61,6 @@ $config = new Configuration();
         var activeInstance = "";
         
         var activeAfterInput;
-                
-        //on page load, when make the parts of the page slide in        
-        $("#sideBar").ready(function () { 
-        
-            $("#sideBar").addClass('magictime slideLeftRetourn');
-        });
-        $("#mainPannel").ready(function () { 
-        
-            $("#mainPannel").addClass('magictime slideUpRetourn');
-        });
         
         //this function is called at te opening of the page
         $(function() {
