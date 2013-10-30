@@ -10,6 +10,12 @@ function sideBarCtrl($scope){
 		if($scope.selectedLine == module.name)return "moduleSelected";
 		else return "";
 	}
+
+	$scope.displayHome = function(){
+
+		$scope.selectedLine = "";
+		angular.element($("#mainPannel")).scope().loadHome();
+	}
 }
 
 

@@ -29,7 +29,7 @@ $config = new Configuration();
     <script type="text/javascript" src="include/ui-bootstrap-tpls-0.6.0.min.js"></script>
     <body>
         <div id="sideBar" class="magictime slideLeftRetourn" ng-controller="sideBarCtrl">
-            <div id="logo">Home</div><br>
+            <div id="logo" ng-click="displayHome()">Home</div><br>
             <div class="sectionTitle">Users : </div><br>
             <div id="listUsers" ng-controller="userListCtrl">
 				<div class="user" ng-class="getClass(user)" ng-repeat="user in userList" ng-click="click(user)">{{user.name}}</div>
@@ -101,10 +101,6 @@ $config = new Configuration();
             redefineComportements();
         });
         
-        $("#sideBar #logo").click(function(){
-            
-            angular.element($("#mainPannel")).scope().loadHome();
-        });
         
         function deleteInstance(){
             
