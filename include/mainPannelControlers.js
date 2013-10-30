@@ -12,10 +12,6 @@ function mainPannelCtrl($scope, $http, $sce){
 		activeSubModule = "";
 		activeInstance = "";
 
-/*            $("#sideBar .user").removeClass("moduleSelected");
-            $("#sideBar .sideBarLine").removeClass("moduleSelected");
-*/
-
 		$http({
 			method: "POST",
 			url: "/ajax/getHome.php",

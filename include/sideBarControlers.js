@@ -5,9 +5,9 @@ function sideBarCtrl($scope){
 
 	$scope.selectedLine = "";
 
-	$scope.getClass = function(module){
+	$scope.getClass = function(name){
 
-		if($scope.selectedLine == module.name)return "moduleSelected";
+		if($scope.selectedLine == name)return "moduleSelected";
 		else return "";
 	}
 
@@ -15,6 +15,18 @@ function sideBarCtrl($scope){
 
 		$scope.selectedLine = "";
 		angular.element($("#mainPannel")).scope().loadHome();
+	}
+
+	$scope.addUser = function(){
+
+		activePage = "config";
+		activeModule = "user";
+		activeSubModule = "";
+		activeInstance = "Add new";
+
+		$scope.selectedLine = "Add new";
+		
+		angular.element($("#mainPannel")).scope().loadUser("Add new");
 	}
 }
 

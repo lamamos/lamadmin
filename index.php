@@ -32,14 +32,14 @@ $config = new Configuration();
             <div id="logo" ng-click="displayHome()">Home</div><br>
             <div class="sectionTitle">Users : </div><br>
             <div id="listUsers" ng-controller="userListCtrl">
-				<div class="user" ng-class="getClass(user)" ng-repeat="user in userList" ng-click="click(user)">{{user.name}}</div>
+				<div class="user" ng-class="getClass(user.name)" ng-repeat="user in userList" ng-click="click(user)">{{user.name}}</div>
 	    	</div>
             <br>
-            <div class="sectionTitle" id="addUser">Add user</div>
+            <div class="sectionTitle" id="addUser" ng-class="getClass('Add new')" ng-click="addUser()">Add user</div>
             <br><br>
             <div class="sectionTitle">Services : </div><br>
             <div id="listServices" ng-controller="serviceListCtrl">
-				<div class="sideBarLine" id="{{module.name}}" ng-class="getClass(module)"  ng-repeat="module in moduleList">
+				<div class="sideBarLine" id="{{module.name}}" ng-class="getClass(module.name)" ng-repeat="module in moduleList">
 					<div class="mainModule" ng-click="click(module)">{{module.name}}</div>
 					<div class="bool-slider" ng-class="{true : module.activated, false : !module.activated}"><div class="inset"><div class="control"></div></div></div>
 				</div>
@@ -362,7 +362,7 @@ $config = new Configuration();
                 });
             });
             
-            $("#addUser").click(function(){
+            /*$("#addUser").click(function(){
                 
                 activePage = "config";
                 activeModule = "user";
@@ -373,7 +373,7 @@ $config = new Configuration();
                 $(this).addClass('moduleSelected');
                 
 				angular.element($("#mainPannel")).scope().loadUser("Add new");
-            });
+            });*/
      
         }
         
