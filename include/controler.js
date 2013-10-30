@@ -5,7 +5,11 @@ function sideBarCtrl($scope){
 
 	$scope.selectedLine = "";
 
+	$scope.getClass = function(module){
 
+		if($scope.selectedLine == module.name)return "moduleSelected";
+		else return "";
+	}
 }
 
 
@@ -44,14 +48,8 @@ function userListCtrl($scope, $http){
 		$scope.$parent.selectedLine = user.name;
 
 		displayUser(user.name);
-        }
+    }
 
-
-	$scope.getClass = function(user){
-
-		if($scope.$parent.selectedLine == user.name)return "moduleSelected";
-		else return "";
-	}
 }
 
 
@@ -167,12 +165,6 @@ function serviceListCtrl($scope, $http) {
 
     }
 
-
-	$scope.getClass = function(service){
-
-		if($scope.$parent.selectedLine == service.name)return "moduleSelected";
-		else return "";
-	}
 }
 
 
