@@ -25,7 +25,7 @@ $config = new Configuration();
     <script type="text/javascript" src="include/angular-animate.js"></script>
     <script type="text/javascript" src="include/controler.js"></script>
     <body>
-        <div id="sideBar">
+        <div id="sideBar" ng-controller="sideBarCtrl">
             <div id="logo">Home</div><br>
             <div class="sectionTitle">Users : </div><br>
             <div id="listUsers" ng-controller="userListCtrl">
@@ -36,7 +36,7 @@ $config = new Configuration();
             <br><br>
             <div class="sectionTitle">Services : </div><br>
             <div id="listServices" ng-controller="serviceListCtrl">
-				<div class="sideBarLine" id="{{module.name}}" ng-repeat="module in moduleList">
+				<div class="sideBarLine" id="{{module.name}}" ng-class="getClass(module)"  ng-repeat="module in moduleList">
 					<div class="mainModule" ng-click="click(module)">{{module.name}}</div>
 					<div class="bool-slider" ng-class="{true : module.activated, false : !module.activated}"><div class="inset"><div class="control"></div></div></div>
 				</div>

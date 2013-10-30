@@ -1,12 +1,19 @@
 var app = angular.module('lamadmin', []);
 
 
+function sideBarCtrl($scope){
+
+	$scope.selectedLine = "";
 
 
-function userListCtrl($scope, $http) {
+}
+
+
+
+
+function userListCtrl($scope, $http){
 
 	$scope.userList = [];
-	$scope.selectedUser = "";
 
 	var donnees = $.param({moduleName: "user"});
 
@@ -34,7 +41,7 @@ function userListCtrl($scope, $http) {
 		activeSubModule = "";
 		activeInstance = user.name;
 
-		$scope.selectedUser = user.name;
+		$scope.$parent.selectedLine = user.name;
 
 		displayUser(user.name);
         }
@@ -42,7 +49,7 @@ function userListCtrl($scope, $http) {
 
 	$scope.getClass = function(user){
 
-		if($scope.selectedUser == user.name)return "moduleSelected";
+		if($scope.$parent.selectedLine == user.name)return "moduleSelected";
 		else return "";
 	}
 }
@@ -57,7 +64,6 @@ function userListCtrl($scope, $http) {
 function serviceListCtrl($scope, $http) {
 
 	$scope.moduleList = [];
-	$scope.selectedService = "";
 
 	$http({
 		method: "POST",
@@ -86,7 +92,7 @@ function serviceListCtrl($scope, $http) {
 		activeSubModule = "";
 		activeInstance = "";
 
-		$scope.selectedService = module.name;
+		$scope.$parent.selectedLine = module.name;
 
 
 
@@ -159,17 +165,14 @@ function serviceListCtrl($scope, $http) {
 			})
 		;
 
+    }
 
 
+	$scope.getClass = function(service){
 
-        }
-
-
-	/*$scope.getClass = function(user){
-
-		if($scope.selectedUser == user.name)return "moduleSelected";
+		if($scope.$parent.selectedLine == service.name)return "moduleSelected";
 		else return "";
-	}*/
+	}
 }
 
 
