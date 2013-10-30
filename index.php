@@ -37,7 +37,7 @@ $config = new Configuration();
             <div class="sectionTitle">Services : </div><br>
             <div id="listServices" ng-controller="serviceListCtrl">
 				<div class="sideBarLine" id="{{module.name}}" ng-repeat="module in moduleList">
-					<div class="mainModule">{{module.name}}</div>
+					<div class="mainModule" ng-click="click(module)">{{module.name}}</div>
 					<div class="bool-slider" ng-class="{true : module.activated, false : !module.activated}"><div class="inset"><div class="control"></div></div></div>
 				</div>
 			</div>
@@ -477,7 +477,7 @@ $config = new Configuration();
             
                 request.always(function(){});
             });
-            
+            /*
             $(".mainModule").click(function(){ 
             
                 if($(this).parent().find(".bool-slider").hasClass("false")){return;}
@@ -559,7 +559,7 @@ $config = new Configuration();
             
                 request.always(function(){});
                 
-            });
+            });*/
             
             $("#mainPannel").on("change", ".instanceSelector", function(){
             
