@@ -361,20 +361,6 @@ $config = new Configuration();
             
                 });
             });
-            
-            /*$("#addUser").click(function(){
-                
-                activePage = "config";
-                activeModule = "user";
-                activeSubModule = "";
-                activeInstance = "Add new";
-                
-                $("#sideBar div").removeClass('moduleSelected');
-                $(this).addClass('moduleSelected');
-                
-				angular.element($("#mainPannel")).scope().loadUser("Add new");
-            });*/
-     
         }
         
         function displayInstanceMenu(source){
