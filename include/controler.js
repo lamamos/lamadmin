@@ -6,6 +6,7 @@ var app = angular.module('lamadmin', []);
 function userListCtrl($scope, $http) {
 
 	$scope.userList = [];
+	$scope.selectedUser = "";
 
 	var donnees = $.param({moduleName: "user"});
 
@@ -25,6 +26,25 @@ function userListCtrl($scope, $http) {
 			alert("error when getting the liste of the users");
 		})
 	;
+
+	$scope.click = function(user) {
+
+		activePage = "config";
+		activeModule = "user";
+		activeSubModule = "";
+		activeInstance = user.name;
+
+		$scope.selectedUser = user.name;
+
+		displayUser(user.name);
+        }
+
+
+	$scope.getClass = function(user){
+
+		if($scope.selectedUser == user.name)return "moduleSelected";
+		else return "";
+	}
 
 }
 
