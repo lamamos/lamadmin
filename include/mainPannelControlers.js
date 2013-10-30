@@ -3,7 +3,7 @@
 function mainPannelCtrl($scope, $http, $sce){
 
 	$scope.needTabs = false;
-	$scope.unicTabContent = "kikooo85";
+	$scope.unicTabContent = "";
 
 	$scope.loadHome = function(){
 
