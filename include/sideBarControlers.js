@@ -47,7 +47,7 @@ function userListCtrl($scope, $http){
 
 		$scope.$parent.selectedLine = user.name;
 
-		displayUser(user.name);
+		angular.element($("#mainPannel")).scope().loadUser(user.name);
     }
 }
 

@@ -141,81 +141,9 @@ $config = new Configuration();
             });
         }
         
-        
-        function displayUser(name){
-
-            activePage = "config";
-            activeModule = "user";
-            activeSubModule = "";
-            activeInstance = name;
-            
-            var data = {
-                moduleName: "user",
-                instanceName: name
-            }
-                    
-            request = $.ajax({
-                url: "/ajax/getFormInstance.php",
-                type: "POST",
-                data: data
-            });
-        
-            request.done(function(response, textStatus, jqXHR){
-            
-                if($("#mainPannel #tabs").length > 0){   //if we have a tabs element
-                    
-                    $("#tabs").addClass("pt-page-moveToTop"); //we make the tab deseapear
-                    $("#tabs li").addClass("pt-page-moveToTop"); //we make the tab deseapear
-                    //when the tabs have desapeared
-                    $("#tabs li").one('webkitAnimationEnd oanimationend msAnimationEnd animationend', function(e) {
-                        
-                        $("#tabs").remove(); //we delete them
-                        $("#tabs li").remove(); //we delete them                        
-                    });
-                }
-                
-                //we make the forms deseapear
-                $("#mainPannel #forms").addClass("pt-page-moveToBottom");
-                //when they are not anymore on the screen
-                $("#mainPannel #forms").one('webkitAnimationEnd oanimationend msAnimationEnd animationend', function(e) {
-                
-                    $("#mainPannel #forms").remove();   //we delete them
-                    $("#mainPannel").append("<div id=\"forms\">"+response+"</div>");    //we add the user form
-                    $("#mainPannel #forms").addClass("pt-page-moveFromTop");    //we make it appeare
-                    $(".instanceForm").submit(function (){       
-        
-                        var data = $(this).serialize();
-                        data += "&moduleName=user&instanceName="+activeInstance;
-        
-                        $.ajax({
-                            type    : "POST",
-                            url     : "/ajax/setFormInstance.php",
-                            data    : data,
-                            success : function(data) {
-                                refresh();
-                                //opts.onSuccess.call(FORM[0], data);
-                            },
-                            error   : function() {
-                                alert("Error when commitin the modif on this module.");
-                                //opts.onError.call(FORM[0]);
-                            }
-                        });
-                    });
-                    $(".deleteInstance").click(function(){deleteInstance();});
-                });
-            });
-        
-            request.fail(function(jqXHR, textStatus, errorThrown){
-        
-                alert("error when getting the form for the user");
-            });
-        
-            request.always(function(){});
-        }
-        
         function refresh(){
 
-            if(activePage == "home"){displayHome();}
+           /* if(activePage == "home"){displayHome();}
             else if(activePage == "config"){
                 if(activeModule == "user"){
                     
@@ -226,7 +154,7 @@ $config = new Configuration();
                 }
             }
             
-            redefineComportements();
+            redefineComportements();*/
         }
         
         function addElementToArray(clickedElement){             
@@ -448,8 +376,7 @@ $config = new Configuration();
                 $("#sideBar div").removeClass('moduleSelected');
                 $(this).addClass('moduleSelected');
                 
-                displayUser("Add new");
-                
+				angular.element($("#mainPannel")).scope().loadUser("Add new");
             });
      
         }
