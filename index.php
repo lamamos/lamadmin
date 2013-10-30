@@ -28,7 +28,9 @@ $config = new Configuration();
         <div id="sideBar">
             <div id="logo">Home</div><br>
             <div class="sectionTitle">Users : </div><br>
-            <div id="listUsers" ng-controller="userListCtrl"><div class="user" ng-class="getClass(user)" ng-repeat="user in userList" ng-click="click(user)">{{user.name}}</div></div>
+            <div id="listUsers" ng-controller="userListCtrl">
+				<div class="user" ng-class="getClass(user)" ng-repeat="user in userList" ng-click="click(user)">{{user.name}}</div>
+	    	</div>
             <br>
             <div class="sectionTitle" id="addUser">Add user</div>
             <br><br>
