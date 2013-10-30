@@ -82,22 +82,6 @@ $config = new Configuration();
             
             angular.element($("#mainPannel")).scope().loadHome();
             
-            $("#mainPannel").tabs({
-                beforeActivate: function(event, ui){
-                    
-                    tabName = ui.newTab.attr('id').substr(1);
-                    changeTab(tabName);
-                }
-            });
-            
-            $("#menu").menu();
-            
-            $(document).ajaxComplete(function(){
-                
-                //function called when a jaxrequest is done
-                //alert("kikoo");   
-            });
-            
             redefineComportements();
         });
         
@@ -131,7 +115,7 @@ $config = new Configuration();
                     refresh();
                 }else{
                     
-                    changeTab(activeSubModule);
+                    /*changeTab(activeSubModule);	//changed (angular)*/
                 }
                 
             });
@@ -284,7 +268,7 @@ $config = new Configuration();
                                     type    : "POST",
                                     url     : "/ajax/setFormInstance.php",
                                     data    : data,
-                                    success : function(data) {changeTab(activeSubModule);},
+                                    success : function(data) {/*changeTab(activeSubModule); //changed (angular)*/},
                                     error   : function() {}
                                 });
                             });
