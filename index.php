@@ -516,19 +516,6 @@ $config = new Configuration();
                 request.always(function(){});
             });
             
-            /*$(".user").click(function(){
-             
-                activePage = "config";
-                activeModule = "user";
-                activeSubModule = "";
-                activeInstance = $(this).text();
-                
-                $("#sideBar div").removeClass('moduleSelected');
-                $(this).addClass('moduleSelected');
-                
-                displayUser($(this).text());
-            });*/
-            
             $(".mainModule").click(function(){ 
             
                 if($(this).parent().find(".bool-slider").hasClass("false")){return;}
