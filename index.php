@@ -14,6 +14,8 @@ $config = new Configuration();
     <head>
 
     </head>
+    <script type="text/javascript" src="include/angular.min.js"></script>
+    <link rel="stylesheet" href="include/bootstrap.min.css">
     <link rel="stylesheet" href="include/jquery-ui.css">
     <link rel="stylesheet" href="include/style.css">
     <link rel="stylesheet" href="include/magic.css">
@@ -21,10 +23,10 @@ $config = new Configuration();
     <link rel="stylesheet" href="include/on_off_button.css">
     <script type="text/javascript" src="include/jquery-2.0.3.min.js"></script>
     <script type="text/javascript" src="include/jquery-ui.js"></script>
-    <script type="text/javascript" src="include/angular.min.js"></script>
     <script type="text/javascript" src="include/angular-animate.js"></script>
     <script type="text/javascript" src="include/sideBarControlers.js"></script>
     <script type="text/javascript" src="include/mainPannelControlers.js"></script>
+    <script type="text/javascript" src="include/ui-bootstrap-tpls-0.6.0.min.js"></script>
     <body>
         <div id="sideBar" class="magictime slideLeftRetourn" ng-controller="sideBarCtrl">
             <div id="logo">Home</div><br>
@@ -47,11 +49,28 @@ $config = new Configuration();
         </div>
     
         <div id="mainPannel" class="magictime slideUpRetourn" ng-controller="mainPannelCtrl">
+
+			<div id="tabs" ng-controller="tabsControler">
+				<tabset>
+					<tab ng-repeat="tab in tabs" select="changeTab(tab)" heading="{{tab.title}}" active="tab.active" disabled="tab.disabled">
+						<div id="forms" ng-bind-html="tab.content"></div>
+					</tab>
+				</tabset>
+			</div>
+
             <div id="forms">
                 
                 
             </div>
-        </div>    
+
+        </div> 
+
+
+
+
+
+
+  
     </body>
     
     <script type="text/javascript">
@@ -66,7 +85,7 @@ $config = new Configuration();
         //this function is called at te opening of the page
         $(function() {
             
-            displayHome();
+            //displayHome();
             
             $("#mainPannel").tabs({
                 beforeActivate: function(event, ui){
@@ -128,7 +147,7 @@ $config = new Configuration();
         }
         
         function changeTab(tabName){
-    
+    /*
             try{if(tabName){oldTabName = tabName;}}catch(e){oldTabName = "general";}
 
             activeSubModule = tabName;
@@ -197,12 +216,17 @@ $config = new Configuration();
                 alert("error when getting the list of the submodule");
             });
             
-            request.always(function(){});
+            request.always(function(){});*/
         }
         
         function displayHome(){
             
-            activePage = "home";
+			//alert("kikoo");
+			//angular.element("#tabs").scope().clearTabs();
+
+
+
+            /*activePage = "home";
             activeModule = "";
             activeSubModule = "";
             activeInstance = "";
@@ -257,7 +281,7 @@ $config = new Configuration();
                     });
 
                 }
-            });
+            });*/
         }
         
         function displayUser(name){

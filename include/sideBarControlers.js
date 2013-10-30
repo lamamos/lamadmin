@@ -1,4 +1,4 @@
-var app = angular.module('lamadmin', []);
+var app = angular.module('lamadmin', ['ui.bootstrap']);
 
 
 function sideBarCtrl($scope){
@@ -91,7 +91,7 @@ function serviceListCtrl($scope, $http) {
 
 		$scope.$parent.selectedLine = module.name;
 
-		$("#mainPannel").scope().loadModul(module.name);
+		angular.element($("#mainPannel")).scope().loadModul(module.name);
     }
 
 }
