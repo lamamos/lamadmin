@@ -23,7 +23,8 @@ $config = new Configuration();
     <script type="text/javascript" src="include/jquery-ui.js"></script>
     <script type="text/javascript" src="include/angular.min.js"></script>
     <script type="text/javascript" src="include/angular-animate.js"></script>
-    <script type="text/javascript" src="include/controler.js"></script>
+    <script type="text/javascript" src="include/sideBarControlers.js"></script>
+    <script type="text/javascript" src="include/mainPannelControlers.js"></script>
     <body>
         <div id="sideBar" class="magictime slideLeftRetourn" ng-controller="sideBarCtrl">
             <div id="logo">Home</div><br>
@@ -45,7 +46,7 @@ $config = new Configuration();
             <div class="sectionTitle test">Refresh</div>
         </div>
     
-        <div id="mainPannel" class="magictime slideUpRetourn">
+        <div id="mainPannel" class="magictime slideUpRetourn" ng-controller="mainPannelCtrl">
             <div id="forms">
                 
                 
@@ -457,7 +458,6 @@ $config = new Configuration();
                         //the fact of not having a space between the selector in the next line is normal, we selecte an element by it's class and ID
                         $("#"+moduleChanged+".sideBarLine").removeClass("moduleSelected");
                     }
-                
                 });
             
                 request.fail(function(jqXHR, textStatus, errorThrown){

@@ -92,12 +92,10 @@ function serviceListCtrl($scope, $http) {
 
 		$scope.$parent.selectedLine = module.name;
 
+		$("#mainPannel").scope().loadModul(module.name);
 
 
-
-		//Ne pas faire comme cela. Créer un nouvel element dans le DOM qui aura son propre controler
-		//qui se chargera d'aller chercher les données sur le serveur.
-		var donnees = $.param({name: module.name});
+		/*var donnees = $.param({name: module.name});
 
 		$http({
 			method: "POST",
@@ -142,7 +140,7 @@ function serviceListCtrl($scope, $http) {
 				    }
 				    $("#tabs li").addClass("pt-page-moveFromTop");
 				    $("#mainPannel").tabs("refresh");
-				}
+				}*/
 
 
 				/*if($("#mainPannel #tabs").length > 0){   //if we have a tabs element
@@ -192,13 +190,13 @@ function serviceListCtrl($scope, $http) {
 		         
 
 
-			})
+			/*})
 
 			.error(function(data, status, headers, config) {
 
 				alert("error when getting the liste of the submodules");
 			})
-		;
+		;*/
 
     }
 
