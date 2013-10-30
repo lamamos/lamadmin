@@ -115,8 +115,42 @@ body {
 }
 
 
+a{
+
+	/*color:#e6e6e6;*/
+	color: #000000;
+}
 
 
+a:hover, a:focus{
+
+    color:#585858;
+}
+
+input{
+
+	color: #e6e6e6;
+	border: 1px #000000 solid;
+    border-radius: 4px;
+
+	/*part taker from the jekyll site (http://jekyllrb.com/news/)*/
+	margin: 3px;
+	background: none repeat scroll 0 0 #333333;
+	box-shadow: 0 1px 10px rgba(0, 0, 0, 0.3) inset, 0 1px 0 rgba(255, 255, 255, 0.1), 0 -1px 0 rgba(0, 0, 0, 0.5);
+}
+
+.nav > li {
+
+    background-image: linear-gradient(to top, #D69600 0%, #FFB300 100%);
+    /*background-image: linear-gradient(to top, #830000 0%, #9d0000 100%);*/
+    border-radius: 4px 4px 0 0;
+}
+
+.nav-tabs {
+
+    /*border-bottom: 5px solid #830000;*/
+    border-bottom: 5px solid #D69600;
+}
 
 
 
