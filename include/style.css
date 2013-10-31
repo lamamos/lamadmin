@@ -152,11 +152,36 @@ input{
     border-bottom: 5px solid #D69600;
 }
 
+ng-scope.active{
 
 
+	background-color: black;
+}
 
 
+/* Links in the tabs (all of them, selected or not) */
+.nav-tabs > li > a{
 
+	color: #555555;
+	border: 0px none;
+	background-color: white;
+}
+
+/* Link selected in the tabs */
+.nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus{
+
+	color: #000000;
+	border: 0px none;
+    background-image: linear-gradient(to top, #D69600 0%, #FFB300 100%);
+}
+
+/* Links that is hovered but not selected in the tabs */
+.nav > li > a:hover, .nav > li > a:focus{
+
+	color: #c40000;
+	border: 0px none;
+    background-image: linear-gradient(to top, #D69600 0%, #FFB300 100%);
+}
 
 
 
