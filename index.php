@@ -21,7 +21,7 @@ $config = new Configuration();
     <link rel="stylesheet" href="include/animate.css">
     <link rel="stylesheet" href="include/on_off_button.css">
     <script type="text/javascript" src="include/jquery-2.0.3.min.js"></script>
-    <script type="text/javascript" src="include/angular-animate.js"></script>
+    <script type="text/javascript" src="include/angular-animate.min.js"></script>
     <script type="text/javascript" src="include/sideBarControlers.js"></script>
     <script type="text/javascript" src="include/mainPannelControlers.js"></script>
     <script type="text/javascript" src="include/ui-bootstrap-tpls-0.6.0.min.js"></script>
@@ -51,7 +51,8 @@ $config = new Configuration();
 		<div ng-controller="tabsControler">
 			<div id="tabs" ng-show="needTabs">
 				<tabset>
-					<tab ng-repeat="tab in tabs" select="changeTab(tab)" heading="{{tab.title}}" active="tab.active" disabled="tab.disabled">
+					<tab class="tab-anim" ng-repeat="tab in tabs" select="changeTab(tab)" heading="{{tab.title}}" active="tab.active" disabled="tab.disabled">
+
 						<div id="forms" ng-bind-html="tab.content"></div>
 					</tab>
 				</tabset>

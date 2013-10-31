@@ -301,6 +301,7 @@ to { transform: translateY(-100%); }
 
 
 
+
 .pt-page-moveFromBottom {
 -webkit-animation: moveFromBottom .6s ease both;
 -moz-animation: moveFromBottom .6s ease both;
@@ -316,6 +317,42 @@ from { -moz-transform: translateY(100%); }
 @keyframes moveFromBottom {
 from { transform: translateY(100%); }
 }
+
+
+
+/*
+.tab-anim.ng-enter{
+	-webkit-animation: moveFromTop 1s ease both;
+	-moz-animation: moveFromTop 1s ease both;
+	animation: moveFromTop 1s ease both;
+	animation-delay: 1s;
+}
+
+.tab-anim.ng-enter{
+  opacity:0;
+}
+
+.tab-anim.ng-enter.ng-enter-active {
+  opacity:1;
+}
+
+
+
+
+
+.tab-anim.ng-leave {
+	-webkit-animation: moveToTop 1s ease both;
+	-moz-animation: moveToTop 1s ease both;
+	animation: moveToTop 1s ease both;
+}
+
+.tab-anim.ng-leave.ng-leave-active {
+  opacity:0;
+}
+.tab-anim.ng-leave{
+  opacity:1;
+}
+*/
 
 
 
