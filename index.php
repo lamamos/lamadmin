@@ -48,19 +48,17 @@ $config = new Configuration();
     
         <div id="mainPannel" class="magictime slideUpRetourn" ng-controller="mainPannelCtrl">
 
-			<div ng-controller="tabsControler">
-				<div id="tabs" ng-show="needTabs">
-					<tabset>
-						<tab ng-repeat="tab in tabs" select="changeTab(tab)" heading="{{tab.title}}" active="tab.active" disabled="tab.disabled">
-							<div id="forms" ng-bind-html="tab.content"></div>
-						</tab>
-					</tabset>
-				</div>
-
-				<div id="unicTab" ng-hide="needTabs" ng-bind-html="unicTabContent"></div>
+		<div ng-controller="tabsControler">
+			<div id="tabs" ng-show="needTabs">
+				<tabset>
+					<tab ng-repeat="tab in tabs" select="changeTab(tab)" heading="{{tab.title}}" active="tab.active" disabled="tab.disabled">
+						<div id="forms" ng-bind-html="tab.content"></div>
+					</tab>
+				</tabset>
 			</div>
 
-
+			<div id="unicTab" ng-hide="needTabs" ng-bind-html="unicTabContent"></div>
+		</div>
         </div> 
     </body>
     
