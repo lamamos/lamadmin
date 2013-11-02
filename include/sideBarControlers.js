@@ -37,24 +37,28 @@ function userListCtrl($scope, $http){
 
 	$scope.userList = [];
 
-	var donnees = $.param({moduleName: "user"});
+	$scope.update = function(){
 
-	$http({
-		method: "POST",
-		url: "/ajax/getListInstances.php",
-		data: donnees,
-		headers: {'Content-Type': 'application/x-www-form-urlencoded'}
-	})
-		.success(function(response){
+		var donnees = $.param({moduleName: "user"});
 
-			$scope.userList = response;
+		$http({
+			method: "POST",
+			url: "/ajax/getListInstances.php",
+			data: donnees,
+			headers: {'Content-Type': 'application/x-www-form-urlencoded'}
 		})
+			.success(function(response){
 
-		.error(function(data, status, headers, config) {
+				$scope.userList = response;
+			})
 
-			alert("error when getting the liste of the users");
-		})
-	;
+			.error(function(data, status, headers, config) {
+
+				alert("error when getting the liste of the users");
+			})
+		;
+	}
+
 
 	$scope.click = function(user) {
 
@@ -67,6 +71,16 @@ function userListCtrl($scope, $http){
 
 		angular.element($("#mainPannel")).scope().loadUser(user.name);
     }
+
+
+	$scope.$on('updateUsersList', function(event, args){
+
+			$scope.update();
+	});
+
+
+
+	$scope.update();
 }
 
 

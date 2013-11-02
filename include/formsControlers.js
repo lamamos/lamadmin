@@ -1,7 +1,7 @@
 
 
 
-function formCtrl($scope, $http){
+function formCtrl($scope, $rootScope, $http){
 
 	/*$scope.content = [
 		{"content_type" : "text", "title" : "test3", "value" : ""},
@@ -57,7 +57,6 @@ function formCtrl($scope, $http){
 		})
 			.success(function(response){
 
-				//alert(JSON.stringify(response));
 				$scope.content = response;
 			})
 
@@ -86,7 +85,6 @@ function formCtrl($scope, $http){
 		})
 			.success(function(response){
 
-				//alert(response);
 			})
 
 			.error(function(data, status, headers, config) {
@@ -114,7 +112,7 @@ function formCtrl($scope, $http){
 			.success(function(response){
 
 				angular.element($("#mainPannel")).scope().loadHome();
-				//TODO: update the list of the users, get it from the server, or juste delete the right one in the list localy
+				if($scope.moduleName == "user")$rootScope.$broadcast("updateUsersList", []);
 			})
 
 			.error(function(data, status, headers, config) {
@@ -123,10 +121,6 @@ function formCtrl($scope, $http){
 			})
 		;
 	}
-
-
-
-
 }
 
 
