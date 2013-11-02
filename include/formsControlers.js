@@ -86,7 +86,7 @@ function formCtrl($scope, $http){
 		})
 			.success(function(response){
 
-				alert(response);
+				//alert(response);
 			})
 
 			.error(function(data, status, headers, config) {

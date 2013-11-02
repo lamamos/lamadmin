@@ -30,19 +30,13 @@ if($_POST['instanceName'] == "Add new"){    //we are adding a new subModule inst
 }
 
 
-echo "kikooo";
+$reponse = "values : ";
 
-//need to associate the key values (!!!arrays and hash!!!)
+foreach($_POST['values'] as $field){
 
+	$instance->setArgument($field['title'], $field['value']);
+}
 
-/*foreach($_POST as $key => $value){
-    
-    if( ($key != 'moduleName') && ($key != 'subModuleName') && ($key != 'instanceName') ){
-        
-        $instance->setArgument($key, $value);   
-    }
-}*/
-
-//$config->writeConfigFile($config);
+$config->writeConfigFile($config);
 
 ?>
