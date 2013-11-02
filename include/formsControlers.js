@@ -92,7 +92,7 @@ function formCtrl($scope, $http){
 			.success(function(response){
 
 				angular.element($("#mainPannel")).scope().loadHome();
-				//TODO: update the list of the users
+				//TODO: update the list of the users, get it from the server, or juste delete the right one in the list localy
 			})
 
 			.error(function(data, status, headers, config) {
