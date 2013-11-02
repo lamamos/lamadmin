@@ -54,7 +54,8 @@ $config = new Configuration();
 				<tabset>
 					<tab class="tab-anim" ng-repeat="tab in tabs" select="changeTab(tab)" heading="{{tab.title}}" active="tab.active" disabled="tab.disabled">
 
-						<div id="forms" ng-bind-html="tab.content"></div>
+						<!--<div id="forms" ng-bind-html="tab.content"></div>-->
+						<div ng-include="'tab_template.html'"></div>
 					</tab>
 				</tabset>
 			</div>
@@ -66,6 +67,23 @@ $config = new Configuration();
 
         </div> 
     </body>
+
+
+	<script type="text/ng-template" id="tab_template.html">
+		<div ng-switch on="activeSubModule">
+			<div ng-switch-when="general">
+
+				<!--<div id="forms" ng-bind-html="tab.content"></div>-->
+
+				<form id="container" ng-submit="submit()" ng-controller="formCtrl">
+					<div ng-include="'form_template.html'"></div>
+					<input type="submit" value="Save">
+				</form>
+			</div>
+			<div ng-switch-default><div id="forms" ng-bind-html="tab.content"></div></div>
+		</div>
+	</script>
+
 
 
 	<script type="text/ng-template" id="unic_tab_template.html">
@@ -85,7 +103,7 @@ $config = new Configuration();
 
 	<script type="text/ng-template" id="form_template.html">
 		<div ng-repeat="item in content" ng-switch on="item.content_type">
-			<div ng-switch-when="text">
+			<div ng-switch-when="string">
 				{{item.title}}:<input name={{item.title}} type="text" ng-model="item.value">
 			</div>
 			<div ng-switch-when="number">

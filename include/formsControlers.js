@@ -58,8 +58,10 @@ function formCtrl($scope, $rootScope, $http){
 		})
 			.success(function(response){
 
-				if($scope.moduleName == "user")	$scope.deletable = true;
-				else $scope.deletable = false;
+
+				//alert(response);
+				/*if($scope.moduleName == "user")	$scope.deletable = true;
+				else $scope.deletable = false;*/
 
 				$scope.content = response;
 			})

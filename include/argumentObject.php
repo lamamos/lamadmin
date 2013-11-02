@@ -36,7 +36,7 @@ class StringArg extends Argument{
 
 	public function toJson(){
 
-		return "{\"content_type\" : \"text\", \"title\" : \"".$this->name."\", \"value\" : \"".$this->value."\"}";
+		return "{\"content_type\" : \"string\", \"title\" : \"".$this->name."\", \"value\" : \"".$this->value."\"}";
 	}
     
     public function toConfigFile(){
@@ -215,16 +215,19 @@ class ArrayArg extends Argument{
 
 	public function toJson(){
 
-		$response = "{\"content_type\" : \"array\", \"title\" : \"".$this->name."\", \"subType\" : \"".$this->subType->getType()."\", \"stuffs\" : [";
+		$response = "{\"content_type\" : \"array\", \"title\" : \"".$this->name."\", \"subType\" : \"".$this->subType."\", \"stuffs\" : [";
 
-        for($i=0; $i<count($this->value); $i++){
-            
-            $element = $this->value[$i];
-            $response .= $element->toJson();
-			$response .= ",";
-        }
+		if(isset($this->value)){
 
-		$response = substr($response, 0, -1); //remove the last useless ","
+		    for($i=0; $i<count($this->value); $i++){
+		        
+		        $element = $this->value[$i];
+		        $response .= $element->toJson();
+				$response .= ",";
+		    }
+			$response = substr($response, 0, -1); //remove the last useless ","
+		}
+
 		$response .= "]}";
 
 		return $response;

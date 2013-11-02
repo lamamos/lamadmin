@@ -6,9 +6,12 @@ function mainPannelCtrl($scope, $http, $sce, $compile){
 	//may be useless
 	$scope.unicTabContent = "<div ng-controller=\"formCtrl\">salut</div>";
 
+	$scope.activeModule = "";
+
 	$scope.loadHome = function(){
 
 		$scope.needTabs = false;
+		$scope.activeModule = "home";
 		angular.element($("#unicTab")).scope().loadHome();
 	}
 
@@ -16,6 +19,7 @@ function mainPannelCtrl($scope, $http, $sce, $compile){
 	$scope.loadUser = function(name){
 
 		$scope.needTabs = false;
+		$scope.activeModule = "user";
 		angular.element($("#unicTab")).scope().loadInstance("config", "user", "", name);
 	}
 
@@ -34,6 +38,7 @@ function mainPannelCtrl($scope, $http, $sce, $compile){
 			.success(function(response){
 
 				$scope.needTabs = true;
+				$scope.activeModule = name;
 				angular.element($("#tabs")).scope().clearTabs();
 
 				var tabs= response.split(",");
@@ -57,6 +62,7 @@ function mainPannelCtrl($scope, $http, $sce, $compile){
 function tabsControler($scope, $http, $sce){
 
 	$scope.tabs = [];
+	$scope.activeSubModule = "";
 
 	$scope.clearTabs = function(){
 
@@ -73,29 +79,40 @@ function tabsControler($scope, $http, $sce){
 
 	$scope.changeTab = function(tab){
 
-		activeSubModule = tab.title;
+		$scope.activeSubModule = tab.title;
 
-		var donnees =$.param({
-			moduleName: activeModule,
-			subModuleName: tab.title,
-		});
+		if($scope.activeSubModule == "general"){
 
-		$http({
-			method: "POST",
-			url: "/ajax/getFormSubModule.php",
-			data: donnees,
-			headers: {'Content-Type': 'application/x-www-form-urlencoded'}
-		})
-			.success(function(response){
+			//$scope.activeModule is defined in the parent controller : mainPannelCtrl
+			//TODO : this methode is awfull, need to find a way to wait for the formCtrl to be initialized
+			setTimeout(function (){
+				$scope.$broadcast('getFormEvent', ["config", $scope.activeModule, $scope.activeSubModule, ""]);
+			}, 10);
 
-				tab.content = $sce.trustAsHtml(response);
+		}else{
+
+			var donnees =$.param({
+				moduleName: activeModule,
+				subModuleName: tab.title,
+			});
+
+			$http({
+				method: "POST",
+				url: "/ajax/getFormSubModule.php",
+				data: donnees,
+				headers: {'Content-Type': 'application/x-www-form-urlencoded'}
 			})
+				.success(function(response){
 
-			.error(function(data, status, headers, config) {
+					tab.content = $sce.trustAsHtml(response);
+				})
 
-				alert("error when getting the liste of the list of the submodul instances");
-			})
-		;
+				.error(function(data, status, headers, config) {
+
+					alert("error when getting the liste of the list of the submodul instances");
+				})
+			;
+		}
 
 	}
 }
