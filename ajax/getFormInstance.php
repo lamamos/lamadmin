@@ -13,7 +13,7 @@ if($_POST['instanceName'] == "Add new"){    //if we are creating a new instance
     if( (isset($_POST['subModuleName'])) && ($_POST['subModuleName'] != NULL) )$subModule = $module->getSubModule($_POST['subModuleName']);
     else $subModule = $module;
     
-    $response = $subModule->toForm();
+	$response = $subModule->toJson();
 
     
 }else{  //if we are editing an existing instance
@@ -34,8 +34,6 @@ if($_POST['instanceName'] == "Add new"){    //if we are creating a new instance
         $instance = $subModule->getInstance($_POST['instanceName']);
     }
     
-    
-    //$response = $instance->toForm();
 	$response = $instance->toJson();
 }
 

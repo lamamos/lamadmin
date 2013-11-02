@@ -13,15 +13,11 @@ function mainPannelCtrl($scope, $http, $sce, $compile){
 	}
 
 
-
 	$scope.loadUser = function(name){
 
 		$scope.needTabs = false;
 		angular.element($("#unicTab")).scope().loadInstance("config", "user", "", name);
 	}
-
-
-
 
 
 	$scope.loadModul = function(name){

@@ -51,8 +51,6 @@ function formCtrl($scope, $http){
 
 				//alert(JSON.stringify(response));
 				$scope.content = response;
-
-				//$scope.content[0].title = "salutRoger";
 			})
 
 			.error(function(data, status, headers, config) {
