@@ -31,6 +31,7 @@ function formCtrl($scope, $rootScope, $http){
 	];*/
 
 	$scope.content = "";
+	$scope.deletable = false;
 
 	$scope.moduleName = "";
 	$scope.subModuleName = "";
@@ -56,6 +57,9 @@ function formCtrl($scope, $rootScope, $http){
 			headers: {'Content-Type': 'application/x-www-form-urlencoded'}
 		})
 			.success(function(response){
+
+				if($scope.moduleName == "user")	$scope.deletable = true;
+				else $scope.deletable = false;
 
 				$scope.content = response;
 			})
