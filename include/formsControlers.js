@@ -71,8 +71,29 @@ function formCtrl($scope, $http){
 
 	$scope.submit = function(){
 
-		alert("submit : "+$scope.content[0].value);
+		var donnees = $.param({
+			moduleName: $scope.moduleName,
+			subModuleName: $scope.subModuleName,
+			instanceName: $scope.instanceName,
+			values: $scope.content
+		});
 
+		$http({
+			method: "POST",
+			url: "/ajax/setFormInstance.php",
+			data: donnees,
+			headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+		})
+			.success(function(response){
+
+				alert(response);
+			})
+
+			.error(function(data, status, headers, config) {
+
+				alert("error when setting the form");
+			})
+		;
 
 /*
 		$(".instanceForm").submit(function (){
