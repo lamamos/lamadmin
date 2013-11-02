@@ -71,9 +71,11 @@ $config = new Configuration();
 		<div ng-switch on="page">
 			<div ng-switch-when="home"><p>{{home}}</p></div>
 			<div ng-switch-when="form">
-				<div id="container" ng-controller="formCtrl">
+				<form id="container" ng-controller="formCtrl">
 					<div ng-include="'form_template.html'"></div>
-				</div>
+					<input type="submit" value="Save">
+					<input type="button" value="Delete">
+				</form>
 			</div>
 			<div ng-switch-default>an error accured</div>
 		</div>
