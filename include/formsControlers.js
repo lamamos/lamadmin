@@ -31,7 +31,6 @@ function formCtrl($scope, $rootScope, $http){
 	];*/
 
 	$scope.content = "";
-	$scope.deletable = false;
 
 	$scope.moduleName = "";
 	$scope.subModuleName = "";
@@ -57,11 +56,6 @@ function formCtrl($scope, $rootScope, $http){
 			headers: {'Content-Type': 'application/x-www-form-urlencoded'}
 		})
 			.success(function(response){
-
-
-				//alert(response);
-				/*if($scope.moduleName == "user")	$scope.deletable = true;
-				else $scope.deletable = false;*/
 
 				$scope.content = response;
 			})
@@ -91,7 +85,6 @@ function formCtrl($scope, $rootScope, $http){
 		})
 			.success(function(response){
 
-				alert(response);
 				if($scope.moduleName == "user")$rootScope.$broadcast("updateUsersList", []);
 			})
 

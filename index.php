@@ -93,7 +93,7 @@ $config = new Configuration();
 				<form id="container" ng-submit="submit()" ng-controller="formCtrl">
 					<div ng-include="'form_template.html'"></div>
 					<input type="submit" value="Save">
-					<input type="button" ng-if="deletable" ng-click="delete()" value="Delete">
+					<input type="button" ng-click="delete()" value="Delete">
 				</form>
 			</div>
 			<div ng-switch-default>an error accured</div>
