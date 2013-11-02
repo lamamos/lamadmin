@@ -86,10 +86,10 @@ $config = new Configuration();
 	<script type="text/ng-template" id="form_template.html">
 		<div ng-repeat="item in content" ng-switch on="item.content_type">
 			<div ng-switch-when="text">
-				{{item.title}}:<input name={{item.title}} type='text' value={{item.value}}>
+				{{item.title}}:<input name={{item.title}} type="text" ng-model="item.value">
 			</div>
 			<div ng-switch-when="number">
-				{{item.title}}:<input name={{item.title}} type='number' value={{item.value}}>, alias : {{item.nickname}}
+				{{item.title}}:<input name={{item.title}} type="number" ng-model="item.value">
 			</div>
 			<div ng-switch-when="array">
 				{{item.title}}:<div ng-repeat="item in item.stuffs" ng-include="'tree_item_renderer.html'"></div>
