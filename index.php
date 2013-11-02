@@ -140,7 +140,7 @@ $config = new Configuration();
         
         function addElementToArray(clickedElement){             
         
-            var data = {
+            /*var data = {
                 moduleName: activeModule,
                 subModuleName: activeSubModule,
                 instanceName: activeInstance,
@@ -164,12 +164,12 @@ $config = new Configuration();
                 alert("error when adding an element to the array");
             });
         
-            request.always(function(){});
+            request.always(function(){});*/
         }
         
         function removeElementFromArray(clickedElement){            
             
-            elementName = clickedElement.attr('name').substring(7);
+            /*elementName = clickedElement.attr('name').substring(7);
             
             //we remove the input in the form            
             $("input[name='"+elementName+"']").remove();
@@ -204,20 +204,19 @@ $config = new Configuration();
                 alert("error when deletting an element to the array");
             });
         
-            request.always(function(){});
+            request.always(function(){});*/
         }
         
         function redefineComportements(){
 
             //we need to put a timeout, if we call the function right away, the DOM is not yet constructed
             //and it's useless
-            setTimeout(function(){reredefineComportements();}, 500);
-            //$(document).ready(function(){reredefineComportements();});
+            //setTimeout(function(){reredefineComportements();}, 500);
         }
         
         function reredefineComportements(){
            
-            $("#mainPannel").on("change", ".instanceSelector", function(){
+            /*$("#mainPannel").on("change", ".instanceSelector", function(){
             
                 $(".instanceSelector option:selected").each(function(){	//they should be only one element here
             
@@ -269,7 +268,8 @@ $config = new Configuration();
                                     type    : "POST",
                                     url     : "/ajax/setFormInstance.php",
                                     data    : data,
-                                    success : function(data) {/*changeTab(activeSubModule); //changed (angular)*/},
+                                    success : function(data) {//changeTab(activeSubModule); //changed (angular)
+					},
                                     error   : function() {}
                                 });
                             });
@@ -302,11 +302,11 @@ $config = new Configuration();
                     request.always(function(){});
             
                 });
-            });
+            });*/
         }
         
         function displayInstanceMenu(source){
-                        
+             /*           
             activeAfterInput = source;
             
             request = $.ajax({
@@ -323,18 +323,18 @@ $config = new Configuration();
                 var position = activeAfterInput.offset();
                 position.left += activeAfterInput.width() + 5;
                 $(".menu").offset({ top: position.top, left: position.left})
-            });
+            });*/
         }
         
         function formatInstanceMenu(choise){
             
-            activeAfterInput.val(choise);
-            $(".menu").remove();
+            /*activeAfterInput.val(choise);
+            $(".menu").remove();*/
         }
         
         $(".test").click(function(){
             
-            refresh();
+            //refresh();
         });
     </script>
 

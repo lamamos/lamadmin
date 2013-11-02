@@ -85,6 +85,7 @@ function formCtrl($scope, $rootScope, $http){
 		})
 			.success(function(response){
 
+				if($scope.moduleName == "user")$rootScope.$broadcast("updateUsersList", []);
 			})
 
 			.error(function(data, status, headers, config) {
