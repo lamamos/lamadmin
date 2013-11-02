@@ -7,6 +7,7 @@ abstract class Argument{
 
     
     abstract protected function toForm();
+    abstract protected function toJson();
     abstract protected function toConfigFile();
     abstract protected function toConfigFileArg();
     
@@ -32,6 +33,11 @@ class StringArg extends Argument{
         
         return "<input type=\"text\" name=\"".$this->name."\" value=\"".$this->value."\">";
     }
+
+	public function toJson(){
+
+		return "{\"content_type\" : \"text\", \"title\" : \"".$this->name."\", \"value\" : \"".$this->value."\"}";
+	}
     
     public function toConfigFile(){
         
@@ -68,6 +74,11 @@ class AfterArg extends Argument{
         
         return "<input type=\"text\" class=\"instanceMenu\" name=\"".$this->name."\" value=\"".$this->value."\">";
     }
+
+	public function toJson(){
+
+		return "{\"content_type\" : \"after\", \"title\" : \"".$this->name."\", \"value\" : \"".$this->value."\"}";
+	}
     
     public function toConfigFile(){
         
@@ -104,6 +115,11 @@ class NumberArg extends Argument{
         
         return "<input type=\"text\" name=\"".$this->name."\" value=\"".$this->value."\" style=\"background-color:#82ff5d;\">";
     }
+
+	public function toJson(){
+
+		return "{\"content_type\" : \"number\", \"title\" : \"".$this->name."\", \"value\" : \"".$this->value."\"}";
+	}
     
     public function toConfigFile(){
         
@@ -143,6 +159,11 @@ class BoolArg extends Argument{
 
         return $response;
     }
+
+	public function toJson(){
+
+		return "{\"content_type\" : \"bool\", \"title\" : \"".$this->name."\", \"value\" : \"".$this->value."\"}";
+	}
     
     public function toConfigFile(){
         
@@ -191,6 +212,23 @@ class ArrayArg extends Argument{
         
         return $form;
     }
+
+	public function toJson(){
+
+		$response = "{\"content_type\" : \"array\", \"title\" : \"".$this->name."\", \"subType\" : \"".$this->subType->getType()."\", \"stuffs\" : [";
+
+        for($i=0; $i<count($this->value); $i++){
+            
+            $element = $this->value[$i];
+            $response .= $element->toJson();
+			$response .= ",";
+        }
+
+		$response = substr($response, 0, -1); //remove the last useless ","
+		$response .= "]}";
+
+		return $response;
+	}
     
     public function toConfigFile(){
         
@@ -280,6 +318,22 @@ class HashArg extends Argument{
         return $form;
     }
     
+	public function toJson(){
+
+		$response = "{\"content_type\" : \"hash\", \"title\" : \"".$this->name."\", \"stuffs\" : {";
+
+
+        foreach($this->value as $element){
+            
+            $response .= "\"".$element->getName().":".$element->toForm().",";            
+        }
+
+		$response = substr($response, 0, -1); //remove the last useless ","
+		$response .= "}}";
+
+		return $response;
+	}
+
     public function toConfigFile(){
         
         //return "'".$this->name."' => ".$this->toConfigFileArg();

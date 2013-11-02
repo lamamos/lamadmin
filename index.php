@@ -24,6 +24,7 @@ $config = new Configuration();
     <script type="text/javascript" src="include/angular-animate.min.js"></script>
     <script type="text/javascript" src="include/sideBarControlers.js"></script>
     <script type="text/javascript" src="include/mainPannelControlers.js"></script>
+    <script type="text/javascript" src="include/formsControlers.js"></script>
     <script type="text/javascript" src="include/ui-bootstrap-tpls-0.6.0.min.js"></script>
     <body>
         <div id="sideBar" class="magictime slideLeftRetourn" ng-controller="sideBarCtrl">
@@ -57,12 +58,49 @@ $config = new Configuration();
 					</tab>
 				</tabset>
 			</div>
-
-			<div id="unicTab" ng-hide="needTabs" ng-bind-html="unicTabContent"></div>
 		</div>
+
+		<div id="unicTab" ng-hide="needTabs" ng-controller="unicTabCtrl">
+			<div ng-include="'unic_tab_template.html'"></div>
+		</div>
+
         </div> 
     </body>
-    
+
+	<script type="text/ng-template" id="unic_tab_template.html">
+		<div ng-switch on="page">
+			<div ng-switch-when="home"><p>{{home}}</p></div>
+			<div ng-switch-when="form">
+				<div id="container" ng-controller="formCtrl">
+					<div ng-include="'form_template.html'"></div>
+				</div>
+			</div>
+			<div ng-switch-default>an error accured</div>
+		</div>
+	</script>
+
+
+
+
+	<script type="text/ng-template" id="form_template.html">
+		<div ng-repeat="item in content" ng-switch on="item.content_type">
+			<div ng-switch-when="text">
+				{{item.title}}:<input name={{item.title}} type='text' value={{item.value}}>
+			</div>
+			<div ng-switch-when="number">
+				{{item.title}}:<input name={{item.title}} type='number' value={{item.value}}>, alias : {{item.nickname}}
+			</div>
+			<div ng-switch-when="array">
+				{{item.title}}:<div ng-repeat="item in item.stuffs" ng-include="'tree_item_renderer.html'"></div>
+			</div>
+			<div ng-switch-when="hash">
+				{{item.title}}:<div ng-repeat="item in item.stuffs" ng-include="'tree_item_renderer.html'"></div>
+			</div>
+			<div ng-switch-default>
+				default : {{item.title}}
+			</div>
+		</div>
+	</script>
 
 
     <script type="text/javascript">

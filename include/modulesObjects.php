@@ -181,6 +181,19 @@ abstract class Module{
         return $form;
     }
 
+    public function toJson(){
+        
+        $response = "[";
+
+        foreach($this->arguments as $argument){
+                
+            $response .= $argument->toJson().",";
+        }
+
+		$response = substr($response, 0, -1); //remove the last useless ","
+        $response .= "]";
+		return $response;
+    }
     
 	//TODO : remove this two function, they chould be useless
 	public function getInstanceName(){return $this->instanceName;}
@@ -376,6 +389,25 @@ class Instance{
         
         
         return $form;
+    }
+
+
+    public function toJson(){
+        
+        $response = "[";
+
+        foreach($this->motherModule->getArguments() as $argument){
+        
+            $instanceArg = $this->getArgumentObject($argument->getName());
+            //if the arg is not defined in this instance, we ask the module to display the form
+            if(isset($instanceArg))$response .= $instanceArg->toJson().",";
+            else $response .= $argument->toJson().",";
+        }
+
+		$response = substr($response, 0, -1); //remove the last useless ","
+        $response .= "]";
+
+		return $response;
     }
     
     public function getHasBeenWritten(){return $this->hasBeenWritten;}
