@@ -32,8 +32,16 @@ function formCtrl($scope, $http){
 
 	$scope.content = "";
 
+	$scope.moduleName = "";
+	$scope.subModuleName = "";
+	$scope.instanceName = "";
+
 
 	$scope.$on('getFormEvent', function(event, args){
+
+		$scope.moduleName = args[1];
+		$scope.subModuleName = args[2];
+		$scope.instanceName = args[3];
 
 		var donnees = $.param({
 				moduleName: args[1],
@@ -59,6 +67,43 @@ function formCtrl($scope, $http){
 			})
 		;
 	});
+
+
+	$scope.submit = function(){
+
+		alert("submit");
+
+	}
+
+	$scope.delete = function(){
+
+		var donnees = $.param({
+				moduleName: $scope.moduleName,
+				subModuleName: $scope.subModuleName,
+				instanceName: $scope.instanceName
+		});
+
+		$http({
+			method: "POST",
+			url: "/ajax/deleteInstance.php",
+			data: donnees,
+			headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+		})
+			.success(function(response){
+
+				angular.element($("#mainPannel")).scope().loadHome();
+				//TODO: update the list of the users
+			})
+
+			.error(function(data, status, headers, config) {
+
+				alert("error when getting the liste of the form of the user");
+			})
+		;
+	}
+
+
+
 
 }
 

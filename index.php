@@ -67,21 +67,20 @@ $config = new Configuration();
         </div> 
     </body>
 
+
 	<script type="text/ng-template" id="unic_tab_template.html">
 		<div ng-switch on="page">
 			<div ng-switch-when="home"><p>{{home}}</p></div>
 			<div ng-switch-when="form">
-				<form id="container" ng-controller="formCtrl">
+				<form id="container" ng-submit="submit()" ng-controller="formCtrl">
 					<div ng-include="'form_template.html'"></div>
 					<input type="submit" value="Save">
-					<input type="button" value="Delete">
+					<input type="button" ng-click="delete()" value="Delete">
 				</form>
 			</div>
 			<div ng-switch-default>an error accured</div>
 		</div>
 	</script>
-
-
 
 
 	<script type="text/ng-template" id="form_template.html">
@@ -122,41 +121,6 @@ $config = new Configuration();
             redefineComportements();
         });
         
-        
-        function deleteInstance(){
-            
-            var data = {
-                moduleName: activeModule,
-                subModuleName: activeSubModule,
-                instanceName: activeInstance,
-            }
-        
-            request = $.ajax({
-                url: "/ajax/deleteInstance.php",
-                type: "POST",
-                data: data
-            });
-        
-            request.done(function(response, textStatus, jqXHR){});
-        
-            request.fail(function(jqXHR, textStatus, errorThrown){alert("error when deleting the user");});
-        
-            request.always(function(){
-            
-                if(activeModule=="user"){
-                
-                    activePage = "home";
-                    activeModule = "";
-                    activeSubModule = "";
-                    activeInstance = "";
-                    refresh();
-                }else{
-                    
-                    /*changeTab(activeSubModule);	//changed (angular)*/
-                }
-                
-            });
-        }
         
         function refresh(){
 
