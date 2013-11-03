@@ -86,6 +86,7 @@ $config = new Configuration();
 					<form id="container" ng-submit="submit()" ng-controller="formCtrl">
 						<div ng-repeat="item in content" ng-include="'form_template.html'"></div>
 						<input type="submit" value="Save">
+						<input type="button" value="Delete">
 					</form>
 				<!--</div>-->
 			</div>
