@@ -29,15 +29,15 @@ if($_POST['instanceName'] == "Add new"){    //we are adding a new subModule inst
     $instance = $subModule->getInstance($_POST['instanceName']);
 }
 
-$response = "on a ".count($_POST['values'])." arguments :\n\n";
+//$response = "on a ".count($_POST['values'])." arguments :\n\n";
 
 foreach($_POST['values'] as $field){
 
-	$response .= $field['title']." = ".print_r($field['value']).",\n";
+	//$response .= $field['title']." = ".print_r($field['value']).",\n";
 	$instance->setArgument($field['title'], $field['value']);
 }
 
-echo $response;
+//echo $response;
 
 $config->writeConfigFile($config);
 
