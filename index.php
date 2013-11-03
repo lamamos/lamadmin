@@ -77,7 +77,12 @@ $config = new Configuration();
 					<input type="submit" value="Save">
 				</form>
 			</div>
-			<div ng-switch-default><div id="forms" ng-bind-html="tab.content"></div></div>
+			<div ng-switch-default>
+				<select class="instanceSelector" size="10" multiple="no" > 
+					<option ng-repeat="instance in instancesList">{{instance.name}}</option>
+					<option >Add new</option>
+				</select>
+			</div>
 		</div>
 	</script>
 

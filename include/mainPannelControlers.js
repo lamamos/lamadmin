@@ -63,6 +63,7 @@ function tabsControler($scope, $http, $sce){
 
 	$scope.tabs = [];
 	$scope.activeSubModule = "";
+	$scope.instancesList = [];
 
 	$scope.clearTabs = function(){
 
@@ -91,7 +92,32 @@ function tabsControler($scope, $http, $sce){
 
 		}else{
 
+
 			var donnees =$.param({
+				moduleName: activeModule,
+				subModuleName: tab.title,
+			});
+
+			$http({
+				method: "POST",
+				url: "/ajax/getListInstances.php",
+				data: donnees,
+				headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+			})
+				.success(function(response){
+
+					$scope.instancesList = response;
+					//tab.content = $sce.trustAsHtml(response);
+				})
+
+				.error(function(data, status, headers, config) {
+
+					alert("error when getting the liste of the list of the submodul instances");
+				})
+			;
+
+
+			/*var donnees =$.param({
 				moduleName: activeModule,
 				subModuleName: tab.title,
 			});
@@ -111,7 +137,7 @@ function tabsControler($scope, $http, $sce){
 
 					alert("error when getting the liste of the list of the submodul instances");
 				})
-			;
+			;*/
 		}
 
 	}
