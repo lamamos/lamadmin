@@ -215,7 +215,20 @@ class ArrayArg extends Argument{
         $this->type = "array";
         $this->name = $name;
         $this->subType = $subType;
-        $this->value = $value;
+
+        //$this->value = $value;
+        $this->value[0] = new StringArg("test", $value[0]);
+
+		//foreach($value as $val){
+
+			//$this->value[] = createObjectArgumentBasic($subType, ["", $val]);
+/*
+function createObjectArgumentBasic($type, $string){
+    
+    $argName = $string[0];
+    $argVal = $string[1];*/
+			
+		//}
     }
     
     
@@ -444,7 +457,8 @@ function createObjectArgumentFromString($argObject, $string){
             
             $subElement = $argVal[$i];
             
-            $stringArg[0] = $argName."[".$i."]";
+            //$stringArg[0] = $argName."[".$i."]";
+			$stringArg[0] = "";
             $stringArg[1] = $subElement;
             $subArray[] = createObjectArgumentBasic($subType, $stringArg);
         }

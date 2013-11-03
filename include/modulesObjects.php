@@ -291,6 +291,8 @@ class Instance{
 		$this->name = $name;
         $this->motherModule = $motherModule;
         $this->arguments = array();
+
+		//TODO : the second arg migth not be usefull
         if( (isset($arguments)) && ($arguments != NULL) ) $this->createArguments($arguments, $motherModule);
         $this->afterObjects = array();
 	}
