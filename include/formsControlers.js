@@ -144,6 +144,12 @@ function formCtrl($scope, $rootScope, $http){
 		$scope.currentArray.splice(itemIndex, 1);
 	}
 
+	$scope.formNotEmpty = function(){
+
+		if($scope.content.length)return true;
+		else return false;
+	}
+
 }
 
 
