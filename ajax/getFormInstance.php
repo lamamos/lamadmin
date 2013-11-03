@@ -23,7 +23,7 @@ if($_POST['instanceName'] == "Add new"){    //if we are creating a new instance
         $subModule = $module;	//This line may be useless
         $instance = $module->getInstances()[0];
         
-    }else if( (!isset($_POST['subModuleName'])) || ($_POST['subModuleName'] == "") ){  //if we are eiting a mainModule with multiple instances (user for exemple)
+    }else if( (!isset($_POST['subModuleName'])) || ($_POST['subModuleName'] == "") ){  //if we are editing a mainModule with multiple instances (user for exemple)
         
         $subModule = $module;	//This line may be useless
         $instance = $module->getInstance($_POST['instanceName']);

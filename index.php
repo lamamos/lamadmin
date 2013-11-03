@@ -78,10 +78,16 @@ $config = new Configuration();
 				</form>
 			</div>
 			<div ng-switch-default>
-				<select class="instanceSelector" size="10" multiple="no" > 
-					<option ng-repeat="instance in instancesList">{{instance.name}}</option>
-					<option >Add new</option>
+				<select class="instanceSelector" size="10" multiple="no"> 
+					<option ng-repeat="instance in instancesList" ng-click="click(instance)">{{instance.name}}</option>
+					<option>Add new</option>
 				</select>
+				<!--<div ng-if="content">-->
+					<form id="container" ng-submit="submit()" ng-controller="formCtrl">
+						<div ng-repeat="item in content" ng-include="'form_template.html'"></div>
+						<input type="submit" value="Save">
+					</form>
+				<!--</div>-->
 			</div>
 		</div>
 	</script>

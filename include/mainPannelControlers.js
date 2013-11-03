@@ -107,7 +107,6 @@ function tabsControler($scope, $http, $sce){
 				.success(function(response){
 
 					$scope.instancesList = response;
-					//tab.content = $sce.trustAsHtml(response);
 				})
 
 				.error(function(data, status, headers, config) {
@@ -115,31 +114,17 @@ function tabsControler($scope, $http, $sce){
 					alert("error when getting the liste of the list of the submodul instances");
 				})
 			;
-
-
-			/*var donnees =$.param({
-				moduleName: activeModule,
-				subModuleName: tab.title,
-			});
-
-			$http({
-				method: "POST",
-				url: "/ajax/getFormSubModule.php",
-				data: donnees,
-				headers: {'Content-Type': 'application/x-www-form-urlencoded'}
-			})
-				.success(function(response){
-
-					tab.content = $sce.trustAsHtml(response);
-				})
-
-				.error(function(data, status, headers, config) {
-
-					alert("error when getting the liste of the list of the submodul instances");
-				})
-			;*/
 		}
 
+	}
+
+
+	$scope.click = function(instance){
+
+		//TODO : this methode is awfull, need to find a way to wait for the formCtrl to be initialized
+		setTimeout(function (){
+			$scope.$broadcast('getFormEvent', ["config", $scope.activeModule, $scope.activeSubModule, instance.name]);
+		}, 10);
 	}
 }
 
