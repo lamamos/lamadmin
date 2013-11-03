@@ -8,6 +8,7 @@ abstract class Argument{
     
     abstract protected function toForm();
     abstract protected function toJson();
+	abstract protected function getEmptyTemplate();
     abstract protected function toConfigFile();
     abstract protected function toConfigFileArg();
     
@@ -39,6 +40,11 @@ class StringArg extends Argument{
 		return "{\"content_type\" : \"string\", \"title\" : \"".$this->name."\", \"value\" : \"".$this->value."\"}";
 	}
     
+	public function getEmptyTemplate(){
+
+		return "{\"content_type\" : \"string\", \"title\" : \"\", \"value\" : \"\"}";
+	}
+
     public function toConfigFile(){
         
         return "'".$this->name."' => ".$this->toConfigFileArg().",";
@@ -78,6 +84,11 @@ class AfterArg extends Argument{
 	public function toJson(){
 
 		return "{\"content_type\" : \"after\", \"title\" : \"".$this->name."\", \"value\" : \"".$this->value."\"}";
+	}
+
+	public function getEmptyTemplate(){
+
+		return "{\"content_type\" : \"after\", \"title\" : \"\", \"value\" : \"\"}";
 	}
     
     public function toConfigFile(){
@@ -119,6 +130,11 @@ class NumberArg extends Argument{
 	public function toJson(){
 
 		return "{\"content_type\" : \"number\", \"title\" : \"".$this->name."\", \"value\" : \"".$this->value."\"}";
+	}
+
+	public function getEmptyTemplate(){
+
+		return "{\"content_type\" : \"number\", \"title\" : \"\", \"value\" : \"\"}";
 	}
     
     public function toConfigFile(){
@@ -163,6 +179,11 @@ class BoolArg extends Argument{
 	public function toJson(){
 
 		return "{\"content_type\" : \"bool\", \"title\" : \"".$this->name."\", \"value\" : \"".$this->value."\"}";
+	}
+
+	public function getEmptyTemplate(){
+
+		return "{\"content_type\" : \"bool\", \"title\" : \"\", \"value\" : \"\"}";
 	}
     
     public function toConfigFile(){
@@ -215,7 +236,7 @@ class ArrayArg extends Argument{
 
 	public function toJson(){
 
-		$response = "{\"content_type\" : \"array\", \"title\" : \"".$this->name."\", \"subType\" : \"".$this->subType."\", \"stuffs\" : [";
+		$response = "{\"content_type\" : \"array\", \"title\" : \"".$this->name."\", \"subType\" : \"".$this->getEmptyTemplate()."\", \"stuffs\" : [";
 
 		if(isset($this->value)){
 
@@ -231,6 +252,15 @@ class ArrayArg extends Argument{
 		$response .= "]}";
 
 		return $response;
+	}
+
+	public function getEmptyTemplate(){
+
+		$template = $this->subType->getEmptyTemplate();
+
+		$template = str_replace ("\"", "\\\"", $template);
+
+		return $template;
 	}
     
     public function toConfigFile(){
@@ -337,6 +367,11 @@ class HashArg extends Argument{
 		return $response;
 	}
 
+	public function getEmptyTemplate(){
+
+		return "dafuk";
+	}
+
     public function toConfigFile(){
         
         //return "'".$this->name."' => ".$this->toConfigFileArg();
@@ -419,6 +454,10 @@ function createObjectArgumentFromString($argObject, $string){
     return NULL;
 }
 
+
+
+//TODO : make this function work with arrays and hash (recursively)
+//TODO : protect it from NULL putted in $string (for an empty arg object)
 function createObjectArgumentBasic($type, $string){
     
     $argName = $string[0];

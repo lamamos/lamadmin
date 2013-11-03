@@ -57,7 +57,7 @@ abstract class Module{
                     $argumentsExport[] = new BoolArg($name, NULL);
                 }elseif($type === "array"){
                     
-                    $subType = $parts[1];
+                    $subType = createObjectArgumentBasic($parts[1], [NULL, NULL]);
                     $name = $parts[2];
                     $argumentsExport[] = new ArrayArg($name, $subType, NULL);
                 }elseif($type === "hash"){

@@ -72,11 +72,8 @@ $config = new Configuration();
 	<script type="text/ng-template" id="tab_template.html">
 		<div ng-switch on="activeSubModule">
 			<div ng-switch-when="general">
-
-				<!--<div id="forms" ng-bind-html="tab.content"></div>-->
-
 				<form id="container" ng-submit="submit()" ng-controller="formCtrl">
-					<div ng-include="'form_template.html'"></div>
+					<div ng-repeat="item in content" ng-include="'form_template.html'"></div>
 					<input type="submit" value="Save">
 				</form>
 			</div>
@@ -91,7 +88,7 @@ $config = new Configuration();
 			<div ng-switch-when="home"><p>{{home}}</p></div>
 			<div ng-switch-when="form">
 				<form id="container" ng-submit="submit()" ng-controller="formCtrl">
-					<div ng-include="'form_template.html'"></div>
+					<div ng-repeat="item in content" ng-include="'form_template.html'"></div>
 					<input type="submit" value="Save">
 					<input type="button" ng-click="delete()" value="Delete">
 				</form>
@@ -102,7 +99,7 @@ $config = new Configuration();
 
 
 	<script type="text/ng-template" id="form_template.html">
-		<div ng-repeat="item in content" ng-switch on="item.content_type">
+		<div ng-switch on="item.content_type">
 			<div ng-switch-when="string">
 				{{item.title}}:<input name={{item.title}} type="text" ng-model="item.value">
 			</div>
@@ -110,10 +107,17 @@ $config = new Configuration();
 				{{item.title}}:<input name={{item.title}} type="number" ng-model="item.value">
 			</div>
 			<div ng-switch-when="array">
-				{{item.title}}:<div ng-repeat="item in item.stuffs" ng-include="'tree_item_renderer.html'"></div>
+				{{item.title}}:
+				<div ng-init="setArray(item.stuffs)">
+					<div ng-repeat="item in item.stuffs">
+						<div ng-include="'form_template.html'"></div>
+						<button ng-click="deleteItem($index)">-</button>
+					</div>
+					<button ng-click="addNewElement(item)">+</button>
+				</div>
 			</div>
 			<div ng-switch-when="hash">
-				{{item.title}}:<div ng-repeat="item in item.stuffs" ng-include="'tree_item_renderer.html'"></div>
+				{{item.title}}:<div ng-repeat="item in item.stuffs" ng-include="'form_template.html'"></div>
 			</div>
 			<div ng-switch-default>
 				default : {{item.title}}
