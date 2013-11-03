@@ -360,7 +360,13 @@ class Instance{
                     
             $this->arguments[] = new BoolArg($argumentName, $value);
         }elseif($type === "array"){
-                    
+
+			//$newArgument = clone $this->motherModule->getArgument($argumentName);
+
+			$newArgument = new ArrayArg($argumentName, NULL);
+			$newArgument->setValue($value);	//$value
+			$this->arguments[] = $newArgument;
+			
             //$this->arguments[] = new ArrayArg($argumentName, $value);
         }    
             

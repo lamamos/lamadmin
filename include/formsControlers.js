@@ -8,10 +8,10 @@ function formCtrl($scope, $rootScope, $http){
 
 		{"content_type" : "number", "title" : "test4", "value" : "5", "nickname" : "roger"},
 
-		{"content_type" : "array", "title" : "test5", "subType" : "string", "stuffs" : [
+		{"content_type" : "array", "title" : "test5", "subType" : "string", "value" : [
 
 			{"content_type" : "string", "title" : "test5-1", "value" : "kikooooo"},
-			{"content_type" : "array", "title" : "test5-2", "stuffs" : [
+			{"content_type" : "array", "title" : "test5-2", "value" : [
 
 					{"content_type" : "string", "title" : "test5-2-1", "value" : "kikooooo42"},
 					{"content_type" : "string", "title" : "test5-2-2", "value" : "kikoooo42"}
@@ -21,7 +21,7 @@ function formCtrl($scope, $rootScope, $http){
 			}
 		]},
 
-		{"content_type" : "hash", "title" : "test6", "subType" : "string", "stuffs" : {
+		{"content_type" : "hash", "title" : "test6", "subType" : "string", "value" : {
 
 				"folderName":{"content_type" : "string", "title" : "folderName6-1", "value" : "folder3"},
 				"rule":{"content_type" : "number", "title" : "rule6-2", "value" : "600", "nickname" : "roberto ki roxx"}
@@ -87,6 +87,7 @@ function formCtrl($scope, $rootScope, $http){
 		})
 			.success(function(response){
 
+				alert(response);
 				if($scope.moduleName == "user")$rootScope.$broadcast("updateUsersList", []);
 			})
 
@@ -95,8 +96,9 @@ function formCtrl($scope, $rootScope, $http){
 				alert("error when setting the form");
 			})
 		;
-
 	}
+
+
 
 	$scope.delete = function(){
 
@@ -134,7 +136,7 @@ function formCtrl($scope, $rootScope, $http){
 	$scope.addNewElement = function(item){
 
 		template = angular.fromJson(item.subType);
-		item.stuffs.push(template);
+		item.value.push(template);
 	}
 
 	$scope.deleteItem = function(itemIndex){

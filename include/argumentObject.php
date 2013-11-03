@@ -236,7 +236,7 @@ class ArrayArg extends Argument{
 
 	public function toJson(){
 
-		$response = "{\"content_type\" : \"array\", \"title\" : \"".$this->name."\", \"subType\" : \"".$this->getEmptyTemplate()."\", \"stuffs\" : [";
+		$response = "{\"content_type\" : \"array\", \"title\" : \"".$this->name."\", \"subType\" : \"".$this->getEmptyTemplate()."\", \"value\" : [";
 
 		if(isset($this->value)){
 
@@ -272,11 +272,14 @@ class ArrayArg extends Argument{
         
         $response = "[";
         
-        foreach($this->value as $element){
-         
-            $response .= $element->toConfigFileArg().", ";
-        }
-        $response = substr($response, 0, -2);   //we remove the laste space and coma
+		if(count($this->value)){	//if we have args in this array
+
+		    foreach($this->value as $element){
+		     
+		        $response .= $element->toConfigFileArg().", ";
+		    }
+		    $response = substr($response, 0, -2);   //we remove the laste space and coma
+		}
         $response .= "],";
         
         return $response;
@@ -300,11 +303,13 @@ class ArrayArg extends Argument{
     public function getValue(){return $this->value;}
     public function setValue($value){
 
-        for($i=0; $i<count($this->value); $i++){
-                
-            $val = $this->value[$i];
-            $val->setValue($value[$i]);
+		$array = [];
+        for($i=0; $i<count($value); $i++){
+
+			$array[] = createObjectArgumentBasic($value[$i]['content_type'], [$value[$i]['title'], $value[$i]['value']]);
         }
+
+		$this->value = $array;
     }
 }
 

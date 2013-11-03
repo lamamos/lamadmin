@@ -108,8 +108,8 @@ $config = new Configuration();
 			</div>
 			<div ng-switch-when="array">
 				{{item.title}}:
-				<div ng-init="setArray(item.stuffs)">
-					<div ng-repeat="item in item.stuffs">
+				<div ng-init="setArray(item.value)">
+					<div ng-repeat="item in item.value">
 						<div ng-include="'form_template.html'"></div>
 						<button ng-click="deleteItem($index)">-</button>
 					</div>
