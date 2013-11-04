@@ -135,6 +135,14 @@ $config = new Configuration();
 				<span ng-if="item.title">{{item.title}} : </span>
 				<input name={{item.title}} type="number" ng-model="item.value">
 			</div>
+			<div ng-switch-when="bool">
+				<span ng-if="item.title">{{item.title}} : </span>
+				<div class="bool-slider" style="position: relative; display: inline-block; left: 10px;" 
+					ng-class="{true : item.value, false : !item.value}"
+					ng-click="item.value = !item.value">
+						<div class="inset"><div class="control"></div></div>
+				</div>
+			</div>
 			<div ng-switch-when="array">
 				<span ng-if="item.title">{{item.title}} : </span>
 				<div style="display: inline-block;" ng-init="setArray(item.value)">
@@ -150,7 +158,7 @@ $config = new Configuration();
 				<div ng-repeat="item in item.stuffs" ng-include="'form_template.html'"></div>
 			</div>
 			<div ng-switch-default>
-				default : {{item.title}}
+				default : {{item.title}} is {{item.content_type}}.
 			</div>
 		</div>
 	</script>

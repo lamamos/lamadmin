@@ -167,7 +167,7 @@ class BoolArg extends Argument{
     
         $this->type = "bool";
         $this->name = $name;
-        $this->value = $value;
+		$this->value = $value;
     }
     
     
@@ -182,7 +182,10 @@ class BoolArg extends Argument{
 
 	public function toJson(){
 
-		return "{\"content_type\" : \"bool\", \"title\" : \"".$this->name."\", \"value\" : \"".$this->value."\"}";
+		if($this->value) $response = "{\"content_type\" : \"bool\", \"title\" : \"".$this->name."\", \"value\" : true}";
+		else $response = "{\"content_type\" : \"bool\", \"title\" : \"".$this->name."\", \"value\" : false}";
+
+		return $response;
 	}
 
 	public function getEmptyTemplate(){
@@ -204,7 +207,11 @@ class BoolArg extends Argument{
     public function getName(){return $this->name;}
     public function setName($name){$this->name = $name;}
     public function getValue(){return $this->value;}
-    public function setValue($value){$this->value = $value;}
+    public function setValue($value){
+
+		if($value === "true")$this->value = true;
+		else $this->value = false;
+	}
 }
 
 
