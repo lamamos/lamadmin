@@ -128,13 +128,15 @@ $config = new Configuration();
 	<script type="text/ng-template" id="form_template.html">
 		<div ng-switch on="item.content_type">
 			<div ng-switch-when="string">
-				{{item.title}}:<input name={{item.title}} type="text" ng-model="item.value">
+				<span ng-if="item.title">{{item.title}} : </span>
+				<input name={{item.title}} type="text" ng-model="item.value">
 			</div>
 			<div ng-switch-when="number">
-				{{item.title}}:<input name={{item.title}} type="number" ng-model="item.value">
+				<span ng-if="item.title">{{item.title}} : </span>
+				<input name={{item.title}} type="number" ng-model="item.value">
 			</div>
 			<div ng-switch-when="array">
-				{{item.title}}:
+				<span ng-if="item.title">{{item.title}} : </span>
 				<div ng-init="setArray(item.value)">
 					<div ng-repeat="item in item.value">
 						<div ng-include="'form_template.html'"></div>
@@ -144,7 +146,8 @@ $config = new Configuration();
 				</div>
 			</div>
 			<div ng-switch-when="hash">
-				{{item.title}}:<div ng-repeat="item in item.stuffs" ng-include="'form_template.html'"></div>
+				<span ng-if="item.title">{{item.title}} : </span>
+				<div ng-repeat="item in item.stuffs" ng-include="'form_template.html'"></div>
 			</div>
 			<div ng-switch-default>
 				default : {{item.title}}
