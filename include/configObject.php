@@ -4,6 +4,8 @@ include_once("createConfig.php");
 include_once("modulesObjects.php");
 include_once("argumentObject.php");
 
+require_once("FirePHPCore/FirePHP.class.php");
+
 class Configuration{
 
 	protected $availableModules;
@@ -87,6 +89,8 @@ class Configuration{
                 
                 $keyValue[] = $argument;
             }
+			//keyval is an array of array shaped like this : ['arg_Name', 'arg_value'], avec arg-value an array is needed
+
             
             //we now create the object corresponding to this instance
             //we first find the name of the instance

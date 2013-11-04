@@ -3,6 +3,22 @@
 ini_set('session.gc_maxlifetime', 3600*24*7);
 session_start();
 
+
+
+require_once("include/FirePHPCore/FirePHP.class.php");
+
+
+
+ob_start();
+
+/*$firephp = FirePHP::getInstance(true);
+ 
+$var = array('i'=>10, 'j'=>20);
+ 
+$firephp->log($var, 'Iterators');*/
+
+
+
 include_once("include/configObject.php");
 include_once("include/createConfig.php");
 

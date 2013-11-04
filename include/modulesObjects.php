@@ -1,5 +1,6 @@
 <?php
 
+require_once("FirePHPCore/FirePHP.class.php");
 include_once("argumentObject.php");
 
 
@@ -292,7 +293,7 @@ class Instance{
         $this->motherModule = $motherModule;
         $this->arguments = array();
 
-		//TODO : the second arg migth not be usefull
+		//TODO : the second arg migth not be usefull (the mothermodule)
         if( (isset($arguments)) && ($arguments != NULL) ) $this->createArguments($arguments, $motherModule);
         $this->afterObjects = array();
 	}
@@ -303,7 +304,7 @@ class Instance{
         foreach($arguments as $argument){
                 
             $argName = $argument[0];
-            $argObject = $this->motherModule->getArgument($argName);     
+            $argObject = $this->motherModule->getArgument($argName);
             $this->arguments[] = createObjectArgumentFromString($argObject, $argument);
         }
     }
