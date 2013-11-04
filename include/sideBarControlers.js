@@ -1,4 +1,4 @@
-var app = angular.module('lamadmin', ['ui.bootstrap', 'ngAnimate']);
+var app = angular.module('lamadmin', ['ui.bootstrap']);
 
 
 function sideBarCtrl($scope){

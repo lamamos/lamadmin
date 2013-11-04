@@ -21,7 +21,6 @@ $config = new Configuration();
     <link rel="stylesheet" href="include/animate.css">
     <link rel="stylesheet" href="include/on_off_button.css">
     <script type="text/javascript" src="include/jquery-2.0.3.min.js"></script>
-    <script type="text/javascript" src="include/angular-animate.min.js"></script>
     <script type="text/javascript" src="include/sideBarControlers.js"></script>
     <script type="text/javascript" src="include/mainPannelControlers.js"></script>
     <script type="text/javascript" src="include/formsControlers.js"></script>
