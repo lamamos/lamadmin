@@ -103,9 +103,9 @@ function formCtrl($scope, $rootScope, $http){
 	$scope.delete = function(){
 
 		var donnees = $.param({
-				moduleName: $scope.moduleName,
-				subModuleName: $scope.subModuleName,
-				instanceName: $scope.instanceName
+			moduleName: $scope.moduleName,
+			subModuleName: $scope.subModuleName,
+			instanceName: $scope.instanceName
 		});
 
 		$http({
