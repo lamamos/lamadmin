@@ -139,10 +139,10 @@ $config = new Configuration();
 				<span ng-if="item.title">{{item.title}} : </span>
 				<div style="display: inline-block;" ng-init="setArray(item.value)">
 					<div style="display: inline-block;" ng-repeat="item in item.value">
-						<div style="display: inline-block;"  ng-include="'form_template.html'"></div>
-						<button ng-click="deleteItem($index)">-</button>
+						<div style="display: inline-block;" ng-include="'form_template.html'"></div>
+						<input type="button" ng-click="deleteItem($index)" value="-"></input>
 					</div>
-					<button ng-click="addNewElement(item)">+</button>
+					<input type="button" ng-click="addNewElement(item)" value="+"></input>
 				</div>
 			</div>
 			<div ng-switch-when="hash">
