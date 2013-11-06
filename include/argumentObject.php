@@ -380,12 +380,12 @@ $firephp->log($this->value, 'hash');
     
 	public function toJson(){
 
-		$response = "{\"content_type\" : \"hash\", \"title\" : \"".$this->name."\", \"stuffs\" : {";
+		$response = "{\"content_type\" : \"hash\", \"title\" : \"".$this->name."\", \"value\" : {";
 
 
         foreach($this->value as $element){
             
-            $response .= "\"".$element->getName().":".$element->toForm().",";            
+            $response .= "\"".$element->getName()."\":".$element->toJson().",";            
         }
 
 		$response = substr($response, 0, -1); //remove the last useless ","

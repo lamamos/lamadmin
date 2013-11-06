@@ -156,7 +156,11 @@ $config = new Configuration();
 			</div>
 			<div ng-switch-when="hash">
 				<span ng-if="item.title">{{item.title}} : </span>
-				<div ng-repeat="item in item.stuffs" ng-include="'form_template.html'"></div>
+				<div style="display: inline-block; border: 1px #000000 solid;">
+					<div style="display: inline-block;" ng-repeat="item in item.value">
+						<div style="display: inline-block;" ng-include="'form_template.html'"></div>
+					</div>
+				</div>
 			</div>
 			<div ng-switch-default>
 				default : {{item.title}} is {{item.content_type}}.
