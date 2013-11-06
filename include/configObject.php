@@ -4,6 +4,8 @@ include_once("createConfig.php");
 include_once("modulesObjects.php");
 include_once("argumentObject.php");
 
+require_once("FirePHPCore/FirePHP.class.php");
+
 class Configuration{
 
 	protected $availableModules;
@@ -72,21 +74,24 @@ class Configuration{
             //we now gets the arguments given to this element
             preg_match_all("/\'(\s|.)*\'\s*=>\s*(\s|.)*,\n/U", $instanceString, $args);
             $args = $args[0];
-            
+
+
             unset($keyValue);
             $keyValue = array();
             foreach($args as $argument){
                 
-                $argument = explode("=>", $argument);
+                $argument = explode("=>", $argument, 2);	//we cut only at the first "=>" (the 2, is for 2 elements max returned)
                 //we get only what is between quotes
                 preg_match_all('/".*?"|\'.*?\'/', $argument[0], $matches);
                 $argument[0] = $matches[0][0];
                 $argument[0] = substr($argument[0], 1, -1);
-                
+
                 $argument[1] = readArgument($argument[1]);
                 
                 $keyValue[] = $argument;
             }
+			//keyval is an array of array shaped like this : ['arg_Name', 'arg_value'], avec arg-value an array is needed
+
             
             //we now create the object corresponding to this instance
             //we first find the name of the instance

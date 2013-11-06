@@ -15,6 +15,10 @@ body {
 #mainPannel{
     overflow: hidden;
     background-color:transparent;
+
+	padding: 15px;
+	border: 5px #585858 solid;
+    border-radius: 15px;
 }
 
 #logo{
@@ -111,14 +115,73 @@ body {
 }
 
 
+a{
+
+	/*color:#e6e6e6;*/
+	color: #000000;
+}
 
 
+a:hover, a:focus{
+
+    color:#585858;
+}
+
+input{
+
+	color: #e6e6e6;
+	border: 1px #000000 solid;
+    border-radius: 4px;
+
+	/*part taker from the jekyll site (http://jekyllrb.com/news/)*/
+	margin: 3px;
+	background: none repeat scroll 0 0 #333333;
+	box-shadow: 0 1px 10px rgba(0, 0, 0, 0.3) inset, 0 1px 0 rgba(255, 255, 255, 0.1), 0 -1px 0 rgba(0, 0, 0, 0.5);
+}
+
+.nav > li {
+
+    background-image: linear-gradient(to top, #D69600 0%, #FFB300 100%);
+    /*background-image: linear-gradient(to top, #830000 0%, #9d0000 100%);*/
+    border-radius: 4px 4px 0 0;
+}
+
+.nav-tabs {
+
+    /*border-bottom: 5px solid #830000;*/
+    border-bottom: 5px solid #D69600;
+}
+
+ng-scope.active{
 
 
+	background-color: black;
+}
 
 
+/* Links in the tabs (all of them, selected or not) */
+.nav-tabs > li > a{
 
+	color: #555555;
+	border: 0px none;
+	background-color: white;
+}
 
+/* Link selected in the tabs */
+.nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus{
+
+	color: #000000;
+	border: 0px none;
+    background-image: linear-gradient(to top, #D69600 0%, #FFB300 100%);
+}
+
+/* Links that is hovered but not selected in the tabs */
+.nav > li > a:hover, .nav > li > a:focus{
+
+	color: #c40000;
+	border: 0px none;
+    background-image: linear-gradient(to top, #D69600 0%, #FFB300 100%);
+}
 
 
 
@@ -238,6 +301,7 @@ to { transform: translateY(-100%); }
 
 
 
+
 .pt-page-moveFromBottom {
 -webkit-animation: moveFromBottom .6s ease both;
 -moz-animation: moveFromBottom .6s ease both;
@@ -253,4 +317,43 @@ from { -moz-transform: translateY(100%); }
 @keyframes moveFromBottom {
 from { transform: translateY(100%); }
 }
+
+
+
+/*
+.tab-anim.ng-enter{
+	-webkit-animation: moveFromTop 1s ease both;
+	-moz-animation: moveFromTop 1s ease both;
+	animation: moveFromTop 1s ease both;
+	animation-delay: 1s;
+}
+
+.tab-anim.ng-enter{
+  opacity:0;
+}
+
+.tab-anim.ng-enter.ng-enter-active {
+  opacity:1;
+}
+
+
+
+
+
+.tab-anim.ng-leave {
+	-webkit-animation: moveToTop 1s ease both;
+	-moz-animation: moveToTop 1s ease both;
+	animation: moveToTop 1s ease both;
+}
+
+.tab-anim.ng-leave.ng-leave-active {
+  opacity:0;
+}
+.tab-anim.ng-leave{
+  opacity:1;
+}
+*/
+
+
+
 

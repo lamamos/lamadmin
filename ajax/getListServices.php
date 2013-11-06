@@ -5,18 +5,19 @@ include_once("../include/createConfig.php");
 //TODO : don't regenerate the config, use the one witch is registred in the session variables
 $config = new Configuration();
 
-$tabs = "";
+$tabs = "[";
 foreach($config->getAvalableModules() as $module){
     if(!preg_match("/".$module->getName()."/", "user")){
 
-        $tabs .= $module->getName();
+        $tabs .= "{\"name\":\"".$module->getName()."\", \"activated\":";
         
-        if($module->isActivated()){$tabs .= ";1";}else{$tabs .= ";0";}
+        if($module->isActivated()){$tabs .= "true";}else{$tabs .= "false";}
         
-        $tabs .= ",";
+        $tabs .= "},";
     }
 }
 $tabs = substr_replace($tabs ,"",-1);
+$tabs .= "]";
 
 echo $tabs;
 

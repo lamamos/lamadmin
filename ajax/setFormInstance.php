@@ -11,7 +11,7 @@ $module = $config->getModule($_POST['moduleName']);
 
 
 //get the right subModule
-if(!isset($_POST['subModuleName'])){$subModule = $module;}
+if( (!isset($_POST['subModuleName'])) || ($_POST['subModuleName'] == "general") || ($_POST['subModuleName'] == "") ){$subModule = $module;}
 else{$subModule = $module->getSubModule($_POST['subModuleName']);}
 
 //get the right instance
@@ -20,8 +20,8 @@ if($_POST['instanceName'] == "Add new"){    //we are adding a new subModule inst
     $instance = new Instance("new_subModule", NULL, $subModule);
     $subModule->addInstance($instance);
     
-}elseif(!isset($_POST['subModuleName'])){
-    
+}elseif( $_POST['subModuleName'] == "general" ){
+
     $instance = $subModule->getInstances()[0];
     
 }else{    //if we are editing a submodul
@@ -29,15 +29,16 @@ if($_POST['instanceName'] == "Add new"){    //we are adding a new subModule inst
     $instance = $subModule->getInstance($_POST['instanceName']);
 }
 
+//$response = "on a ".count($_POST['values'])." arguments :\n\n";
 
+foreach($_POST['values'] as $field){
 
-foreach($_POST as $key => $value){
-    
-    if( ($key != 'moduleName') && ($key != 'subModuleName') && ($key != 'instanceName') ){
-        
-        $instance->setArgument($key, $value);   
-    }
+	//$response .= $field['title']." = ".print_r($field['value']).",\n";
+	$instance->setArgument($field['title'], $field['value']);
 }
+
+
+//echo $response;
 
 $config->writeConfigFile($config);
 

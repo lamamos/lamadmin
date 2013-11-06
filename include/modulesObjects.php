@@ -1,5 +1,6 @@
 <?php
 
+require_once("FirePHPCore/FirePHP.class.php");
 include_once("argumentObject.php");
 
 
@@ -57,17 +58,17 @@ abstract class Module{
                     $argumentsExport[] = new BoolArg($name, NULL);
                 }elseif($type === "array"){
                     
-                    $subType = $parts[1];
+                    $subType = createObjectArgumentBasic($parts[1], [NULL, NULL]);
                     $name = $parts[2];
                     $argumentsExport[] = new ArrayArg($name, $subType, NULL);
                 }elseif($type === "hash"){
-                    
+
                     $name = $parts[1];
                     $endHash = array_search("endhash", $parts);
                     
                     $hashDefinition = array_slice($parts, 2, $endHash-2);
                     
-                    $argumentsExport[] = new HashArg($name, $hashDefinition);
+                    $argumentsExport[] = new HashArg($name, $hashDefinition, NULL);
                 }
             }
         }
@@ -181,6 +182,19 @@ abstract class Module{
         return $form;
     }
 
+    public function toJson(){
+        
+        $response = "[";
+
+        foreach($this->arguments as $argument){
+                
+            $response .= $argument->toJson().",";
+        }
+
+		$response = substr($response, 0, -1); //remove the last useless ","
+        $response .= "]";
+		return $response;
+    }
     
 	//TODO : remove this two function, they chould be useless
 	public function getInstanceName(){return $this->instanceName;}
@@ -278,6 +292,8 @@ class Instance{
 		$this->name = $name;
         $this->motherModule = $motherModule;
         $this->arguments = array();
+
+		//TODO : the second arg migth not be usefull (the mothermodule)
         if( (isset($arguments)) && ($arguments != NULL) ) $this->createArguments($arguments, $motherModule);
         $this->afterObjects = array();
 	}
@@ -288,7 +304,7 @@ class Instance{
         foreach($arguments as $argument){
                 
             $argName = $argument[0];
-            $argObject = $this->motherModule->getArgument($argName);     
+            $argObject = $this->motherModule->getArgument($argName);
             $this->arguments[] = createObjectArgumentFromString($argObject, $argument);
         }
     }
@@ -320,7 +336,7 @@ class Instance{
     }
 	public function setArguments($arguments){$this->arguments = $arguments;}
     public function setArgument($argumentName, $value){
-        
+
         for($i=0; $i<count($this->arguments); $i++){
             
             if($this->arguments[$i]->getName() == $argumentName){
@@ -329,7 +345,7 @@ class Instance{
                 return 0;
             }
         }
-        
+
         //if we are still here it's that the argument didn't already exist, so we create it
         //first we need to find the type of this arg by checking in the motherModule
         $type = $this->motherModule->getArgType($argumentName);
@@ -347,9 +363,18 @@ class Instance{
                     
             $this->arguments[] = new BoolArg($argumentName, $value);
         }elseif($type === "array"){
-                    
-            //$this->arguments[] = new ArrayArg($argumentName, $value);
-        }    
+
+			$newArgument = new ArrayArg($argumentName, NULL);
+			$newArgument->setValue($value);	//$value
+			$this->arguments[] = $newArgument;
+        }elseif($type === "hash"){
+
+			$hashRef = $this->motherModule->getArgument($argumentName);
+
+			$newArgument = new HashArg($argumentName, $hashRef->gethashDef(), NULL);
+			$newArgument->setValue($value);
+			$this->arguments[] = $newArgument;
+        }
             
     }
     
@@ -376,6 +401,25 @@ class Instance{
         
         
         return $form;
+    }
+
+
+    public function toJson(){
+        
+        $response = "[";
+
+        foreach($this->motherModule->getArguments() as $argument){
+        
+            $instanceArg = $this->getArgumentObject($argument->getName());
+            //if the arg is not defined in this instance, we ask the module to display the form
+            if(isset($instanceArg))$response .= $instanceArg->toJson().",";
+            else $response .= $argument->toJson().",";
+        }
+
+		$response = substr($response, 0, -1); //remove the last useless ","
+        $response .= "]";
+
+		return $response;
     }
     
     public function getHasBeenWritten(){return $this->hasBeenWritten;}

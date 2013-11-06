@@ -38,7 +38,34 @@ function getListOfAvalableSubModules($moduleName){
 function readArgument($string){
     
 
-    if(preg_match('/\[.*?\]/', $string, $matches)){   //if we have an array
+	if(preg_match('/\{.*?\}/', $string, $matches)){	//if we have a hash
+
+		$fullHash = $matches[0];
+        $fullHash = substr($fullHash, 1, -1);
+
+        //TODO dont split if the "," is in a string or something else
+        $splitHash = explode(",", $fullHash);
+
+        $array = array();
+        foreach($splitHash as $element){
+
+    		$splitSubArg = explode("=>", $element);
+
+			if(isset($splitSubArg[1])){	//if we got an arg, and not an empty value
+
+				$subArgName = $splitSubArg[0];
+				$subArgValue = $splitSubArg[1];
+
+				$subArgName = readArgument($subArgName);
+				$subArgValue = readArgument($subArgValue);
+
+				$array[$subArgName] = $subArgValue;
+			}
+        }
+
+        return $array;
+
+   }elseif(preg_match('/\[.*?\]/', $string, $matches)){   //if we have an array
         
         $fullArray = $matches[0];
         $fullArray = substr($fullArray, 1, -1);
@@ -55,7 +82,7 @@ function readArgument($string){
         return $array;
         
     }else{
-        
+
         //we get the value (on the right of the => sign)
         preg_match_all('/".*?"|\'.*?\'/', $string, $matches);
         $argument = $matches[0][0];

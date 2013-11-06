@@ -1,5 +1,9 @@
 <?php
 
+require_once("FirePHPCore/FirePHP.class.php");
+
+
+
 abstract class Argument{
 
     protected $type;
@@ -7,6 +11,8 @@ abstract class Argument{
 
     
     abstract protected function toForm();
+    abstract protected function toJson();
+	abstract protected function getEmptyTemplate();
     abstract protected function toConfigFile();
     abstract protected function toConfigFileArg();
     
@@ -32,7 +38,17 @@ class StringArg extends Argument{
         
         return "<input type=\"text\" name=\"".$this->name."\" value=\"".$this->value."\">";
     }
+
+	public function toJson(){
+
+		return "{\"content_type\" : \"string\", \"title\" : \"".$this->name."\", \"value\" : \"".$this->value."\"}";
+	}
     
+	public function getEmptyTemplate(){
+
+		return "{\"content_type\" : \"string\", \"title\" : \"\", \"value\" : \"\"}";
+	}
+
     public function toConfigFile(){
         
         return "'".$this->name."' => ".$this->toConfigFileArg().",";
@@ -68,6 +84,16 @@ class AfterArg extends Argument{
         
         return "<input type=\"text\" class=\"instanceMenu\" name=\"".$this->name."\" value=\"".$this->value."\">";
     }
+
+	public function toJson(){
+
+		return "{\"content_type\" : \"after\", \"title\" : \"".$this->name."\", \"value\" : \"".$this->value."\"}";
+	}
+
+	public function getEmptyTemplate(){
+
+		return "{\"content_type\" : \"after\", \"title\" : \"\", \"value\" : \"\"}";
+	}
     
     public function toConfigFile(){
         
@@ -104,6 +130,16 @@ class NumberArg extends Argument{
         
         return "<input type=\"text\" name=\"".$this->name."\" value=\"".$this->value."\" style=\"background-color:#82ff5d;\">";
     }
+
+	public function toJson(){
+
+		return "{\"content_type\" : \"number\", \"title\" : \"".$this->name."\", \"value\" : \"".$this->value."\"}";
+	}
+
+	public function getEmptyTemplate(){
+
+		return "{\"content_type\" : \"number\", \"title\" : \"\", \"value\" : \"\"}";
+	}
     
     public function toConfigFile(){
         
@@ -131,7 +167,7 @@ class BoolArg extends Argument{
     
         $this->type = "bool";
         $this->name = $name;
-        $this->value = $value;
+		$this->value = $value;
     }
     
     
@@ -143,6 +179,19 @@ class BoolArg extends Argument{
 
         return $response;
     }
+
+	public function toJson(){
+
+		if($this->value) $response = "{\"content_type\" : \"bool\", \"title\" : \"".$this->name."\", \"value\" : true}";
+		else $response = "{\"content_type\" : \"bool\", \"title\" : \"".$this->name."\", \"value\" : false}";
+
+		return $response;
+	}
+
+	public function getEmptyTemplate(){
+
+		return "{\"content_type\" : \"bool\", \"title\" : \"\", \"value\" : \"\"}";
+	}
     
     public function toConfigFile(){
         
@@ -158,7 +207,11 @@ class BoolArg extends Argument{
     public function getName(){return $this->name;}
     public function setName($name){$this->name = $name;}
     public function getValue(){return $this->value;}
-    public function setValue($value){$this->value = $value;}
+    public function setValue($value){
+
+		if($value === "true")$this->value = true;
+		else $this->value = false;
+	}
 }
 
 
@@ -173,6 +226,7 @@ class ArrayArg extends Argument{
         $this->type = "array";
         $this->name = $name;
         $this->subType = $subType;
+
         $this->value = $value;
     }
     
@@ -191,6 +245,35 @@ class ArrayArg extends Argument{
         
         return $form;
     }
+
+	public function toJson(){
+
+		$response = "{\"content_type\" : \"array\", \"title\" : \"".$this->name."\", \"subType\" : \"".$this->getEmptyTemplate()."\", \"value\" : [";
+
+		if(isset($this->value)){
+
+		    for($i=0; $i<count($this->value); $i++){
+		        
+		        $element = $this->value[$i];
+		        $response .= $element->toJson();
+				$response .= ",";
+		    }
+			$response = substr($response, 0, -1); //remove the last useless ","
+		}
+
+		$response .= "]}";
+
+		return $response;
+	}
+
+	public function getEmptyTemplate(){
+
+		$template = $this->subType->getEmptyTemplate();
+
+		$template = str_replace ("\"", "\\\"", $template);
+
+		return $template;
+	}
     
     public function toConfigFile(){
         
@@ -201,11 +284,14 @@ class ArrayArg extends Argument{
         
         $response = "[";
         
-        foreach($this->value as $element){
-         
-            $response .= $element->toConfigFileArg().", ";
-        }
-        $response = substr($response, 0, -2);   //we remove the laste space and coma
+		if(count($this->value)){	//if we have args in this array
+
+		    foreach($this->value as $element){
+		     
+		        $response .= $element->toConfigFileArg().", ";
+		    }
+		    $response = substr($response, 0, -2);   //we remove the laste space and coma
+		}
         $response .= "],";
         
         return $response;
@@ -229,11 +315,13 @@ class ArrayArg extends Argument{
     public function getValue(){return $this->value;}
     public function setValue($value){
 
-        for($i=0; $i<count($this->value); $i++){
-                
-            $val = $this->value[$i];
-            $val->setValue($value[$i]);
+		$array = [];
+        for($i=0; $i<count($value); $i++){
+
+			$array[] = createObjectArgumentBasic($value[$i]['content_type'], [$value[$i]['title'], $value[$i]['value']]);
         }
+
+		$this->value = $array;
     }
 }
 
@@ -248,25 +336,36 @@ class HashArg extends Argument{
     
     private $hashDef;
     
-    function __construct($name, $hashDefinition){
-    
+
+    function __construct($name, $hashDefinition, $value){
+
         $this->type = "hash";
         $this->name = $name;
-        $this->createHashValue($hashDefinition);        
-        
         $this->hashDef = $hashDefinition;
+        $this->createHashValueObjects($hashDefinition, $value); 
+/*
+$firephp = FirePHP::getInstance(true);
+$firephp->log($this->value, 'hash');
+*/
     }
     
-    function createHashValue($hashDefinition){
+    function createHashValueObjects($hashDefinition, $value){
         
         for($i = 0; $i<count($hashDefinition); $i=$i+2){
             
             $type = $hashDefinition[$i];
             $name = $hashDefinition[$i+1];
-            
-            $this->value[] = createObjectArgumentBasic($type, [$name, NULL]);
+
+			if(isset($value[$name])) $this->value[$name] = $value[$name];
+            else $this->value[$name] = createObjectArgumentBasic($type, [$name, NULL]);
         }
     }
+
+	public function getArgTypeObject($name){
+
+		if(isset($this->value[$name])) return $this->value[$name];
+		else return NULL;
+	}
 
     public function toForm(){
         
@@ -280,23 +379,49 @@ class HashArg extends Argument{
         return $form;
     }
     
+	public function toJson(){
+
+		$response = "{\"content_type\" : \"hash\", \"title\" : \"".$this->name."\", \"value\" : {";
+
+
+        foreach($this->value as $element){
+            
+            $response .= "\"".$element->getName()."\":".$element->toJson().",";            
+        }
+
+		$response = substr($response, 0, -1); //remove the last useless ","
+		$response .= "}}";
+
+		return $response;
+	}
+
+	public function getEmptyTemplate(){
+
+		return "dafuk";
+	}
+
     public function toConfigFile(){
         
-        //return "'".$this->name."' => ".$this->toConfigFileArg();
+        return "'".$this->name."' => ".$this->toConfigFileArg();
     }
     
     public function toConfigFileArg(){
-        
-        /*$response = "[";
-        
-        foreach($this->value as $element){
-         
-            $response .= $element->toConfigFileArg().", ";
-        }
-        $response = substr($response, 0, -2);   //we remove the laste space and coma
-        $response .= "],";
-        
-        return $response;*/
+
+		$response = "{";
+
+		if(count($this->value)){	//if we have args in this array
+
+			foreach ($this->value as $subArgName => $subArgValue) {
+		     
+				$element = $this->value[$subArgName];
+		        $response .= "'".$subArgName."' => ".$element->toConfigFileArg().", ";
+		    }
+		    $response = substr($response, 0, -2);   //we remove the laste space and coma
+		}
+
+        $response .= "},";
+
+        return $response;
     }
     
     public function createNewElement(){
@@ -311,17 +436,26 @@ class HashArg extends Argument{
         
         //unset($this->value[$num]);
     }
+
     public function getName(){return $this->name;}
     public function setName($name){$this->name = $name;}
     public function getSubType(){return $this->subType;}
+	public function gethashDef(){return $this->hashDef;}
     public function getValue(){return $this->value;}
     public function setValue($value){
 
-        /*for($i=0; $i<count($this->value); $i++){
-                
-            $val = $this->value[$i];
-            $val->setValue($value[$i]);
-        }*/
+		$array = [];
+		foreach ($value as $subArgName => $subArgValue) {
+
+			$subArgTitle = $value[$subArgName]['title'];
+			$subArgValue = $value[$subArgName]['value'];
+
+			$subArgObject = $this->getArgTypeObject($subArgTitle);
+
+			$array[$subArgTitle] = createObjectArgumentFromString($subArgObject, [$subArgTitle, $subArgValue]);
+        }
+
+		$this->value = $array;
     }
 }
 
@@ -339,7 +473,23 @@ function createObjectArgumentFromString($argObject, $string){
     $argVal = $string[1];
     $type = $argObject->getType();
     
-    if($type === "array"){
+
+	if($type === "hash"){
+
+        $subArray = array();
+		foreach ($argVal as $subArgName => $subArgValue) {
+
+			$typeSubArg = $argObject->getArgTypeObject($subArgName);
+
+            $subArray[$subArgName] = createObjectArgumentFromString($typeSubArg, [$subArgName, $subArgValue]);
+        }
+
+		$hashDef = $argObject->gethashDef();
+        $object = new HashArg($argName, $hashDef, $subArray);
+
+        return $object;
+
+    }elseif($type === "array"){
             
         $subType = $argObject->getSubType();
         $subArray = array();
@@ -347,21 +497,28 @@ function createObjectArgumentFromString($argObject, $string){
             
             $subElement = $argVal[$i];
             
-            $stringArg[0] = $argName."[".$i."]";
+			$stringArg[0] = "";
             $stringArg[1] = $subElement;
-            $subArray[] = createObjectArgumentBasic($subType, $stringArg);
+
+			//TODO : for the recursivity, we must use the createObjectArgumentFromString (array inside an array for example)
+            $subArray[] = createObjectArgumentBasic($subType->getType(), $stringArg);
         }
         
         $object = new ArrayArg($argName, $subType, $subArray);
         return $object;
+
     }else{
-        
+
         return createObjectArgumentBasic($type, $string);        
     }
     
     return NULL;
 }
 
+
+
+//TODO : make this function work with arrays and hash (recursively)
+//TODO : protect it from NULL putted in $string (for an empty arg object)
 function createObjectArgumentBasic($type, $string){
     
     $argName = $string[0];
