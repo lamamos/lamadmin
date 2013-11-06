@@ -336,6 +336,7 @@ class HashArg extends Argument{
     
     private $hashDef;
     
+
     function __construct($name, $hashDefinition, $value){
 
         $this->type = "hash";

@@ -369,13 +369,11 @@ class Instance{
 			$this->arguments[] = $newArgument;
         }elseif($type === "hash"){
 
-			//TODO : need to create the hash !!!
-$firephp = FirePHP::getInstance(true);
-$firephp->log(true, 'Iterators');
+			$hashRef = $this->motherModule->getArgument($argumentName);
 
-			/*$newArgument = new ArrayArg($argumentName, NULL);
-			$newArgument->setValue($value);	//$value
-			$this->arguments[] = $newArgument;*/
+			$newArgument = new HashArg($argumentName, $hashRef->gethashDef(), NULL);
+			$newArgument->setValue($value);
+			$this->arguments[] = $newArgument;
         }
             
     }
