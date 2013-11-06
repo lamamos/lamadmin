@@ -401,21 +401,26 @@ $firephp->log($this->value, 'hash');
 
     public function toConfigFile(){
         
-        //return "'".$this->name."' => ".$this->toConfigFileArg();
+        return "'".$this->name."' => ".$this->toConfigFileArg();
     }
     
     public function toConfigFileArg(){
-        
-        /*$response = "[";
-        
-        foreach($this->value as $element){
-         
-            $response .= $element->toConfigFileArg().", ";
-        }
-        $response = substr($response, 0, -2);   //we remove the laste space and coma
-        $response .= "],";
-        
-        return $response;*/
+
+		$response = "{";
+
+		if(count($this->value)){	//if we have args in this array
+
+			foreach ($this->value as $subArgName => $subArgValue) {
+		     
+				$element = $this->value[$subArgName];
+		        $response .= "'".$subArgName."' => ".$element->toConfigFileArg().", ";
+		    }
+		    $response = substr($response, 0, -2);   //we remove the laste space and coma
+		}
+
+        $response .= "},";
+
+        return $response;
     }
     
     public function createNewElement(){
@@ -430,6 +435,7 @@ $firephp->log($this->value, 'hash');
         
         //unset($this->value[$num]);
     }
+
     public function getName(){return $this->name;}
     public function setName($name){$this->name = $name;}
     public function getSubType(){return $this->subType;}
@@ -437,11 +443,18 @@ $firephp->log($this->value, 'hash');
     public function getValue(){return $this->value;}
     public function setValue($value){
 
-        /*for($i=0; $i<count($this->value); $i++){
-                
-            $val = $this->value[$i];
-            $val->setValue($value[$i]);
-        }*/
+		$array = [];
+		foreach ($value as $subArgName => $subArgValue) {
+
+			$subArgTitle = $value[$subArgName]['title'];
+			$subArgValue = $value[$subArgName]['value'];
+
+			$subArgObject = $this->getArgTypeObject($subArgTitle);
+
+			$array[$subArgTitle] = createObjectArgumentFromString($subArgObject, [$subArgTitle, $subArgValue]);
+        }
+
+		$this->value = $array;
     }
 }
 

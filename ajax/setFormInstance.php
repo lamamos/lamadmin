@@ -37,6 +37,7 @@ foreach($_POST['values'] as $field){
 	$instance->setArgument($field['title'], $field['value']);
 }
 
+
 //echo $response;
 
 $config->writeConfigFile($config);

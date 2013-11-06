@@ -336,7 +336,7 @@ class Instance{
     }
 	public function setArguments($arguments){$this->arguments = $arguments;}
     public function setArgument($argumentName, $value){
-        
+
         for($i=0; $i<count($this->arguments); $i++){
             
             if($this->arguments[$i]->getName() == $argumentName){
@@ -345,7 +345,7 @@ class Instance{
                 return 0;
             }
         }
-        
+
         //if we are still here it's that the argument didn't already exist, so we create it
         //first we need to find the type of this arg by checking in the motherModule
         $type = $this->motherModule->getArgType($argumentName);
@@ -364,14 +364,19 @@ class Instance{
             $this->arguments[] = new BoolArg($argumentName, $value);
         }elseif($type === "array"){
 
-			//$newArgument = clone $this->motherModule->getArgument($argumentName);
-
 			$newArgument = new ArrayArg($argumentName, NULL);
 			$newArgument->setValue($value);	//$value
 			$this->arguments[] = $newArgument;
-			
-            //$this->arguments[] = new ArrayArg($argumentName, $value);
-        }    
+        }elseif($type === "hash"){
+
+			//TODO : need to create the hash !!!
+$firephp = FirePHP::getInstance(true);
+$firephp->log(true, 'Iterators');
+
+			/*$newArgument = new ArrayArg($argumentName, NULL);
+			$newArgument->setValue($value);	//$value
+			$this->arguments[] = $newArgument;*/
+        }
             
     }
     
