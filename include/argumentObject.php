@@ -336,25 +336,35 @@ class HashArg extends Argument{
     
     private $hashDef;
     
-    function __construct($name, $hashDefinition){
-    
+    function __construct($name, $hashDefinition, $value){
+
         $this->type = "hash";
         $this->name = $name;
-        $this->createHashValue($hashDefinition);        
-        
         $this->hashDef = $hashDefinition;
+        $this->createHashValueObjects($hashDefinition, $value); 
+/*
+$firephp = FirePHP::getInstance(true);
+$firephp->log($this->value, 'hash');
+*/
     }
     
-    function createHashValue($hashDefinition){
+    function createHashValueObjects($hashDefinition, $value){
         
         for($i = 0; $i<count($hashDefinition); $i=$i+2){
             
             $type = $hashDefinition[$i];
             $name = $hashDefinition[$i+1];
-            
-            $this->value[] = createObjectArgumentBasic($type, [$name, NULL]);
+
+			if(isset($value[$name])) $this->value[$name] = $value[$name];
+            else $this->value[$name] = createObjectArgumentBasic($type, [$name, NULL]);
         }
     }
+
+	public function getArgTypeObject($name){
+
+		if(isset($this->value[$name])) return $this->value[$name];
+		else return NULL;
+	}
 
     public function toForm(){
         
@@ -423,6 +433,7 @@ class HashArg extends Argument{
     public function getName(){return $this->name;}
     public function setName($name){$this->name = $name;}
     public function getSubType(){return $this->subType;}
+	public function gethashDef(){return $this->hashDef;}
     public function getValue(){return $this->value;}
     public function setValue($value){
 
@@ -448,7 +459,23 @@ function createObjectArgumentFromString($argObject, $string){
     $argVal = $string[1];
     $type = $argObject->getType();
     
-    if($type === "array"){
+
+	if($type === "hash"){
+
+        $subArray = array();
+		foreach ($argVal as $subArgName => $subArgValue) {
+
+			$typeSubArg = $argObject->getArgTypeObject($subArgName);
+
+            $subArray[$subArgName] = createObjectArgumentFromString($typeSubArg, [$subArgName, $subArgValue]);
+        }
+
+		$hashDef = $argObject->gethashDef();
+        $object = new HashArg($argName, $hashDef, $subArray);
+
+        return $object;
+
+    }elseif($type === "array"){
             
         $subType = $argObject->getSubType();
         $subArray = array();
@@ -459,13 +486,15 @@ function createObjectArgumentFromString($argObject, $string){
 			$stringArg[0] = "";
             $stringArg[1] = $subElement;
 
+			//TODO : for the recursivity, we must use the createObjectArgumentFromString (array inside an array for example)
             $subArray[] = createObjectArgumentBasic($subType->getType(), $stringArg);
         }
         
         $object = new ArrayArg($argName, $subType, $subArray);
         return $object;
+
     }else{
-        
+
         return createObjectArgumentBasic($type, $string);        
     }
     
