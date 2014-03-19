@@ -28,9 +28,12 @@ abstract class Module{
         
         //we get the paragraph wich is between =HEAD1 ARGUMENTS and the next =something
         preg_match_all("/=head1 ARGUMENTS(\s|.)*\n\=/U", $file, $out);
-		$arguments = split("\n", $out[0][0]);
+        if(count($out[0]) == 0) $arguments = [];
+		else $arguments = split("\n", $out[0][0]);
         array_shift($arguments);    //remode the line with =head1 ARGUMENTS
         array_pop($arguments);  //remove the line with the next = statement of the file
+
+        $argumentsExport = [];
         
         //we remove the empty arguments
         foreach($arguments as $arg){
@@ -77,7 +80,8 @@ abstract class Module{
         
         //we now search for the argument which correspond to the instance name
         preg_match_all("/=head1 INSTANCENAME(\s|.)*\n\=/U", $file, $out);
-        $linesName = split("\n", $out[0][0]);        
+        if(count($out[0]) == 0) $linesName = [];
+        else $linesName = split("\n", $out[0][0]);        
         array_shift($linesName);    
         array_pop($linesName);
 
@@ -86,12 +90,13 @@ abstract class Module{
                 $nameVarExport[] = $nameVar;
             }
         }
-        if($nameVarExport != NULL)$this->nameVarInstance = $nameVarExport[0];
+        if(isset($nameVarExport) && ($nameVarExport != NULL))$this->nameVarInstance = $nameVarExport[0];
         
         
         //we now search for the after statement. The list of module after which this module mult be defined
         preg_match_all("/=head1 AFTER(\s|.)*\n\=/U", $file, $out);
-        $afterNames = split("\n", $out[0][0]);        
+        if(count($out[0]) == 0) $afterNames = [];        
+        else $afterNames = split("\n", $out[0][0]);        
         array_shift($afterNames);    
         array_pop($afterNames);
         

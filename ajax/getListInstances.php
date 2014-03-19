@@ -17,14 +17,15 @@ if( (isset($_POST['subModuleName'])) && ($_POST['subModuleName'] != NULL) ){
 
 
 $response = "[";
+if($subject->getInstances() != NULL){
+  foreach($subject->getInstances() as $instance){
 
-foreach($subject->getInstances() as $instance){
+	  //$response .= $instance->getName().",";
+	  $response .= "{\"name\":\"".$instance->getName()."\"},";
+  }
 
-	//$response .= $instance->getName().",";
-	$response .= "{\"name\":\"".$instance->getName()."\"},";
+  $response = substr($response, 0, -1);
 }
-
-$response = substr($response, 0, -1);
 $response .= "]";
 
 echo $response;

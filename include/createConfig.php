@@ -85,10 +85,14 @@ function readArgument($string){
 
         //we get the value (on the right of the => sign)
         preg_match_all('/".*?"|\'.*?\'/', $string, $matches);
-        $argument = $matches[0][0];
-        //we remove the ' and ", first and last char of the string
-        //$argument[0] = substr($argument[0], 1, -1);
-        $argument = substr($argument, 1, -1);
+        if(count($matches[0]) == 0) $argument = [];
+        else{
+
+          $argument = $matches[0][0];
+          //we remove the ' and ", first and last char of the string
+          //$argument[0] = substr($argument[0], 1, -1);
+          $argument = substr($argument, 1, -1);
+        }
         
         return $argument;
     }

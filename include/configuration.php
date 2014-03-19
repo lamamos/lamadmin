@@ -1,3 +1,3 @@
 <?php
-    $PathToRexConfiguration = "/home/karlito/creation/tiranos/rex/";
+    $PathToRexConfiguration = "/home/karlito/Downloads/test_lamadmin/lamamos_script/lamamos/rex/";
 ?>
