@@ -161,24 +161,25 @@ class NumberArg extends Argument{
 
 class BoolArg extends Argument{
 
-    private $value;
-    
-    function __construct($name, $value){
-    
-      $this->type = "bool";
-      $this->name = $name;
-		  $this->value = $value;
-    }
-    
-    
-    public function toForm(){
-        
-        $response = "<input type=\"hidden\" name=\"".$this->name."\" value=\"0\" /> <input type=\"checkbox\" name=\"".$this->name."\" value=\"1\"";           
-        if($this->value){$response .= " checked";}
-        $response .= "/>";
+  private $value;
+  
+  function __construct($name, $value){
+  
+    $this->type = "bool";
+    $this->name = $name;
 
-        return $response;
-    }
+    $this->setValue($value);
+  }
+  
+  
+  public function toForm(){
+      
+      $response = "<input type=\"hidden\" name=\"".$this->name."\" value=\"0\" /> <input type=\"checkbox\" name=\"".$this->name."\" value=\"1\"";           
+      if($this->value){$response .= " checked";}
+      $response .= "/>";
+
+      return $response;
+  }
 
 	public function toJson(){
 
@@ -193,24 +194,27 @@ class BoolArg extends Argument{
 		return "{\"content_type\" : \"bool\", \"title\" : \"\", \"value\" : \"\"}";
 	}
     
-    public function toConfigFile(){
-        
-        return "'".$this->name."' => ".$this->toConfigFileArg().",";
-    }
+  public function toConfigFile(){
+      
+      return "'".$this->name."' => ".$this->toConfigFileArg().",";
+  }
+  
+  public function toConfigFileArg(){
+      
+      if($this->value){return "'1'";}
+      else{return "'0'";}
+  }
     
-    public function toConfigFileArg(){
-        
-        if($this->value){return "'1'";}
-        else{return "'0'";}
-    }
-    
-    public function getName(){return $this->name;}
-    public function setName($name){$this->name = $name;}
-    public function getValue(){return $this->value;}
-    public function setValue($value){
+  public function getName(){return $this->name;}
+  public function setName($name){$this->name = $name;}
+  public function getValue(){return $this->value;}
+  public function setValue($value){
 
-		if($value === "true")$this->value = true;
-		else $this->value = false;
+    if($value == 1)$this->value = true;
+    else if($value == 0)$this->value = false;
+		else if($value === "true")$this->value = true;
+		else if($value === "false") $this->value = false;
+    else $this->value = false;
 	}
 }
 
