@@ -68,6 +68,14 @@ function formCtrl($scope, $rootScope, $http){
 	});
 
 
+  $scope.clearForm = function(){
+
+    $scope.content = "";
+  }
+
+
+
+
 	$scope.submit = function(){
 
 		var donnees = $.param({
@@ -85,8 +93,11 @@ function formCtrl($scope, $rootScope, $http){
 		})
 			.success(function(response){
 
-				//alert(response);
 				if($scope.moduleName == "user")$rootScope.$broadcast("updateUsersList", []);
+        else{
+          $rootScope.$broadcast("updateCurrentTab", [$scope.subModuleName]);
+          $scope.clearForm();
+        }
 			})
 
 			.error(function(data, status, headers, config) {
@@ -114,8 +125,17 @@ function formCtrl($scope, $rootScope, $http){
 		})
 			.success(function(response){
 
-				angular.element($("#mainPannel")).scope().loadHome();
-				if($scope.moduleName == "user")$rootScope.$broadcast("updateUsersList", []);
+
+				if($scope.moduleName == "user"){
+
+				  angular.element($("#mainPannel")).scope().loadHome();
+          $rootScope.$broadcast("updateUsersList", []);
+
+        }else{
+
+          $rootScope.$broadcast("updateCurrentTab", [$scope.subModuleName]);
+          $scope.clearForm();
+        }
 			})
 
 			.error(function(data, status, headers, config) {

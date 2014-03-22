@@ -99,7 +99,7 @@ $config = new Configuration();
 			<div ng-switch-default>
 				<select class="instanceSelector" size="10" multiple="no"> 
 					<option ng-repeat="instance in instancesList" ng-click="click(instance)">{{instance.name}}</option>
-					<option>Add new</option>
+					<option ng-click="add()">Add new</option>
 				</select>
 				<div ng-controller="formCtrl">
 					<form id="container" ng-if="formNotEmpty()" ng-submit="submit()">

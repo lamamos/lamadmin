@@ -76,11 +76,15 @@ function tabsControler($scope, $http, $sce){
 	}
 
 
+	$scope.$on('updateCurrentTab', function(event, args){
+
+    $scope.changeTab();
+  });
 
 
 	$scope.changeTab = function(tab){
 
-		$scope.activeSubModule = tab.title;
+		if(tab)$scope.activeSubModule = tab.title;
 
 		if($scope.activeSubModule == "general"){
 
@@ -95,7 +99,7 @@ function tabsControler($scope, $http, $sce){
 
 			var donnees =$.param({
 				moduleName: activeModule,
-				subModuleName: tab.title,
+				subModuleName: $scope.activeSubModule,
 			});
 
 			$http({
@@ -117,6 +121,15 @@ function tabsControler($scope, $http, $sce){
 		}
 
 	}
+
+
+  $scope.add = function(){
+
+		//TODO : this methode is awfull, need to find a way to wait for the formCtrl to be initialized
+		setTimeout(function (){
+			$scope.$broadcast('getFormEvent', ["config", $scope.activeModule, $scope.activeSubModule, "Add new"]);
+		}, 10);
+  }
 
 
 	$scope.click = function(instance){
