@@ -11,12 +11,12 @@ abstract class Module{
 	//TODO : remove this variable it should be useless
 	protected $instanceName;
 	protected $instances;
-    protected $nameVarInstance; //the name of the variables which is the name of this module
+  protected $nameVarInstance; //the name of the variables which is the name of this module
 	protected $pathToConfigFolder;
 	protected $pathToConfigFile;
 	protected $arguments;
 	protected $userRelated = false;
-    protected $afterModules;
+  protected $afterModules;
 
 
 	abstract function __construct($name, $configFolder, $parentModule);
@@ -26,9 +26,9 @@ abstract class Module{
 
 		$file = file_get_contents($this->pathToConfigFile);
         
-        //we get the paragraph wich is between =HEAD1 ARGUMENTS and the next =something
-        preg_match_all("/=head1 ARGUMENTS(\s|.)*\n\=/U", $file, $out);
-        if(count($out[0]) == 0) $arguments = [];
+    //we get the paragraph wich is between =HEAD1 ARGUMENTS and the next =something
+    preg_match_all("/=head1 ARGUMENTS(\s|.)*\n\=/U", $file, $out);
+    if(count($out[0]) == 0) $arguments = [];
 		else $arguments = split("\n", $out[0][0]);
         array_shift($arguments);    //remode the line with =head1 ARGUMENTS
         array_pop($arguments);  //remove the line with the next = statement of the file
@@ -137,21 +137,21 @@ abstract class Module{
 			}
 		}        
     }
-    public function clearInstances(){$this->instances = NULL;}
+  public function clearInstances(){$this->instances = NULL;}
 	public function getName(){return $this->name;}
-    public function getArguments(){return $this->arguments;}
-    public function getArgument($name){
+  public function getArguments(){return $this->arguments;}
+  public function getArgument($name){
          
-        foreach($this->arguments as $argument){
-            
-            if($argument->getName() == $name){
-                
-                return $argument;
-            }
-        }
-        
-        return NULL;
+    foreach($this->arguments as $argument){
+
+      if($argument->getName() == $name){
+
+          return $argument;
+      }
     }
+
+    return NULL;
+  }
 
 	public function setArguments($arguments){$this->arguments = $arguments;}
     public function addArgument($argument){$this->arguments[] = $argument;}

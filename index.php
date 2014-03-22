@@ -42,23 +42,26 @@ $config = new Configuration();
     <script type="text/javascript" src="include/mainPannelControlers.js"></script>
     <script type="text/javascript" src="include/formsControlers.js"></script>
     <script type="text/javascript" src="include/ui-bootstrap-tpls-0.6.0.min.js"></script>
+
+
+
     <body>
         <div id="sideBar" class="magictime slideLeftRetourn" ng-controller="sideBarCtrl">
             <div id="logo" ng-click="displayHome()">Home</div><br>
             <div class="sectionTitle">Users : </div><br>
             <div id="listUsers" ng-controller="userListCtrl">
-				<div class="user" ng-class="getClass(user.name)" ng-repeat="user in userList" ng-click="click(user)">{{user.name}}</div>
-	    	</div>
+				      <div class="user" ng-class="getClass(user.name)" ng-repeat="user in userList" ng-click="click(user)">{{user.name}}</div>
+          	</div>
+            <div class="sectionTitle" ng-class="getClass('Add new')" id="addUser" ng-click="addUser()">Add user</div>
             <br>
-            <div class="sectionTitle" id="addUser" ng-class="getClass('Add new')" ng-click="addUser()">Add user</div>
             <br><br>
             <div class="sectionTitle">Services : </div><br>
             <div id="listServices" ng-controller="serviceListCtrl">
-				<div class="sideBarLine" id="{{module.name}}" ng-class="getClass(module.name)" ng-repeat="module in moduleList">
-					<div class="mainModule" ng-click="click(module)">{{module.name}}</div>
-					<div class="bool-slider" ng-class="{true : module.activated, false : !module.activated}" ng-click="clickBoolean(module)"><div class="inset"><div class="control"></div></div></div>
-				</div>
-			</div>
+				      <div class="sideBarLine" id="{{module.name}}" ng-class="getClass(module.name)" ng-repeat="module in moduleList">
+					      <div class="mainModule" ng-click="click(module)">{{module.name}}</div>
+					      <div class="bool-slider" ng-class="{true : module.activated, false : !module.activated}" ng-click="clickBoolean(module)"><div class="inset"><div class="control"></div></div></div>
+				      </div>
+			      </div>
             <br><br><br><br><br>
             <div class="sectionTitle test">Refresh</div>
         </div>
@@ -216,6 +219,7 @@ $config = new Configuration();
         $(".test").click(function(){
             
             //refresh();
+          //alert(userList);
         });
     </script>
 

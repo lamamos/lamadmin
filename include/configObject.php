@@ -15,14 +15,14 @@ class Configuration{
 
 	function __construct(){
 
-        global $PathToRexConfiguration;
+    global $PathToRexConfiguration;
         
 		$this->initialisation();
 
 		foreach(getListOfAvalableModules() as $module){
 
-			$configFolder = $PathToRexConfiguration."/lib/Service/".$module;
-            $this->availableModules[] = new MainModule($module, $configFolder);
+		$configFolder = $PathToRexConfiguration."/lib/Service/".$module;
+      $this->availableModules[] = new MainModule($module, $configFolder);
 		}
 
 		$this->readRexifile();

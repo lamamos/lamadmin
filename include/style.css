@@ -13,12 +13,12 @@ body {
 
 
 #mainPannel{
-    overflow: hidden;
-    background-color:transparent;
+  overflow: hidden;
+  background-color:transparent;
 
-	padding: 15px;
-	border: 5px #585858 solid;
-    border-radius: 15px;
+  padding: 15px;
+  border: 5px #585858 solid;
+  border-radius: 15px;
 }
 
 #logo{
@@ -35,8 +35,8 @@ body {
 
 #forms{
     
-    padding-top:10px;
-    padding-left:10px;
+  padding-top:10px;
+  padding-left:10px;
 }
 
 .subModuleForm{
@@ -93,6 +93,11 @@ body {
     
     float:left;
     width:100%;
+}
+
+.sideBarLine:hover{
+    
+    color:grey;
 }
 
 .mainModule{
