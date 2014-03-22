@@ -165,9 +165,9 @@ class BoolArg extends Argument{
     
     function __construct($name, $value){
     
-        $this->type = "bool";
-        $this->name = $name;
-		$this->value = $value;
+      $this->type = "bool";
+      $this->name = $name;
+		  $this->value = $value;
     }
     
     

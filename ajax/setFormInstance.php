@@ -33,8 +33,11 @@ if($_POST['instanceName'] == "Add new"){    //we are adding a new subModule inst
 
 foreach($_POST['values'] as $field){
 
-	//$response .= $field['title']." = ".print_r($field['value']).",\n";
-	$instance->setArgument($field['title'], $field['value']);
+	//$response .= $field['title']." = ".$field['value'].",\n";
+
+  if($field['value'] == "false") $instance->setArgument($field['title'], false);
+  else if($field['value'] == "true") $instance->setArgument($field['title'], true);
+	else $instance->setArgument($field['title'], $field['value']);
 }
 
 

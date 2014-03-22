@@ -78,6 +78,9 @@ function formCtrl($scope, $rootScope, $http){
 
 	$scope.submit = function(){
 
+
+    //alert(JSON.stringify($scope.content));
+
 		var donnees = $.param({
 			moduleName: $scope.moduleName,
 			subModuleName: $scope.subModuleName,
@@ -92,6 +95,8 @@ function formCtrl($scope, $rootScope, $http){
 			headers: {'Content-Type': 'application/x-www-form-urlencoded'}
 		})
 			.success(function(response){
+
+        //alert(response);
 
 				if($scope.moduleName == "user"){
 

@@ -365,7 +365,7 @@ class Instance{
                     
             $this->arguments[] = new NumberArg($argumentName, $value);
         }elseif($type === "bool"){
-                    
+
             $this->arguments[] = new BoolArg($argumentName, $value);
         }elseif($type === "array"){
 
