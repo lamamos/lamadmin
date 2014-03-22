@@ -191,8 +191,14 @@ class Configuration{
         fwrite($file, "key_auth;\n\n");
         
         fwrite($file, "group martobre => \"192.168.0.151\";\n\n");
-        
+
+        fwrite($file, "use config;\n");
+        fwrite($file, "use install;\n");
+        fwrite($file, "use init;\n");
+
         fwrite($file, "require Rex::Logger;\n");
+        fwrite($file, "require communication;\n");
+
         foreach($this->getAvalableModules() as $module){
             
             fwrite($file, "require Service::".$module->getName().";\n");
@@ -204,7 +210,7 @@ class Configuration{
         
         fwrite($file, "\ntask \"configure\", group => martobre, sub{\n\n");
         
-        
+        fwrite($file, "  initialise();\n");
         
         
         
@@ -258,6 +264,8 @@ class Configuration{
         }
         
     
+        fwrite($file, "  finalise();\n");
+
         fwrite($file, "};\n\n");
      
         fclose($file);
