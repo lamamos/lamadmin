@@ -36,9 +36,6 @@ function formCtrl($scope, $rootScope, $http){
 	$scope.subModuleName = "";
 	$scope.instanceName = "";
 
-	$scope.currentArray = "";
-
-
 	$scope.$on('getFormEvent', function(event, args){
 
 		$scope.moduleName = args[1];
@@ -129,20 +126,15 @@ function formCtrl($scope, $rootScope, $http){
 	}
 
 
-	$scope.setArray = function(array){
+	$scope.addNewElement = function(array){
 
-		$scope.currentArray = array;
+		template = angular.fromJson(array.subType);
+		array.value.push(template);
 	}
 
-	$scope.addNewElement = function(item){
+	$scope.deleteItem = function(arrayIndex, itemIndex){
 
-		template = angular.fromJson(item.subType);
-		item.value.push(template);
-	}
-
-	$scope.deleteItem = function(itemIndex){
-
-		$scope.currentArray.splice(itemIndex, 1);
+    $scope.content[arrayIndex].value.splice(itemIndex, 1);
 	}
 
 	$scope.formNotEmpty = function(){
