@@ -8,6 +8,7 @@ function mainPannelCtrl($scope, $http, $sce, $compile){
 
 	$scope.activeModule = "";
 
+
 	$scope.loadHome = function(){
 
 		$scope.needTabs = false;

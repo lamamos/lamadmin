@@ -183,7 +183,7 @@ $config = new Configuration();
         $(function() {
             
             angular.element($("#mainPannel")).scope().loadHome();
-            
+
             redefineComportements();
         });
         
