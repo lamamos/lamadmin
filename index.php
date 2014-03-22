@@ -137,7 +137,7 @@ $config = new Configuration();
 			</div>
 			<div ng-switch-when="number">
 				<span ng-if="item.title">{{item.title}} : </span>
-				<input name={{item.title}} type="number" ng-model="item.value">
+				<input name={{item.title}} type="text" ng-model="item.value">
 			</div>
 			<div ng-switch-when="bool">
 				<span ng-if="item.title">{{item.title}} : </span>

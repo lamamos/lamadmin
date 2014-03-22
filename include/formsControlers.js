@@ -56,7 +56,7 @@ function formCtrl($scope, $rootScope, $http){
 		})
 			.success(function(response){
 
-				//alert(response);
+				//alert(JSON.stringify(response));
 				$scope.content = response;
 			})
 

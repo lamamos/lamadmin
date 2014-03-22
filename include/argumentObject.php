@@ -126,10 +126,10 @@ class NumberArg extends Argument{
     }
     
     
-    public function toForm(){
-        
-        return "<input type=\"text\" name=\"".$this->name."\" value=\"".$this->value."\" style=\"background-color:#82ff5d;\">";
-    }
+  public function toForm(){
+      
+      return "<input type=\"text\" name=\"".$this->name."\" value=\"".$this->value."\" style=\"background-color:#82ff5d;\">";
+  }
 
 	public function toJson(){
 
