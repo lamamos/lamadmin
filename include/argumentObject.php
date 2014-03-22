@@ -473,80 +473,78 @@ $firephp->log($this->value, 'hash');
 
 function createObjectArgumentFromString($argObject, $string){
     
-    $argName = $string[0];
-    $argVal = $string[1];
-    $type = $argObject->getType();
-    
+  $argName = $string[0];
+  $argVal = $string[1];
+  $type = $argObject->getType();
 
-	if($type === "hash"){
 
-        $subArray = array();
-		foreach ($argVal as $subArgName => $subArgValue) {
+  if($type === "hash"){
 
-			$typeSubArg = $argObject->getArgTypeObject($subArgName);
+    $subArray = array();
+    foreach ($argVal as $subArgName => $subArgValue) {
 
-            $subArray[$subArgName] = createObjectArgumentFromString($typeSubArg, [$subArgName, $subArgValue]);
-        }
+      $typeSubArg = $argObject->getArgTypeObject($subArgName);
 
-		$hashDef = $argObject->gethashDef();
-        $object = new HashArg($argName, $hashDef, $subArray);
-
-        return $object;
-
-    }elseif($type === "array"){
-            
-        $subType = $argObject->getSubType();
-        $subArray = array();
-        for($i=0; $i<count($argVal); $i++){
-            
-            $subElement = $argVal[$i];
-            
-			$stringArg[0] = "";
-            $stringArg[1] = $subElement;
-
-			//TODO : for the recursivity, we must use the createObjectArgumentFromString (array inside an array for example)
-            $subArray[] = createObjectArgumentBasic($subType->getType(), $stringArg);
-        }
-        
-        $object = new ArrayArg($argName, $subType, $subArray);
-        return $object;
-
-    }else{
-
-        return createObjectArgumentBasic($type, $string);        
+      $subArray[$subArgName] = createObjectArgumentFromString($typeSubArg, [$subArgName, $subArgValue]);
     }
-    
-    return NULL;
+
+    $hashDef = $argObject->gethashDef();
+    $object = new HashArg($argName, $hashDef, $subArray);
+
+    return $object;
+
+  }elseif($type === "array"){
+
+    $subType = $argObject->getSubType();
+    $subArray = array();
+    for($i=0; $i<count($argVal); $i++){
+
+      $subElement = $argVal[$i];
+
+      $stringArg[0] = "";
+      $stringArg[1] = $subElement;
+
+      $subArray[] = createObjectArgumentFromString($subType, $stringArg);
+    }
+
+    $object = new ArrayArg($argName, $subType, $subArray);
+    return $object;
+
+  }else{
+
+    return createObjectArgumentBasic($type, $string);        
+  }
+
+  return NULL;
 }
 
 
 
-//TODO : make this function work with arrays and hash (recursively)
-//TODO : protect it from NULL putted in $string (for an empty arg object)
 function createObjectArgumentBasic($type, $string){
     
-    $argName = $string[0];
-    $argVal = $string[1];
-            
-    if($type === "string"){
-        
-        $object = new StringArg($argName, $argVal);
-        return $object;
-    }elseif($type === "after"){
-        
-        $object = new AfterArg($argVal);
-        return $object;
-    }elseif($type === "number"){
-            
-        $object = new NumberArg($argName, $argVal);
-        return $object;
-    }elseif($type === "bool"){
-                    
-        $object = new BoolArg($argName, $argVal);
-        return $object;
-    }
+  if($string == NULL) return NULL;
+  $argName = $string[0];
+  $argVal = $string[1];
+          
+  if($type === "string"){
+      
+    $object = new StringArg($argName, $argVal);
+    return $object;
+  }elseif($type === "after"){
     
-    return NULL;
+    $object = new AfterArg($argVal);
+    return $object;
+  }elseif($type === "number"){
+        
+    $object = new NumberArg($argName, $argVal);
+    return $object;
+  }elseif($type === "bool"){
+                
+    $object = new BoolArg($argName, $argVal);
+    return $object;
+  }
+  
+  return NULL;
 }
 
 

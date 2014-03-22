@@ -8,8 +8,6 @@ abstract class Module{
 
 	protected $name;
 
-	//TODO : remove this variable it should be useless
-	protected $instanceName;
 	protected $instances;
   protected $nameVarInstance; //the name of the variables which is the name of this module
 	protected $pathToConfigFolder;
@@ -201,10 +199,6 @@ abstract class Module{
 		return $response;
     }
     
-	//TODO : remove this two function, they chould be useless
-	public function getInstanceName(){return $this->instanceName;}
-	public function setInstanceName($name){$this->instanceName = $name;}
-    
     public function getNameVarInstance(){return $this->nameVarInstance;}
 }
 
@@ -287,32 +281,31 @@ class Instance{
 
 	private $name;
 	private $arguments;
-    private $hasBeenWritten;
-    private $afterObjects;
-    private $motherModule;
+  private $hasBeenWritten;
+  private $afterObjects;
+  private $motherModule;
 
 	function __construct($name, $arguments, $motherModule){
 
-        $this->hasBeenWritten = false;
-		$this->name = $name;
-        $this->motherModule = $motherModule;
-        $this->arguments = array();
+    $this->hasBeenWritten = false;
+    $this->name = $name;
+    $this->motherModule = $motherModule;
+    $this->arguments = array();
 
-		//TODO : the second arg migth not be usefull (the mothermodule)
-        if( (isset($arguments)) && ($arguments != NULL) ) $this->createArguments($arguments, $motherModule);
-        $this->afterObjects = array();
+    if( (isset($arguments)) && ($arguments != NULL) ) $this->createArguments($arguments);
+    $this->afterObjects = array();
 	}
     
     
-    private function createArguments($arguments){
-        
-        foreach($arguments as $argument){
-                
-            $argName = $argument[0];
-            $argObject = $this->motherModule->getArgument($argName);
-            $this->arguments[] = createObjectArgumentFromString($argObject, $argument);
-        }
+  private function createArguments($arguments){
+      
+    foreach($arguments as $argument){
+            
+      $argName = $argument[0];
+      $argObject = $this->motherModule->getArgument($argName);
+      $this->arguments[] = createObjectArgumentFromString($argObject, $argument);
     }
+  }
 
 	public function getName(){return $this->name;}
 	public function setName($name){$this->name = $name;}

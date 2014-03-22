@@ -2,7 +2,6 @@
 include_once("../include/configObject.php");
 include_once("../include/createConfig.php");
 
-//TODO : don't regenerate the config, use the one witch is registred in the session variables
 $config = new Configuration();
 
 $module = $config->getModule($_POST['moduleName']);
@@ -13,7 +12,7 @@ if($_POST['subModuleName'] == "general"){	//we need to generate the config of th
 
     if($module->isActivated()){
         
-        //TODO : we consider that a module is loaded only once, it may be false, need to check that in the config file
+        //We are considering the the Mainmodule may only be loaded instanciated once.
         $instance = $module->getInstances()[0];
         $response = $instance->toForm();
     }

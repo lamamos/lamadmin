@@ -7,8 +7,6 @@ session_start();
 
 require_once("include/FirePHPCore/FirePHP.class.php");
 
-
-
 ob_start();
 
 /*

@@ -40,37 +40,37 @@ function readArgument($string){
 
 	if(preg_match('/\{.*?\}/', $string, $matches)){	//if we have a hash
 
-		$fullHash = $matches[0];
-        $fullHash = substr($fullHash, 1, -1);
+    $fullHash = $matches[0];
+    $fullHash = substr($fullHash, 1, -1);
 
-        //TODO dont split if the "," is in a string or something else
-        $splitHash = explode(",", $fullHash);
+    //TODO dont split if the "," is in a string or something else. Or a hash of hashes
+    $splitHash = explode(",", $fullHash);
 
-        $array = array();
-        foreach($splitHash as $element){
+    $array = array();
+    foreach($splitHash as $element){
 
-    		$splitSubArg = explode("=>", $element);
+      $splitSubArg = explode("=>", $element);
 
-			if(isset($splitSubArg[1])){	//if we got an arg, and not an empty value
+      if(isset($splitSubArg[1])){	//if we got an arg, and not an empty value
 
-				$subArgName = $splitSubArg[0];
-				$subArgValue = $splitSubArg[1];
+        $subArgName = $splitSubArg[0];
+        $subArgValue = $splitSubArg[1];
 
-				$subArgName = readArgument($subArgName);
-				$subArgValue = readArgument($subArgValue);
+        $subArgName = readArgument($subArgName);
+        $subArgValue = readArgument($subArgValue);
 
-				$array[$subArgName] = $subArgValue;
-			}
-        }
+        $array[$subArgName] = $subArgValue;
+      }
+    }
 
-        return $array;
+    return $array;
 
    }elseif(preg_match('/\[.*?\]/', $string, $matches)){   //if we have an array
         
         $fullArray = $matches[0];
         $fullArray = substr($fullArray, 1, -1);
         
-        //TODO dont split if the "," is in a string or something else
+        //TODO dont split if the "," is in a string or something else. Or an array of arrays.
         $splitArray = explode(",", $fullArray);
         
         $array = array();
