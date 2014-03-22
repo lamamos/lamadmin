@@ -93,7 +93,12 @@ function formCtrl($scope, $rootScope, $http){
 		})
 			.success(function(response){
 
-				if($scope.moduleName == "user")$rootScope.$broadcast("updateUsersList", []);
+				if($scope.moduleName == "user"){
+
+          $rootScope.$broadcast("updateUsersList", []);
+          angular.element($("#sideBar")).scope().selectedLine = "";
+				  angular.element($("#mainPannel")).scope().loadHome();
+        }
         else{
           $rootScope.$broadcast("updateCurrentTab", [$scope.subModuleName]);
           $scope.clearForm();
