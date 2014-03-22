@@ -195,9 +195,11 @@ class Configuration{
         fwrite($file, "use config;\n");
         fwrite($file, "use install;\n");
         fwrite($file, "use init;\n");
+        fwrite($file, "\n");
 
         fwrite($file, "require Rex::Logger;\n");
         fwrite($file, "require communication;\n");
+        fwrite($file, "\n");
 
         foreach($this->getAvalableModules() as $module){
             
@@ -210,7 +212,7 @@ class Configuration{
         
         fwrite($file, "\ntask \"configure\", group => martobre, sub{\n\n");
         
-        fwrite($file, "  initialise();\n");
+        fwrite($file, "  initialise();\n\n");
         
         
         
