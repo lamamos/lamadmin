@@ -44,6 +44,12 @@ body {
     width:100%;
 }
 
+.instanceFormDiv{
+
+  float:left;
+  margin-left:10px;
+}
+
 .instanceForm{
     overflow: hidden;
     padding-left:5px;

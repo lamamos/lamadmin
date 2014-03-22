@@ -101,7 +101,7 @@ $config = new Configuration();
 					<option ng-repeat="instance in instancesList" ng-click="click(instance)">{{instance.name}}</option>
 					<option ng-click="add()">Add new</option>
 				</select>
-				<div ng-controller="formCtrl">
+				<div class="instanceFormDiv" ng-controller="formCtrl">
 					<form id="container" ng-if="formNotEmpty()" ng-submit="submit()">
 						<div ng-repeat="item in content" ng-include="'form_template.html'"></div>
 						<input type="submit" value="Save">
