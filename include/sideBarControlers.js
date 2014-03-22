@@ -4,10 +4,11 @@ var app = angular.module('lamadmin', ['ui.bootstrap']);
 function sideBarCtrl($scope){
 
 	$scope.selectedLine = "";
+	$scope.selectedType = "";
 
-	$scope.getClass = function(name){
+	$scope.getClass = function(type, name){
 
-		if($scope.selectedLine == name)return "moduleSelected";
+		if( ($scope.selectedLine == name) && ($scope.selectedType == type) )return "moduleSelected";
 		else return "";
 	}
 
@@ -25,6 +26,7 @@ function sideBarCtrl($scope){
 		activeInstance = "Add new";
 
 		$scope.selectedLine = "Add new";
+  	$scope.selectedType = "User";
 
 		angular.element($("#mainPannel")).scope().loadUser("Add new");
 	}
@@ -68,6 +70,7 @@ function userListCtrl($scope, $http){
 		activeInstance = user.name;
 
 		$scope.$parent.selectedLine = user.name;
+		$scope.$parent.selectedType = "User";
 
 		angular.element($("#mainPannel")).scope().loadUser(user.name);
     }
@@ -133,7 +136,8 @@ function serviceListCtrl($scope, $http) {
 		if( (activeModule == module.name) && (module.activated == false) ){
 
 			$scope.$parent.selectedLine = "";
-        	angular.element($("#mainPannel")).scope().loadHome();
+		  $scope.$parent.selectedType = "";
+    	angular.element($("#mainPannel")).scope().loadHome();
 		}
 
 	}
@@ -149,6 +153,7 @@ function serviceListCtrl($scope, $http) {
 		activeInstance = "";
 
 		$scope.$parent.selectedLine = module.name;
+		$scope.$parent.selectedType = "Service";
 
 		angular.element($("#mainPannel")).scope().loadModul(module.name);
     }

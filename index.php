@@ -50,14 +50,14 @@ $config = new Configuration();
             <div id="logo" ng-click="displayHome()">Home</div><br>
             <div class="sectionTitle">Users : </div><br>
             <div id="listUsers" ng-controller="userListCtrl">
-				      <div class="user" ng-class="getClass(user.name)" ng-repeat="user in userList" ng-click="click(user)">{{user.name}}</div>
+				      <div class="user" ng-class="getClass('User', user.name)" ng-repeat="user in userList" ng-click="click(user)">{{user.name}}</div>
           	</div>
             <div class="sectionTitle" ng-class="getClass('Add new')" id="addUser" ng-click="addUser()">Add user</div>
             <br>
             <br><br>
             <div class="sectionTitle">Services : </div><br>
             <div id="listServices" ng-controller="serviceListCtrl">
-				      <div class="sideBarLine" id="{{module.name}}" ng-class="getClass(module.name)" ng-repeat="module in moduleList">
+				      <div class="sideBarLine" id="{{module.name}}" ng-class="getClass('Service', module.name)" ng-repeat="module in moduleList">
 					      <div class="mainModule" ng-click="click(module)">{{module.name}}</div>
 					      <div class="bool-slider" ng-class="{true : module.activated, false : !module.activated}" ng-click="clickBoolean(module)"><div class="inset"><div class="control"></div></div></div>
 				      </div>
