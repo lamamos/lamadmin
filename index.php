@@ -53,8 +53,8 @@ $config = new Configuration();
             <br><br>
             <div class="sectionTitle">Services : </div><br>
             <div id="listServices" ng-controller="serviceListCtrl">
-				      <div class="sideBarLine" id="{{module.name}}" ng-class="getClass('Service', module.name)" ng-repeat="module in moduleList">
-					      <div class="mainModule" ng-click="click(module)">{{module.name}}</div>
+				      <div class="sideBarLine" id="{{module.name}}" ng-click="click(module)" ng-class="getClass('Service', module.name)" ng-repeat="module in moduleList">
+					      <div class="mainModule">{{module.name}}</div>
 					      <div class="bool-slider" ng-class="{true : module.activated, false : !module.activated}" ng-click="clickBoolean(module)"><div class="inset"><div class="control"></div></div></div>
 				      </div>
 			      </div>

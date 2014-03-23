@@ -90,6 +90,11 @@ body {
     padding-left:8px;
 }
 
+.user:hover{
+
+    color:grey;
+}
+
 .moduleSelected{
         
     background-image: -ms-linear-gradient(bottom, #D69600 0%, #FFB300 100%);
