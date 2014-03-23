@@ -45,7 +45,7 @@ $config = new Configuration();
 
     <body>
         <div id="sideBar" class="magictime slideLeftRetourn" ng-controller="sideBarCtrl">
-            <div id="logo" ng-click="displayHome()">Home</div><br>
+            <div><img id="logo" ng-click="displayHome()" src="include/images/logo3_empty.png"></div><br>
             <div class="sectionTitle">Users : </div><br>
             <div id="listUsers" ng-controller="userListCtrl">
 				      <div class="user" ng-class="getClass('User', user.name)" ng-repeat="user in userList" ng-click="click(user)">{{user.name}}</div>

@@ -23,9 +23,12 @@ body {
 
 #logo{
     
-    font-weight:bold;
-    color:white;
-    font-size:25;
+  font-weight:bold;
+  color:white;
+  font-size:25;
+  width:100px;
+  margin-left:10px;
+  margin-top:10px;
 }
 
 #tabs{
