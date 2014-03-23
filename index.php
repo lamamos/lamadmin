@@ -89,7 +89,7 @@ $config = new Configuration();
 	<script type="text/ng-template" id="tab_template.html">
 		<div ng-switch on="activeSubModule">
 			<div ng-switch-when="general">
-				<form id="container" ng-submit="submit()" ng-controller="formCtrl">
+				<form id="container" ng-if="formNotEmpty()" ng-submit="submit()" ng-controller="formCtrl">
 					<div ng-repeat="item in content" ng-include="'form_template.html'"></div>
 					<input type="submit" value="Save">
 				</form>
@@ -164,7 +164,6 @@ $config = new Configuration();
 				</div>
 			</div>
 			<div ng-switch-default>
-				default : {{item.title}} is {{item.content_type}}.
 			</div>
 		</div>
 	</script>
