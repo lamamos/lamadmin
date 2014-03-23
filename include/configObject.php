@@ -79,7 +79,7 @@ class Configuration{
             unset($keyValue);
             $keyValue = array();
             foreach($args as $argument){
-                
+
                 $argument = explode("=>", $argument, 2);	//we cut only at the first "=>" (the 2, is for 2 elements max returned)
                 //we get only what is between quotes
                 preg_match_all('/".*?"|\'.*?\'/', $argument[0], $matches);

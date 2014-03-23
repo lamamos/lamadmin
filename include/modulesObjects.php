@@ -28,7 +28,7 @@ abstract class Module{
     preg_match_all("/=head1 ARGUMENTS(\s|.)*\n\=/U", $file, $out);
     if(count($out[0]) == 0) $arguments = [];
 		else $arguments = split("\n", $out[0][0]);
-        array_shift($arguments);    //remode the line with =head1 ARGUMENTS
+        array_shift($arguments);    //remove the line with =head1 ARGUMENTS
         array_pop($arguments);  //remove the line with the next = statement of the file
 
         $argumentsExport = [];
@@ -74,7 +74,6 @@ abstract class Module{
             }
         }
         $this->arguments = $argumentsExport;
-        
         
         //we now search for the argument which correspond to the instance name
         preg_match_all("/=head1 INSTANCENAME(\s|.)*\n\=/U", $file, $out);
@@ -292,7 +291,12 @@ class Instance{
     $this->motherModule = $motherModule;
     $this->arguments = array();
 
-    if( (isset($arguments)) && ($arguments != NULL) ) $this->createArguments($arguments);
+
+    if( (isset($arguments)) && ($arguments != NULL) ){
+
+      $this->createArguments($arguments);
+    }
+
     $this->afterObjects = array();
 	}
     
