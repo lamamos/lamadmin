@@ -6,10 +6,17 @@ body {
 
 
 #sideBar{
-    float: left;
-    width: 20%;
-    height: 100%;
+  float: left;
+  width: 20%;
+  height: 100%;
+	overflow: auto;
 }
+
+/* Force the scroll bar to the left hand side of the screen */
+/*.jspVerticalBar
+{
+	left: 0;
+}*/
 
 
 #mainPannel{
@@ -155,8 +162,7 @@ input{
 
 .nav > li {
 
-    background-image: linear-gradient(to top, #D69600 0%, #FFB300 100%);
-    /*background-image: linear-gradient(to top, #830000 0%, #9d0000 100%);*/
+    /*background-image: linear-gradient(to top, #D69600 0%, #FFB300 100%);*/
     border-radius: 4px 4px 0 0;
 }
 
@@ -168,7 +174,6 @@ input{
 
 ng-scope.active{
 
-
 	background-color: black;
 }
 
@@ -178,7 +183,8 @@ ng-scope.active{
 
 	color: #555555;
 	border: 0px none;
-	background-color: white;
+	/*background-color: white;*/
+  background-image: linear-gradient(to top, #D69600 0%, #523a00 100%);
 }
 
 /* Link selected in the tabs */
@@ -186,7 +192,7 @@ ng-scope.active{
 
 	color: #000000;
 	border: 0px none;
-    background-image: linear-gradient(to top, #D69600 0%, #FFB300 100%);
+  background-image: linear-gradient(to top, #D69600 0%, #FFB300 100%);
 }
 
 /* Links that is hovered but not selected in the tabs */
@@ -194,7 +200,7 @@ ng-scope.active{
 
 	color: #c40000;
 	border: 0px none;
-    background-image: linear-gradient(to top, #D69600 0%, #FFB300 100%);
+  background-image: linear-gradient(to top, #D69600 0%, #FFB300 100%);
 }
 
 

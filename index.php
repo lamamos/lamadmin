@@ -41,8 +41,6 @@ $config = new Configuration();
     <script type="text/javascript" src="include/formsControlers.js"></script>
     <script type="text/javascript" src="include/ui-bootstrap-tpls-0.6.0.min.js"></script>
 
-
-
     <body>
         <div id="sideBar" class="magictime slideLeftRetourn" ng-controller="sideBarCtrl">
             <div><img id="logo" ng-click="displayHome()" src="include/images/logo3_empty.png"></div><br>
