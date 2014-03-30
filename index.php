@@ -46,6 +46,11 @@ $config = new Configuration();
     <body>
         <div id="sideBar" class="magictime slideLeftRetourn" ng-controller="sideBarCtrl">
             <div><img id="logo" ng-click="displayHome()" src="include/images/logo3_empty.png"></div><br>
+            <div>
+              {{'CHOOSE_LANGUAGE' | translate}}
+              <img src="include/images/flags/GB.png" ng-click="changeLanguage('en')"/>
+              <img src="include/images/flags/FR.png" ng-click="changeLanguage('fr')"/>
+            </div>
             <div class="sectionTitle">{{'USERS' | translate}}</div><br>
             <div id="listUsers" ng-controller="userListCtrl">
 				      <div class="user" ng-class="getClass('User', user.name)" ng-repeat="user in userList" ng-click="click(user)">{{user.name}}</div>
