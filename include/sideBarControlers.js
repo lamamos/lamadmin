@@ -1,4 +1,4 @@
-var app = angular.module('lamadmin', ['ui.bootstrap']);
+var app = angular.module('lamadmin', ['ui.bootstrap', 'pascalprecht.translate']);
 
 
 function sideBarCtrl($scope){
