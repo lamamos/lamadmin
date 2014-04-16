@@ -6,38 +6,37 @@ require_once("FirePHPCore/FirePHP.class.php");
 
 abstract class Argument{
 
-    protected $type;
-    protected $name;
+  protected $type;
+  protected $name;
 
-    
-    abstract protected function toForm();
-    abstract protected function toJson();
-	abstract protected function getEmptyTemplate();
-    abstract protected function toConfigFile();
-    abstract protected function toConfigFileArg();
-    
-    public function getType(){return $this->type;}
-    public function getName(){return $this->name;}
+
+  abstract protected function toForm();
+  abstract protected function toJson();
+  abstract protected function getEmptyTemplate();
+  abstract protected function toConfigFile();
+  abstract protected function toConfigFileArg();
+
+  public function getType(){return $this->type;}
+  public function getName(){return $this->name;}
 }
 
 
 
 class StringArg extends Argument{
 
-    private $value;
-    
-    function __construct($name, $value){
-    
-        $this->type = "string";
-        $this->name = $name;
-        $this->value = $value;
-    }
-    
-    
-    public function toForm(){
-        
-        return "<input type=\"text\" name=\"".$this->name."\" value=\"".$this->value."\">";
-    }
+  private $value;
+  
+  function __construct($name, $value){
+  
+    $this->type = "string";
+    $this->name = $name;
+    $this->value = $value;
+  }
+  
+  public function toForm(){
+      
+    return "<input type=\"text\" name=\"".$this->name."\" value=\"".$this->value."\"/>";
+  }
 
 	public function toJson(){
 
@@ -49,20 +48,20 @@ class StringArg extends Argument{
 		return "{\"content_type\" : \"string\", \"title\" : \"\", \"value\" : \"\"}";
 	}
 
-    public function toConfigFile(){
-        
-        return "'".$this->name."' => ".$this->toConfigFileArg().",";
-    }
-    
-    public function toConfigFileArg(){
-        
-        return "'".$this->value."'";
-    }
-    
-    public function getName(){return $this->name;}
-    public function setName($name){$this->name = $name;}
-    public function getValue(){return $this->value;}
-    public function setValue($value){$this->value = $value;}
+  public function toConfigFile(){
+      
+    return "'".$this->name."' => ".$this->toConfigFileArg().",";
+  }
+  
+  public function toConfigFileArg(){
+      
+    return "'".$this->value."'";
+  }
+  
+  public function getName(){return $this->name;}
+  public function setName($name){$this->name = $name;}
+  public function getValue(){return $this->value;}
+  public function setValue($value){$this->value = $value;}
 }
 
 
@@ -70,46 +69,45 @@ class StringArg extends Argument{
 
 class AfterArg extends Argument{
 
-    private $value;
-    
-    function __construct($value){
-    
-        $this->type = "after";
-        $this->name = "after";
-        $this->value = $value;
-    }
-    
-    
-    public function toForm(){
-        
-        return "<input type=\"text\" class=\"instanceMenu\" name=\"".$this->name."\" value=\"".$this->value."\">";
-    }
+  private $value;
+  
+  function __construct($value){
+  
+    $this->type = "after";
+    $this->name = "after";
+    $this->value = $value;
+  }
+  
+  
+  public function toForm(){
+      
+    return "<input type=\"text\" class=\"instanceMenu\" name=\"".$this->name."\" value=\"".$this->value."\">";
+  }
 
-	public function toJson(){
+  public function toJson(){
 
-		return "{\"content_type\" : \"after\", \"title\" : \"".$this->name."\", \"value\" : \"".$this->value."\"}";
-	}
+    return "{\"content_type\" : \"after\", \"title\" : \"".$this->name."\", \"value\" : \"".$this->value."\"}";
+  }
 
 	public function getEmptyTemplate(){
 
 		return "{\"content_type\" : \"after\", \"title\" : \"\", \"value\" : \"\"}";
 	}
     
-    public function toConfigFile(){
-        
-        
-        return "'".$this->name."' => ".$this->toConfigFileArg().",";
-    }
-    
-    public function toConfigFileArg(){
-        
-        return "'".$this->value."'";
-    }
-    
-    public function getName(){return $this->name;}
-    public function setName($name){$this->name = $name;}
-    public function getValue(){return $this->value;}
-    public function setValue($value){$this->value = $value;}
+  public function toConfigFile(){
+
+    return "'".$this->name."' => ".$this->toConfigFileArg().",";
+  }
+
+  public function toConfigFileArg(){
+
+    return "'".$this->value."'";
+  }
+
+  public function getName(){return $this->name;}
+  public function setName($name){$this->name = $name;}
+  public function getValue(){return $this->value;}
+  public function setValue($value){$this->value = $value;}
 }
 
 
