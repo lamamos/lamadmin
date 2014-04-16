@@ -1,4 +1,4 @@
 tiradmin
 ========
 
-An administration panel for rex
+An administration panel for rex.
