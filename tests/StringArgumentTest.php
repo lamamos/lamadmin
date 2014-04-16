@@ -71,27 +71,61 @@ class StringArgumentTest extends PHPUnit_Framework_TestCase
     $this->assertStringMatchesFormat($expected, $actual);
   }
 
+  /**
+   * @dataProvider provider
+   */
+  public function testGetName($name, $value){
 
-/*
+    $stringArgument = new StringArg($name, $value);
 
-  public function toConfigFile(){
-      
-    return "'".$this->name."' => ".$this->toConfigFileArg().",";
+    $expected = $name;
+    $actual = $stringArgument->getName();
+
+    $this->assertEquals($expected, $actual);
   }
-  
-  public function toConfigFileArg(){
-      
-    return "'".$this->value."'";
+
+  /**
+   * @dataProvider provider
+   * @depends testGetName
+   */
+  public function testSetName($name, $value){
+
+    $stringArgument = new StringArg("test", $value);
+    $stringArgument->setName($name);
+
+    $expected = $name;
+    $actual = $stringArgument->getName();
+
+    $this->assertEquals($expected, $actual);
   }
-  
-  public function getName(){return $this->name;}
-  public function setName($name){$this->name = $name;}
-  public function getValue(){return $this->value;}
-  public function setValue($value){$this->value = $value;}
 
-*/
+  /**
+   * @dataProvider provider
+   */
+  public function testGetValue($name, $value){
 
+    $stringArgument = new StringArg($name, $value);
 
+    $expected = $value;
+    $actual = $stringArgument->getValue();
+
+    $this->assertEquals($expected, $actual);
+  }
+
+  /**
+   * @dataProvider provider
+   * @depends testGetValue
+   */
+  public function testSetValue($name, $value){
+
+    $stringArgument = new StringArg($name, "test");
+    $stringArgument->setValue($value);
+
+    $expected = $value;
+    $actual = $stringArgument->getValue();
+
+    $this->assertEquals($expected, $actual);
+  }
 
 }
 
