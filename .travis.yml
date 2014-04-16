@@ -8,3 +8,4 @@ before_script: "/home/travis/.phpenv/versions/5.5.9/bin/composer.phar self-updat
 script:
   - "cd include"
   - "phpunit ../tests/StringArgumentTest.php"
+  - "phpunit ../tests/NumberArgumentTest.php"
