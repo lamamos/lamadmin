@@ -126,7 +126,7 @@ class NumberArg extends Argument{
     
   public function toForm(){
       
-      return "<input type=\"text\" name=\"".$this->name."\" value=\"".$this->value."\" style=\"background-color:#82ff5d;\">";
+      return "<input type=\"text\" name=\"".$this->name."\" value=\"".$this->value."\" style=\"background-color:#82ff5d;\"/>";
   }
 
 	public function toJson(){
@@ -171,12 +171,12 @@ class BoolArg extends Argument{
   
   
   public function toForm(){
-      
-      $response = "<input type=\"hidden\" name=\"".$this->name."\" value=\"0\" /> <input type=\"checkbox\" name=\"".$this->name."\" value=\"1\"";           
-      if($this->value){$response .= " checked";}
-      $response .= "/>";
+    
+    $response = "<input type=\"hidden\" name=\"".$this->name."\" value=\"0\" /> <input type=\"checkbox\" name=\"".$this->name."\" value=\"1\"";           
+    if($this->value){$response .= " checked";}
+    $response .= "/>";
 
-      return $response;
+    return $response;
   }
 
 	public function toJson(){
@@ -208,11 +208,18 @@ class BoolArg extends Argument{
   public function getValue(){return $this->value;}
   public function setValue($value){
 
-    if($value == 1)$this->value = true;
-    else if($value == 0)$this->value = false;
-		else if($value === "true")$this->value = true;
-		else if($value === "false") $this->value = false;
-    else $this->value = false;
+    if(is_string($value)){
+
+      if($value === "false")$this->value = false;
+      else $this->value = true;
+    }else if(is_numeric($value)){
+
+      if($value == 0)$this->value = false;
+      else $this->value = true;
+    }else{
+
+      $this->value = false;
+    }
 	}
 }
 
