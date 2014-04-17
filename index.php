@@ -1,3 +1,22 @@
+<!--
+ Copyright (C) 2013-2014 Clément Roblot
+
+This file is part of lamadmin.
+
+Lamadmin is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+Lamadmin is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with Lamadmin.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
 <?php
 //set the garbage coloctor timeout for our session
 ini_set('session.gc_maxlifetime', 3600*24*7);
@@ -45,6 +64,7 @@ $config = new Configuration();
 
     <body>
         <div id="sideBar" class="magictime slideLeftRetourn" ng-controller="sideBarCtrl">
+          <div style="direction:ltr;"> <!-- Just a trick to get the scroll bar on the left -->
             <div><img id="logo" ng-click="displayHome()" src="include/images/logo3_empty.png"></div><br>
             <div>
               {{'CHOOSE_LANGUAGE' | translate}}
@@ -66,9 +86,10 @@ $config = new Configuration();
 				      </div>
 			      </div>
             <br><br><br><br><br>
-            <div class="sectionTitle test">{{'REFRESH' | translate}}</div>
+            <div class="sectionTitle test">Refresh</div>
+          </div>
         </div>
-    
+
         <div id="mainPannel" class="magictime slideUpRetourn" ng-controller="mainPannelCtrl">
 
 		<div ng-controller="tabsControler">
