@@ -10,6 +10,7 @@ body {
   width: 20%;
   height: 100%;
 	overflow: auto;
+  direction: rtl; //to get the scroll bar on the left
 }
 
 /* Force the scroll bar to the left hand side of the screen */

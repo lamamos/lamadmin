@@ -45,6 +45,7 @@ $config = new Configuration();
 
     <body>
         <div id="sideBar" class="magictime slideLeftRetourn" ng-controller="sideBarCtrl">
+          <div style="direction:ltr;"> <!-- Just a trick to get the scroll bar on the left -->
             <div><img id="logo" ng-click="displayHome()" src="include/images/logo3_empty.png"></div><br>
             <div>
               {{'CHOOSE_LANGUAGE' | translate}}
@@ -66,9 +67,10 @@ $config = new Configuration();
 				      </div>
 			      </div>
             <br><br><br><br><br>
-            <div class="sectionTitle test">{{'REFRESH' | translate}}</div>
+            <div class="sectionTitle test">Refresh</div>
+          </div>
         </div>
-    
+
         <div id="mainPannel" class="magictime slideUpRetourn" ng-controller="mainPannelCtrl">
 
 		<div ng-controller="tabsControler">
