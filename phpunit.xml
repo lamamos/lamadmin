@@ -5,6 +5,7 @@
       <file>tests/NumberArgumentTest.php</file>
       <file>tests/BooleanArgumentTest.php</file>
       <file>tests/AfterArgumentTest.php</file>
+      <file>tests/ArrayArgumentTest.php</file>
     </testsuite>
   </testsuites>
 </phpunit>
