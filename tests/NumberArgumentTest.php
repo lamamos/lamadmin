@@ -1,4 +1,5 @@
-<!--
+<?php
+/*
  Copyright (C) 2013-2014 Clément Roblot
 
 This file is part of lamadmin.
@@ -15,9 +16,8 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with Lamadmin.  If not, see <http://www.gnu.org/licenses/>.
--->
+*/
 
-<?php
 
 //test file for phpunit
 //to launch in the include folder with the command : phpunit ../tests/NumberArgumentTest.php
