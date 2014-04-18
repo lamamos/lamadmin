@@ -1,0 +1,10 @@
+<phpunit>
+  <testsuites>
+    <testsuite name="Objects_Arguments">
+      <file>tests/StringArgumentTest.php</file>
+      <file>tests/NumberArgumentTest.php</file>
+      <file>tests/BooleanArgumentTest.php</file>
+      <file>tests/AfterArgumentTest.php</file>
+    </testsuite>
+  </testsuites>
+</phpunit>
