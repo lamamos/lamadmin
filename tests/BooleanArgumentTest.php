@@ -19,11 +19,7 @@ along with Lamadmin.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 //test file for phpunit
-<<<<<<< HEAD
 //to launch at the root of the repo with the command : phpunit tests/BooleanArgumentTest.php
-=======
-//to launch in the include folder with the command : phpunit ../tests/BooleanArgumentTest.php
->>>>>>> 57cbd464f1da482b1cc9f2399670e334d28c982e
 //need to have the package php5-json installed to work
 
 require_once("include/argumentObject.php");
