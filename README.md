@@ -1,4 +1,4 @@
-[![Test status](https://api.travis-ci.org/lamamos/lamadmin.svg)](https://travis-ci.org/lamamos/lamadmin)
+[![Build Status](https://travis-ci.org/lamamos/lamadmin.svg?branch=develop)](https://travis-ci.org/lamamos/lamadmin)
 
 tiradmin
 ========
