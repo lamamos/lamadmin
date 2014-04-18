@@ -20,10 +20,10 @@ along with Lamadmin.  If not, see <http://www.gnu.org/licenses/>.
 
 
 //test file for phpunit
-//to launch in the include folder with the command : phpunit ../tests/NumberArgumentTest.php
+//to launch at the root of the repo with the command : phpunit tests/NumberArgumentTest.php
 //need to have the package php5-json installed to work
 
-require_once("../include/argumentObject.php");
+require_once("include/argumentObject.php");
 
 class NumberArgumentTest extends PHPUnit_Framework_TestCase
 {
