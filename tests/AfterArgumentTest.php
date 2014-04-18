@@ -23,7 +23,7 @@ along with Lamadmin.  If not, see <http://www.gnu.org/licenses/>.
 //to launch in the include folder with the command : phpunit ../tests/AfterArgumentTest.php
 //need to have the package php5-json installed to work
 
-require_once("../include/argumentObject.php");
+require_once("include/argumentObject.php");
 
 class AfterArgumentTest extends PHPUnit_Framework_TestCase
 {
