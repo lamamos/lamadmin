@@ -99,7 +99,7 @@ class AfterArg extends Argument{
   
   public function toForm(){
       
-    return "<input type=\"text\" class=\"instanceMenu\" name=\"".$this->name."\" value=\"".$this->value."\">";
+    return "<input type=\"text\" class=\"instanceMenu\" name=\"".$this->name."\" value=\"".$this->value."\"/>";
   }
 
   public function toJson(){
@@ -123,7 +123,7 @@ class AfterArg extends Argument{
   }
 
   public function getName(){return $this->name;}
-  public function setName($name){$this->name = $name;}
+  public function setName($name){/*$this->name = $name;*/}
   public function getValue(){return $this->value;}
   public function setValue($value){$this->value = $value;}
 }
