@@ -18,5 +18,5 @@ along with Lamadmin.  If not, see <http://www.gnu.org/licenses/>.
 -->
 
 <?php
-    $PathToRexConfiguration = "/home/karlito/Downloads/test_lamadmin/lamamos_script/lamamos/rex/";
+    $PathToRexConfiguration = "/etc/lamamos/rex/";
 ?>
