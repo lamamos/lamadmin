@@ -1,4 +1,5 @@
-<!--
+<?php
+/*
  Copyright (C) 2013-2014 Clément Roblot
 
 This file is part of lamadmin.
@@ -15,9 +16,8 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with Lamadmin.  If not, see <http://www.gnu.org/licenses/>.
--->
+*/
 
-<?php
 //set the garbage coloctor timeout for our session
 ini_set('session.gc_maxlifetime', 3600*24*7);
 session_start();
