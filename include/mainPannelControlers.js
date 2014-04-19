@@ -46,9 +46,6 @@ function mainPannelCtrl($scope, $http, $sce, $compile){
 
 	$scope.loadModul = function(name){
 
-
-		alert("kikooo");
-
 		var donnees = $.param({name: name});
 
 		$http({
