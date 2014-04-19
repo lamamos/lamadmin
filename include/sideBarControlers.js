@@ -19,7 +19,7 @@ along with Lamadmin.  If not, see <http://www.gnu.org/licenses/>.
 
 var app = angular.module('lamadmin', ['ui.bootstrap', 'pascalprecht.translate']);
 
-function sideBarCtrl($scope){
+function sideBarCtrl($scope, $translate){
 
 	$scope.selectedLine = "";
 	$scope.selectedType = "";
@@ -47,6 +47,11 @@ function sideBarCtrl($scope){
   	$scope.selectedType = "User";
 
 		angular.element($("#mainPannel")).scope().loadUser("Add new");
+	}
+
+	$scope.changeLanguage = function(language){
+
+		$translate.use(language);
 	}
 }
 
