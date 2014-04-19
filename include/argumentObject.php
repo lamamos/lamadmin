@@ -18,7 +18,6 @@ You should have received a copy of the GNU General Public License
 along with Lamadmin.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-
 require_once("FirePHPCore/FirePHP.class.php");
 
 
@@ -100,7 +99,7 @@ class AfterArg extends Argument{
   
   public function toForm(){
       
-    return "<input type=\"text\" class=\"instanceMenu\" name=\"".$this->name."\" value=\"".$this->value."\">";
+    return "<input type=\"text\" class=\"instanceMenu\" name=\"".$this->name."\" value=\"".$this->value."\"/>";
   }
 
   public function toJson(){
@@ -124,7 +123,7 @@ class AfterArg extends Argument{
   }
 
   public function getName(){return $this->name;}
-  public function setName($name){$this->name = $name;}
+  public function setName($name){/*$this->name = $name;*/}
   public function getValue(){return $this->value;}
   public function setValue($value){$this->value = $value;}
 }
@@ -246,111 +245,109 @@ class BoolArg extends Argument{
 
 class ArrayArg extends Argument{
 
-    private $subType;
-    private $value;
-    
-    function __construct($name, $subType, $value){
-    
-        $this->type = "array";
-        $this->name = $name;
-        $this->subType = $subType;
+  private $subType;
+  private $value;
 
-        $this->value = $value;
-    }
-    
-    
-    public function toForm(){
-        
-        $form = "";
-        for($i=0; $i<count($this->value); $i++){
-            
-            $element = $this->value[$i];
-            $form .= $element->toForm();
-            $form .= "<input type=\"button\" class=\"removeElementFromArray\" name=\"remove_".$this->name."[".$i."]\" value=\"-\">";
-        }
-        
-        $form .= "<input type=\"button\" class=\"addElementToArray\" name=\"".$this->name."\" value=\"+\">";
-        
-        return $form;
+  function __construct($name, $subType, $value){
+
+    $this->type = "array";
+    $this->name = $name;
+    $this->subType = $subType;
+
+    $this->value = $value;
+  }
+
+
+  public function toForm(){
+
+    $form = "";
+    for($i=0; $i<count($this->value); $i++){
+
+      $element = $this->value[$i];
+      $form .= $element->toForm();
+      $form .= "<input type=\"button\" class=\"removeElementFromArray\" name=\"remove_".$this->name."[".$i."]\" value=\"-\"/>";
     }
 
-	public function toJson(){
+    $form .= "<input type=\"button\" class=\"addElementToArray\" name=\"".$this->name."\" value=\"+\"/>";
 
-		$response = "{\"content_type\" : \"array\", \"title\" : \"".$this->name."\", \"subType\" : \"".$this->getEmptyTemplate()."\", \"value\" : [";
+    return $form;
+  }
 
-		if(isset($this->value)){
+  public function toJson(){
 
-		    for($i=0; $i<count($this->value); $i++){
-		        
-		        $element = $this->value[$i];
-		        $response .= $element->toJson();
-				$response .= ",";
-		    }
-			$response = substr($response, 0, -1); //remove the last useless ","
-		}
+    $emptyTemplate = $this->getEmptyTemplate();
+    $emptyTemplate = str_replace ("\"", "\\\"", $emptyTemplate);
 
-		$response .= "]}";
+    $response = "{\"content_type\" : \"array\", \"title\" : \"".$this->name."\", \"subType\" : \"".$emptyTemplate."\", \"value\" : [";
 
-		return $response;
-	}
+    if(isset($this->value)){
 
-	public function getEmptyTemplate(){
+      for($i=0; $i<count($this->value); $i++){
 
-		$template = $this->subType->getEmptyTemplate();
-
-		$template = str_replace ("\"", "\\\"", $template);
-
-		return $template;
-	}
-    
-    public function toConfigFile(){
-        
-        return "'".$this->name."' => ".$this->toConfigFileArg();
+        $element = $this->value[$i];
+        $response .= $element->toJson();
+        $response .= ",";
+      }
+      $response = substr($response, 0, -1); //remove the last useless ","
     }
-    
-    public function toConfigFileArg(){
-        
-        $response = "[";
-        
-		if(count($this->value)){	//if we have args in this array
 
-		    foreach($this->value as $element){
-		     
-		        $response .= $element->toConfigFileArg().", ";
-		    }
-		    $response = substr($response, 0, -2);   //we remove the laste space and coma
-		}
-        $response .= "],";
-        
-        return $response;
-    }
-    
-    public function createNewElement(){
-        
-        $name = $this->name."[".count($this->value)."]";
-        $element = createObjectArgumentBasic($this->subType, [$name, ""]);
-        $this->value[] = $element;
-        
-        return $element;
-    }
-    public function removeElementNum($num){
-        
-        unset($this->value[$num]);
-    }
-    public function getName(){return $this->name;}
-    public function setName($name){$this->name = $name;}
-    public function getSubType(){return $this->subType;}
-    public function getValue(){return $this->value;}
-    public function setValue($value){
+    $response .= "]}";
 
-		$array = [];
-        for($i=0; $i<count($value); $i++){
+    return $response;
+  }
 
-			$array[] = createObjectArgumentBasic($value[$i]['content_type'], [$value[$i]['title'], $value[$i]['value']]);
-        }
+  public function getEmptyTemplate(){
 
-		$this->value = $array;
+    $template = $this->subType->getEmptyTemplate();
+
+    return $template;
+  }
+
+  public function toConfigFile(){
+
+    return "'".$this->name."' => ".$this->toConfigFileArg();
+  }
+
+  public function toConfigFileArg(){
+
+    $response = "[";
+
+    if(count($this->value)){	//if we have args in this array
+
+      foreach($this->value as $element) $response .= $element->toConfigFileArg().", ";
+      $response = substr($response, 0, -2);   //we remove the laste space and coma
     }
+    $response .= "],";
+
+    return $response;
+  }
+
+  public function createNewElement(){
+
+    $name = $this->name."[".count($this->value)."]";
+    $element = createObjectArgumentBasic($this->subType, [$name, ""]);
+    $this->value[] = $element;
+
+    return $element;
+  }
+  public function removeElementNum($num){
+
+    unset($this->value[$num]);
+  }
+  public function getName(){return $this->name;}
+  public function setName($name){$this->name = $name;}
+  public function getSubType(){return $this->subType;}
+  public function getValue(){return $this->value;}
+  public function setValue($value){
+
+    $array = [];
+    for($i=0; $i<count($value); $i++){
+
+      $array[] = createObjectArgumentBasic($value[$i]['content_type'], [$value[$i]['title'], $value[$i]['value']]);
+    }
+
+    $this->value = $array;
+  }
 }
 
 

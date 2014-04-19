@@ -58,20 +58,27 @@ $config = new Configuration();
     <script type="text/javascript" src="include/sideBarControlers.js"></script>
     <script type="text/javascript" src="include/mainPannelControlers.js"></script>
     <script type="text/javascript" src="include/formsControlers.js"></script>
+    <script type="text/javascript" src="include/angular-translate.min.js"></script>
+    <script type="text/javascript" src="include/translation.js"></script>
     <script type="text/javascript" src="include/ui-bootstrap-tpls-0.6.0.min.js"></script>
 
     <body>
         <div id="sideBar" class="magictime slideLeftRetourn" ng-controller="sideBarCtrl">
           <div style="direction:ltr;"> <!-- Just a trick to get the scroll bar on the left -->
             <div><img id="logo" ng-click="displayHome()" src="include/images/logo3_empty.png"></div><br>
-            <div class="sectionTitle">Users : </div><br>
+            <div>
+              {{'CHOOSE_LANGUAGE' | translate}}
+              <img src="include/images/flags/GB.png" ng-click="changeLanguage('en')"/>
+              <img src="include/images/flags/FR.png" ng-click="changeLanguage('fr')"/>
+            </div>
+            <div class="sectionTitle">{{'USERS' | translate}}</div><br>
             <div id="listUsers" ng-controller="userListCtrl">
 				      <div class="user" ng-class="getClass('User', user.name)" ng-repeat="user in userList" ng-click="click(user)">{{user.name}}</div>
           	</div>
-            <div class="sectionTitle" ng-class="getClass('Add new')" id="addUser" ng-click="addUser()">Add user</div>
+            <div class="sectionTitle" ng-class="getClass('Add new')" id="addUser" ng-click="addUser()">{{'ADD_USER' | translate}}</div>
             <br>
             <br><br>
-            <div class="sectionTitle">Services : </div><br>
+            <div class="sectionTitle">{{'SERVICES' | translate}}</div><br>
             <div id="listServices" ng-controller="serviceListCtrl">
 				      <div class="sideBarLine" id="{{module.name}}" ng-click="click(module)" ng-class="getClass('Service', module.name)" ng-repeat="module in moduleList">
 					      <div class="mainModule">{{module.name}}</div>
@@ -201,9 +208,11 @@ $config = new Configuration();
         //this function is called at te opening of the page
         $(function() {
             
-            angular.element($("#mainPannel")).scope().loadHome();
+          angular.element($("#mainPannel")).scope().loadHome();
 
-            redefineComportements();
+          redefineComportements();
+
+          $translate.use('en');
         });
         
         function displayInstanceMenu(source){

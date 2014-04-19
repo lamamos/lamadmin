@@ -4,7 +4,5 @@ php:
   - 5.4
 
 script:
-  - "cd include"
-  - "phpunit ../tests/StringArgumentTest.php"
-  - "phpunit ../tests/NumberArgumentTest.php"
-  - "phpunit ../tests/BooleanArgumentTest.php"
+  - "phpunit --configuration phpunit.xml"
+
