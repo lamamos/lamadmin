@@ -240,7 +240,7 @@ class Configuration{
         fwrite($file, "#key_auth;\n");
         fwrite($file, "pass_auth;\n\n");
         
-        fwrite($file, "group server => \"127.0.0.1\";\n\n");
+        fwrite($file, "group server => \"localhost\";\n\n");
 
         fwrite($file, "use config;\n");
         fwrite($file, "use install;\n");
