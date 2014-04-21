@@ -210,6 +210,13 @@ ng-scope.active{
 	border: 0px none;
 	/*background-color: white;*/
   background-image: linear-gradient(to top, #D69600 0%, #523a00 100%);
+  /*Make the text of the liks unselectable*/
+  -moz-user-select: none; 
+  -khtml-user-select: none; 
+  -webkit-user-select: none; 
+  -o-user-select: none;
+  /*Change the cursor to a pointer to invite to click*/
+  cursor: pointer;
 }
 
 /* Link selected in the tabs */
