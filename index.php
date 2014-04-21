@@ -140,7 +140,14 @@ $config = new Configuration();
 
 	<script type="text/ng-template" id="unic_tab_template.html">
 		<div ng-switch on="page">
-			<div ng-switch-when="home"><p>{{home}}</p></div>
+			<div ng-switch-when="home">
+				<p><h1>{{'HOME_PAGE_TITLE' | translate}}</h1></p>
+				<br>
+				<h2>{{'HOME_PAGE_DESCRIPTION' | translate}}</h2><p>{{'HOME_PAGE_DESCRIPTION_CONTENT' | translate}}</p>
+				<h2>{{'HOME_PAGE_HOW_TO_USE' | translate}}</h2><p>{{'HOME_PAGE_HOW_TO_USE_CONTENT' | translate}}</p>
+				<h2>{{'HOME_PAGE_FIND_HELP' | translate}}</h2><p>{{'HOME_PAGE_FIND_HELP_CONTENT' | translate}}</p>
+				<h2>{{'HOME_PAGE_GET_INVOLVED' | translate}}</h2><p>{{'HOME_PAGE_GET_INVOLVED_CONTENT' | translate}}<a href="https://lamamos.github.io/get_involved.html">lamamos.github.io</a>.</p>
+			</div>
 			<div ng-switch-when="form">
 				<form id="container" ng-submit="submit()" ng-controller="formCtrl">
 					<div ng-repeat="item in content" ng-include="'form_template.html'"></div>
