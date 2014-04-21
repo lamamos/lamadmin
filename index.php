@@ -145,7 +145,7 @@ $config = new Configuration();
 				<br>
 				<h2>{{'HOME_PAGE_DESCRIPTION' | translate}}</h2><p>{{'HOME_PAGE_DESCRIPTION_CONTENT' | translate}}</p>
 				<h2>{{'HOME_PAGE_HOW_TO_USE' | translate}}</h2><p>{{'HOME_PAGE_HOW_TO_USE_CONTENT' | translate}}</p>
-				<h2>{{'HOME_PAGE_FIND_HELP' | translate}}</h2><p>{{'HOME_PAGE_FIND_HELP_CONTENT' | translate}}</p>
+				<h2>{{'HOME_PAGE_FIND_HELP' | translate}}</h2><p>{{'HOME_PAGE_FIND_HELP_CONTENT' | translate}}<a href="https://lamamos.github.io/get_help.html">lamamos.github.io</a>.</p>
 				<h2>{{'HOME_PAGE_GET_INVOLVED' | translate}}</h2><p>{{'HOME_PAGE_GET_INVOLVED_CONTENT' | translate}}<a href="https://lamamos.github.io/get_involved.html">lamamos.github.io</a>.</p>
 			</div>
 			<div ng-switch-when="form">

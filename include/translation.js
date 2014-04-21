@@ -14,7 +14,7 @@ app.config(function ($translateProvider) {
     HOME_PAGE_HOW_TO_USE: 'How to use lamadmin',
     HOME_PAGE_HOW_TO_USE_CONTENT: 'To configure a software just click on it\'s name in the left side of the page. Then change the parameter you want to change, save the changes and your servers will be doing the modifications as soon as possible (in less than 30 minutes).',
     HOME_PAGE_FIND_HELP: 'How to get some help',
-    HOME_PAGE_FIND_HELP_CONTENT: 'help',
+    HOME_PAGE_FIND_HELP_CONTENT: 'You can get some help here:',
     HOME_PAGE_GET_INVOLVED: 'How to get involved',
     HOME_PAGE_GET_INVOLVED_CONTENT: 'We welkome help of any kind. You don\'t need to know how to code to draw nice interfaces, find problems in the use of the software or translate it in other language. You can get more infos on how to get involved into the project here:',
 
@@ -32,7 +32,7 @@ app.config(function ($translateProvider) {
     HOME_PAGE_HOW_TO_USE: 'Comment utiliser Lamadmin',
     HOME_PAGE_HOW_TO_USE_CONTENT: 'Pour configurer un logiciel il vous suffit de cliquer sur son nom dans la partie gauche de la page. Puis modifiez le paramètre qui vous intérèsse. Enfin engegistrez. Vos servers appliqueront les modifications aussi tot que possible (dans moins de 30 minutes).',
     HOME_PAGE_FIND_HELP: 'Comment obtenir de l\'aide',
-    HOME_PAGE_FIND_HELP_CONTENT: 'aide',
+    HOME_PAGE_FIND_HELP_CONTENT: 'Vous pouvez obtenir plus d\'aide ici : ',
     HOME_PAGE_GET_INVOLVED: 'Comment participer au projet',
     HOME_PAGE_GET_INVOLVED_CONTENT: 'Nous apprécions tout type d\'aides. Vous n\'avez pas besoin de savoir programmer pour dessiner une belle interface, touver des problèmes dans le logiciel ou la traduire dans une autre langue. Vous pouvez obtenir plus d\'informations sur comment participer au projet ici : ',
 
