@@ -86,7 +86,7 @@ $config = new Configuration();
 				      </div>
 			      </div>
             <br><br><br><br><br>
-            <div class="sectionTitle test">Refresh</div>
+            <!--<div class="sectionTitle test">Refresh</div>-->	<!--For debug purpose only-->
           </div>
         </div>
 
