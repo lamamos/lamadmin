@@ -216,10 +216,6 @@ $config = new Configuration();
         $(function() {
             
           angular.element($("#mainPannel")).scope().loadHome();
-
-          redefineComportements();
-
-          $translate.use('en');
         });
         
         function displayInstanceMenu(source){
