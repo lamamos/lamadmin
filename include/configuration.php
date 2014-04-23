@@ -18,5 +18,5 @@ You should have received a copy of the GNU General Public License
 along with Lamadmin.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-    $PathToRexConfiguration = "/etc/lamamos/rex/";
+    $PathToRexConfiguration = "/home/karlito/creation/lamamos/test_rexify/";
 ?>
