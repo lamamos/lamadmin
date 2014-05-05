@@ -11,9 +11,9 @@ env:
 
 
 before_script:
-  - doxygen --version
   ##install doxygen
   - sudo apt-get install doxygen
+  - doxygen --version
   ## doxygen : output folder
   - mkdir -p doc
 
