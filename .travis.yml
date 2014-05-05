@@ -3,6 +3,25 @@ php:
   - 5.5
   - 5.4
 
+env:
+  global:
+  - secure: "id8EjneQ+Y0pH3ismFvBTOZldGDskd3bPLtwMthS9MZyQrEHIAtD5X2Lmyr/vNOKwBPwwyc/ZW6AsbV+Jn1UJHG3Z0XmBSYxiFLTJojKPodTrGlH9owgv522KXspDG9zcjddYIvB3GO8lIHzzOUrYkt4bFvqC1QkwS09EeAah84="
+
+
+
+
+before_script:
+  - doxygen --version
+  ##install doxygen
+  - sudo apt-get install doxygen
+  ## doxygen : output folder
+  - mkdir -p doc
+
 script:
+  ## We actualy do the tests
   - "phpunit --configuration phpunit.xml"
+
+after_script:
+ ## PHPDocumentor : Upload vers les GitHub Pages
+ - bash .travis_shell_after_success.sh
 
