@@ -9,35 +9,35 @@ echo "TRAVIS_BRANCH: $TRAVIS_BRANCH"
 if [ "$TRAVIS_PULL_REQUEST" == "false" ] && [ "$TRAVIS_PHP_VERSION" == "5.5" ]; then
  
   echo -e "Publishing Doxygen...\n"
-  ## Copie de la documentation generee dans le $HOME
+  ## Copie the generated documentation into the $HOME
   cp -R doc/html $HOME/doc-latest
  
   cd $HOME
-  ## Initialisation et recuperation de la branche gh-pages du depot Git
+  ## Initialisation and retrieving of the gh-pages of the Git repo
   git config --global user.email "travis@travis-ci.org"
   git config --global user.name "travis-ci"
-  git clone --quiet --branch=gh-pages https://${GH_TOKEN}@github.com:lamamos/lamamos.github.io.git gh-pages > /dev/null
+  git clone --quiet --branch=master https://${GH_TOKEN}@github.com:lamamos/lamamos.github.io.git gh-pages > /dev/null
  
   cd gh-pages
   
-  ## Suppression de l'ancienne version
+  ## Delete the old version
   git rm -rf ./docs/$TRAVIS_BRANCH
  
-  ## Création des dossiers
+  ## Create the folders
   mkdir docs
   cd docs
   mkdir $TRAVIS_BRANCH
  
-  ## Copie de la nouvelle version
+  ## Copie the new version
   cp -Rf $HOME/doc-latest/* ./$TRAVIS_BRANCH/
  
-  ## On ajoute tout
+  ## We add everything
   git add -f .
-  ## On commit
+  ## We commit
   git commit -m "Doxygen (Travis Build : $TRAVIS_BUILD_NUMBER  - Branch : $TRAVIS_BRANCH)"
-  ## On push
+  ## We push
   git push -fq origin gh-pages > /dev/null
-  ## Et c est en ligne !
+  ## And it is online !
   echo -e "Published Doxygen to gh-pages.\n"
  
 fi
