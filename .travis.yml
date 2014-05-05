@@ -7,9 +7,6 @@ env:
   global:
   - secure: "l9eM9SX0z2MbRKGLSXljcMH/HDbcKxf+qEFg+gcwIEB9HhaotPigmlG+xkax+NFytB55CK8u4ZL17/axpqtTMiVhKF34CeRmAAQJg8TwwqGS53XBbpEe/vDeqzQWJ60P2PM5t1sghBSSN06kLtZP41NI4q5tRyN0ZBe2S0xDeFY="
 
-install:
-   - composer install satooshi/php-coveralls:dev-master
-
 
 
 
