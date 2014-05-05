@@ -5,7 +5,7 @@ php:
 
 env:
   global:
-  - secure: "id8EjneQ+Y0pH3ismFvBTOZldGDskd3bPLtwMthS9MZyQrEHIAtD5X2Lmyr/vNOKwBPwwyc/ZW6AsbV+Jn1UJHG3Z0XmBSYxiFLTJojKPodTrGlH9owgv522KXspDG9zcjddYIvB3GO8lIHzzOUrYkt4bFvqC1QkwS09EeAah84="
+  - secure: "Q1sedFtwQ5NwW3/ItYR0DAI1i4W4La8cCzAC93jENOPh7BxpXonrp+UjzN8cWm0hXWm0GyUMJKNh5moS+H6m7R2/+IJk2rNIj90QDZ+JLT7MkAr1V2ckcPDIuuX871f5Y+27FgkGJfbVfTjaEa2jm3U72m//QMvbOSN/xMv9k1k="
 
 
 

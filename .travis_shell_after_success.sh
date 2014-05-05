@@ -16,8 +16,8 @@ if [ "$TRAVIS_PULL_REQUEST" == "false" ] && [ "$TRAVIS_PHP_VERSION" == "5.5" ]; 
   ## Initialisation and retrieving of the gh-pages of the Git repo
   git config --global user.email "travis@travis-ci.org"
   git config --global user.name "travis-ci"
-  git clone --quiet --branch=master https://${GH_TOKEN}@github.com:lamamos/lamamos.github.io.git gh-pages > /dev/null
- 
+  git clone --quiet --branch=master https://${GH_TOKEN}@github.com/lamamos/lamamos.github.io.git > /dev/null
+
   cd gh-pages
   
   ## Delete the old version
