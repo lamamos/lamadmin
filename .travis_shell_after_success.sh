@@ -38,6 +38,6 @@ if [ "$TRAVIS_PULL_REQUEST" == "false" ] && [ "$TRAVIS_PHP_VERSION" == "5.5" ]; 
   ## We push
   git push -fq origin master > /dev/null
   ## And it is online !
-  echo -e "Published Doxygen to gh-pages.\n"
+  echo -e "Published Doxygen to the lamamos website.\n"
  
 fi
