@@ -1,12 +1,12 @@
 #!/bin/bash
- 
+
 echo "--DEBUG--"
 echo "TRAVIS_REPO_SLUG: $TRAVIS_REPO_SLUG"
 echo "TRAVIS_PHP_VERSION: $TRAVIS_PHP_VERSION"
 echo "TRAVIS_PULL_REQUEST: $TRAVIS_PULL_REQUEST"
 echo "TRAVIS_BRANCH: $TRAVIS_BRANCH"
  
-if [ "$TRAVIS_PULL_REQUEST" == "false" ] && [ "$TRAVIS_PHP_VERSION" == "5.5" ]; then
+if [ "$TRAVIS_REPO_SLUG" == "lamamos/lamadmin" ] && [ "$TRAVIS_PULL_REQUEST" == "false" ] && [ "$TRAVIS_PHP_VERSION" == "5.5" ]; then
  
   echo -e "Publishing Doxygen...\n"
   ## Copie the generated documentation into the $HOME
