@@ -36,7 +36,7 @@ if [ "$TRAVIS_PULL_REQUEST" == "false" ] && [ "$TRAVIS_PHP_VERSION" == "5.5" ]; 
   ## We commit
   git commit -m "Doxygen (Travis Build : $TRAVIS_BUILD_NUMBER  - Branch : $TRAVIS_BRANCH)"
   ## We push
-  git push -fq origin gh-pages > /dev/null
+  git push -fq origin master > /dev/null
   ## And it is online !
   echo -e "Published Doxygen to gh-pages.\n"
  
