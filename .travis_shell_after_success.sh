@@ -21,11 +21,13 @@ if [ "$TRAVIS_PULL_REQUEST" == "false" ] && [ "$TRAVIS_PHP_VERSION" == "5.5" ]; 
   cd gh-pages
   
   ## Delete the old version
-  git rm -rf ./docs/$TRAVIS_BRANCH
+  git rm -rf ./docs/lamadmin/$TRAVIS_BRANCH
  
   ## Create the folders
   mkdir docs
   cd docs
+  mkdir lamadmin
+  cd lamadmin
   mkdir $TRAVIS_BRANCH
  
   ## Copie the new version
