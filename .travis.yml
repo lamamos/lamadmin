@@ -11,18 +11,32 @@ env:
 
 
 before_script:
+  ##Install the dependancys using composer
+  - composer install --dev --no-interaction
   ##install doxygen
   - sudo apt-get install doxygen
   ## doxygen : output folder
   - mkdir -p doc
+  ## PHPUnit log folder
+  - mkdir -p build/logs
 
 script:
   ## We actualy do the tests
-  - "phpunit --configuration phpunit.xml"
+  - "phpunit --configuration phpunit.xml --coverage-text --coverage-clover build/logs/clover.xml"
   ## We generate the documentation
   - doxygen
 
 after_script:
- ## PHPDocumentor : Upload vers les GitHub Pages
- - bash .travis_shell_after_success.sh
+  ## Coveralls
+  - php vendor/bin/coveralls -v
+  ## PHPDocumentor : Upload vers les GitHub Pages
+  - bash .travis_shell_after_success.sh
+
+
+
+
+notifications:
+  email:
+    - karlito@martobre.fr
+
 
