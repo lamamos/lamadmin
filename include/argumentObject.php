@@ -101,7 +101,6 @@ class StringArg extends Argument{
     *
     * \param $name The name of this argument (as a string).
     * \param $value The value of this argument (as a string).
-    * \return The form input corresponding to this argument, as a string.
   */
   function __construct($name, $value){
   
@@ -303,7 +302,6 @@ class NumberArg extends Argument{
   *
   * \param $name The name of this argument (as a string).
   * \param $value The value of this argument (as a string).
-  * \return The form input corresponding to this argument, as a string.
   */
   function __construct($name, $value){
 
@@ -404,7 +402,6 @@ class BoolArg extends Argument{
   *
   * \param $name The name of this argument (as a string).
   * \param $value The value of this argument (as a string (true of false), or a number (0 or 1)).
-  * \return The form input corresponding to this argument, as a string.
   */
   function __construct($name, $value){
   
@@ -514,12 +511,25 @@ class BoolArg extends Argument{
 
 
 
-
+/**
+ * \brief Object used to specify an array of arguments.
+ * 
+ * Object used to specify an argument of a module or submodule
+ * that is an array of arguments (all of the same type).
+ */
 class ArrayArg extends Argument{
 
   private $subType;
   private $value;
 
+  /** \brief Constructor of the ArrayArg object.
+  *
+  * \todo We don't need the $subType argument, we can just read it from the $value.
+  *
+  * \param $name The name of this argument (as a string).
+  * \param $subType The type of the argument stored into this array (as a string)
+  * \param $value The value of this argument (an array of arguments of the $subType).
+  */
   function __construct($name, $subType, $value){
 
     $this->type = "array";
@@ -614,6 +624,12 @@ class ArrayArg extends Argument{
     return $response;
   }
 
+  /** \brief Function creating a new argument.
+    *
+    * This function creates a new arguments and adds it to this array.
+    *
+    * \return The argument that have just been created.
+  */
   public function createNewElement(){
 
     $name = $this->name."[".count($this->value)."]";
@@ -622,6 +638,11 @@ class ArrayArg extends Argument{
 
     return $element;
   }
+
+  /** \brief Function removing an argument of the array.
+    *
+    * \param $num The number of the argument in the array that have to be deleted.
+  */
   public function removeElementNum($num){
 
     unset($this->value[$num]);
@@ -632,7 +653,16 @@ class ArrayArg extends Argument{
     * \return The name of the current argument as a string.
   */
   public function getName(){return $this->name;}
+  /**
+   * \brief Function used to sed the name of this argument
+   *
+   * \param $name The name we want this parameter to have from now on, as a string.
+   */
   public function setName($name){$this->name = $name;}
+  /** \brief Function returning the subType of the arguments stored in this array
+    *
+    * \return The subType of the arguments stored in this array.
+  */
   public function getSubType(){return $this->subType;}
 
   /** \brief Function returning the value of the current argument
@@ -640,6 +670,12 @@ class ArrayArg extends Argument{
     * \return The value of the current argument as an array.
   */
   public function getValue(){return $this->value;}
+  /** \brief Function setting the value of the current array of arguments
+    *
+    * For more information this methode is just calling recusivly the function createObjectArgumentBasic
+    *
+  * \param $value The new value of this argument (as an array of hash containing the three values : 'content_type', 'title', 'value' as strings).
+  */
   public function setValue($value){
 
     $array = [];
@@ -663,16 +699,27 @@ class ArrayArg extends Argument{
 
 
 
-
+/**
+ * \brief Object used to specify an hash of arguments.
+ * 
+ * Object used to specify an argument of a module or submodule
+ * that is an hash of arguments.
+ */
 class HashArg extends Argument{
 
   private $subType;
   private $value;
 
-
   private $hashDef;
 
-
+  /** \brief Constructor of the HashArg object.
+  *
+  * \todo Make that object a little better (hashDefinition as a 2D array)
+  *
+  * \param $name The name of this argument (as a string).
+  * \param $hashDefinition The description of the has (as an array containing the type of the arg then it's name, then the type of the second argument then the name of the second argument..).
+  * \param $value The value of this argument (an array of arguments in the order of the hashDefinition).
+  */
   function __construct($name, $hashDefinition, $value){
 
     $this->type = "hash";
@@ -685,6 +732,13 @@ class HashArg extends Argument{
     */
   }
 
+  /** \brief Fills out the arguments of this hash with the values we get into the constructor.
+  *
+  * This function is called by the constructor to fill the arguments of the object.
+  *
+  * \param $hashDefinition The description of the has (as an array containing the type of the arg then it's name, then the type of the second argument then the name of the second argument..).
+  * \param $value The value of this argument (an array of arguments in the order of the hashDefinition).
+  */
   function createHashValueObjects($hashDefinition, $value){
 
     for($i = 0; $i<count($hashDefinition); $i=$i+2){
@@ -697,6 +751,12 @@ class HashArg extends Argument{
     }
   }
 
+  /** \brief Function that get the argument we are searching for.
+  *
+  * \todo rename this function to something more sutable like getArgByName
+  *
+  * \param $name The name of the argument in this hash we want to retriev.
+  */
   public function getArgTypeObject($name){
 
     if(isset($this->value[$name])) return $this->value[$name];
@@ -740,6 +800,8 @@ class HashArg extends Argument{
 
   /** \brief Function returning a JSON template with all the field empty.
     *
+    * \warning This function is not implemented
+    *
     * \return The argument as a JSON string without any values in it.
   */
   public function getEmptyTemplate(){
@@ -779,6 +841,15 @@ class HashArg extends Argument{
     return $response;
   }
 
+  /** \brief Function creating a new argument.
+    *
+    * \warning this function os not implemented
+    * \todo I don't think this function makes any sens in the hash arg. Migth need to be removed.
+    *
+    * This function creates a new arguments and adds it to this array.
+    *
+    * \return The argument that have just been created.
+  */
   public function createNewElement(){
 
     /*$name = $this->name."[".count($this->value)."]";
@@ -787,6 +858,13 @@ class HashArg extends Argument{
 
     return $element;*/
   }
+  /** \brief Function removing an argument of the array.
+    *
+    * \warning Function not implemented.
+    * \todo I don't think this function makes any sens in the hash arg. Migth need to be removed.
+    *
+    * \param $num The number of the argument in the array that have to be deleted.
+  */
   public function removeElementNum($num){
 
     //unset($this->value[$num]);
@@ -797,8 +875,24 @@ class HashArg extends Argument{
     * \return The name of the current argument as a string.
   */
   public function getName(){return $this->name;}
+  /**
+   * \brief Function used to sed the name of this argument
+   *
+   * \param $name The name we want this parameter to have from now on, as a string.
+   */
   public function setName($name){$this->name = $name;}
+  /** \brief Function returning the subType of the arguments stored in this hash
+    *
+    * \todo I don't think this function makes any sens in the hash arg. Migth need to be removed.
+    * \return The subType of the arguments stored in this hash.
+  */
   public function getSubType(){return $this->subType;}
+  /** \brief Function returning the hashDefinition of the arguments stored in this hash
+    *
+    * See the constructor of this object for more info on what is the hashDefinition
+    *
+    * \return The hashDefinition of this hash.
+  */
 	public function gethashDef(){return $this->hashDef;}
 
   /** \brief Function returning the value of the current argument
@@ -806,6 +900,13 @@ class HashArg extends Argument{
     * \return The value of the current argument as an hash.
   */
   public function getValue(){return $this->value;}
+
+  /** \brief Fills out the arguments of this hash with the values we pass it..
+  *
+  * \todo This function migth be useless considering we already got createHashValueObjects.
+  *
+  * \param $value The value of this argument (an array of arguments in the order of the hashDefinition).
+  */
   public function setValue($value){
 
 		$array = [];
@@ -830,7 +931,11 @@ class HashArg extends Argument{
 
 
 
-
+/** \brief Function that is going to create an argument object from it string declaration
+*
+* \param $argObject An empty object of the type of the one we want to create
+* \param $string An array of 2 strings : the name of the argument, then it's value.
+*/
 function createObjectArgumentFromString($argObject, $string){
     
   $argName = $string[0];
@@ -886,8 +991,14 @@ function createObjectArgumentFromString($argObject, $string){
 
 
 
-
-
+/** \brief Function that is going to create an argument object from it string declaration.
+*
+* \warning Don't use this function directly. Il will only create basic arguements (no arrays nor hash). 
+* Prefer using createObjectArgumentFromString who is going to call this function if needed.
+*
+* \param $type The type of the argument to create (as a string).
+* \param $string The value of the argument (as a string).
+*/
 function createObjectArgumentBasic($type, $string){
     
   if($string == NULL) return NULL;
