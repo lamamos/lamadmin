@@ -341,7 +341,10 @@ class SubModule extends Module{
 
 
 
-
+/** \brief Object used to define an instance of a module or submodule.
+  *
+  * A configuration of a server is constituded of objects Instance of modules and submodules
+  */
 class Instance{
 
   private $name;
@@ -350,6 +353,12 @@ class Instance{
   private $afterObjects;
   private $motherModule;
 
+  /** \brief Constructor of the Instance object.
+    *
+    * \param $name The name of this instance (as a string).
+    * \param $arguments The arguments that define the instance (as an array of 2 strings : the name of the argument, then it's value.).
+    * \param $motherModule The module (or submodule) that we are instanciating.
+  */
   function __construct($name, $arguments, $motherModule){
 
     $this->hasBeenWritten = false;
@@ -366,7 +375,10 @@ class Instance{
     $this->afterObjects = array();
   }
 
-
+  /** \brief Function creating an argument for this instance.
+    *
+    * \param $arguments The arguments to create (as an array of 2 strings : the name of the argument, then it's value.).
+  */
   private function createArguments($arguments){
 
     foreach($arguments as $argument){
@@ -377,9 +389,27 @@ class Instance{
     }
   }
 
+  /** \brief Function returning the name of the current instance
+    *
+    * \return The name of the current instance as a string.
+  */
   public function getName(){return $this->name;}
+  /**
+   * \brief Function used to set the name of this instance
+   *
+   * \param $name The name we want this instance to have from now on, as a string.
+   */
   public function setName($name){$this->name = $name;}
+  /** \brief Function returning the arguments of the current instance
+    *
+    * \return The arguments of the current instance as an array of Argument objects.
+  */
   public function getArguments(){return $this->arguments;}
+  /** \brief Function returning an argument of the current instance
+    *
+    * \param $name The name of the argument we want to get
+    * \return The value of arguments we asked as a string.
+  */
   public function getArgument($name){
 
     foreach($this->arguments as $argument){
@@ -391,6 +421,11 @@ class Instance{
     }
     return "";
   }
+  /** \brief Function returning an argument of the current instance
+    *
+    * \param $name The name of the argument we want to get
+    * \return The value of arguments we asked as a Argument object.
+  */
   public function getArgumentObject($name){
 
     foreach($this->arguments as $argument){
@@ -402,7 +437,20 @@ class Instance{
     }
     return NULL;
   }
+  /** \brief Function setting the arguments of the current instance.
+    *
+    * We set all the arguments of the instance at once.
+    *
+    * \param $arguments An array of arguments to set into this instance
+  */
   public function setArguments($arguments){$this->arguments = $arguments;}
+  /** \brief Function setting an argument of the current instance.
+    *
+    * We set one of the arguments of the instance.
+    *
+    * \param $argumentName The name of the argument we want to set (as a string).
+    * \param $value The value we want to set the argument to (as what is suttable for this argument type).
+  */
   public function setArgument($argumentName, $value){
 
     for($i=0; $i<count($this->arguments); $i++){
@@ -446,7 +494,10 @@ class Instance{
 
   }
 
-
+  /** \brief Function returning the current instance as an html form.
+  *
+  * \return The form input corresponding to this instance, as a string.
+  */
   public function toForm(){
 
     $form = "<form class=\"instanceForm\" onsubmit=\"return false;\" method=\"post\">";
@@ -469,7 +520,10 @@ class Instance{
     return $form;
   }
 
-
+  /** \brief Function returning the current instance as JSON.
+    *
+    * \return The instance as a JSON string.
+  */
   public function toJson(){
 
     $response = "[";
@@ -488,12 +542,48 @@ class Instance{
     return $response;
   }
 
+  /** \brief Function returning if this instance have been written into to Rexify file
+    *
+    * Function used in order to specify the order in wich the instances must be written into the Rexify
+    *
+    * \return True if it has already been written.
+  */
   public function getHasBeenWritten(){return $this->hasBeenWritten;}
+  /** \brief Function setting if this instance have been written into to Rexify file
+    *
+    * Function used in order to specify the order in wich the instances must be written into the Rexify
+    *
+    * \param $val True to set it as it has been written, else false.
+  */
   public function setHasBeenWritten($val){$this->hasBeenWritten = $val;}
 
+  /** \brief Function returning the instance after wich it must be written
+    *
+    * Function used in order to specify the order in wich the instances must be written into the Rexify
+    *
+    * \return The object after wich this instance must be written (as an array of Instance objects).
+  */
   public function getAfterObjects(){return $this->afterObjects;}
+  /** \brief Function adding an instance to the ones this one must be written after
+    *
+    * Function used in order to specify the order in wich the instances must be written into the Rexify
+    *
+    * \param $object The object after wich this instance must be written (as an Instance object).
+  */
   public function addAfterObject($object){$this->afterObjects[] = $object;}
+  /** \brief Function adding instances to the ones this one must be written after
+    *
+    * Function used in order to specify the order in wich the instances must be written into the Rexify
+    *
+    * \param $objects The objects after wich this instance must be written (as an array of Instance objects).
+  */
   public function addAfterObjects($objects){$this->afterObjects = array_merge($this->afterObjects, $objects);}
+  /** \brief Function telling if this Instance is ready to be written into Rexify
+    *
+    * Function used in order to specify the order in wich the instances must be written into the Rexify
+    *
+    * \return True is all the object after wich this one must be written have already been written to Rexify, false else.
+  */
   public function isReadyToBeWritten(){
 
     foreach($this->afterObjects as $object){
