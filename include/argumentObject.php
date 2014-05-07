@@ -876,7 +876,7 @@ class HashArg extends Argument{
   */
   public function getName(){return $this->name;}
   /**
-   * \brief Function used to sed the name of this argument
+   * \brief Function used to set the name of this argument
    *
    * \param $name The name we want this parameter to have from now on, as a string.
    */
