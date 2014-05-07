@@ -25,14 +25,14 @@ include_once("argumentObject.php");
 
 abstract class Module{
 
-	protected $name;
+  protected $name;
 
-	protected $instances;
+  protected $instances;
   protected $nameVarInstance; //the name of the variables which is the name of this module
-	protected $pathToConfigFolder;
-	protected $pathToConfigFile;
-	protected $arguments;
-	protected $userRelated = false;
+  protected $pathToConfigFolder;
+  protected $pathToConfigFile;
+  protected $arguments;
+  protected $userRelated = false;
   protected $afterModules;
 
 
@@ -221,6 +221,22 @@ abstract class Module{
 }
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 class MainModule extends Module{
 
 	protected $subModules;
@@ -277,6 +293,16 @@ class MainModule extends Module{
 
 
 
+
+
+
+
+
+
+
+
+
+
 class SubModule extends Module{
 
 	private $parentModule;
@@ -295,15 +321,36 @@ class SubModule extends Module{
 }
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 class Instance{
 
-	private $name;
-	private $arguments;
+  private $name;
+  private $arguments;
   private $hasBeenWritten;
   private $afterObjects;
   private $motherModule;
 
-	function __construct($name, $arguments, $motherModule){
+  function __construct($name, $arguments, $motherModule){
 
     $this->hasBeenWritten = false;
     $this->name = $name;
@@ -317,147 +364,145 @@ class Instance{
     }
 
     $this->afterObjects = array();
-	}
-    
-    
+  }
+
+
   private function createArguments($arguments){
-      
+
     foreach($arguments as $argument){
-            
+
       $argName = $argument[0];
       $argObject = $this->motherModule->getArgument($argName);
       $this->arguments[] = createObjectArgumentFromString($argObject, $argument);
     }
   }
 
-	public function getName(){return $this->name;}
-	public function setName($name){$this->name = $name;}
-	public function getArguments(){return $this->arguments;}
-    public function getArgument($name){
-    
-        foreach($this->arguments as $argument){
-            
-            if($argument->getName() == $name){
-                
-                return $argument->getValue();
-            }
-        }
-        return "";
+  public function getName(){return $this->name;}
+  public function setName($name){$this->name = $name;}
+  public function getArguments(){return $this->arguments;}
+  public function getArgument($name){
+
+    foreach($this->arguments as $argument){
+
+      if($argument->getName() == $name){
+
+        return $argument->getValue();
+      }
     }
-    public function getArgumentObject($name){
-    
-        foreach($this->arguments as $argument){
-            
-            if($argument->getName() == $name){
-                
-                return $argument;
-            }
-        }
-        return NULL;
+    return "";
+  }
+  public function getArgumentObject($name){
+
+    foreach($this->arguments as $argument){
+
+      if($argument->getName() == $name){
+
+        return $argument;
+      }
     }
-	public function setArguments($arguments){$this->arguments = $arguments;}
-    public function setArgument($argumentName, $value){
+    return NULL;
+  }
+  public function setArguments($arguments){$this->arguments = $arguments;}
+  public function setArgument($argumentName, $value){
 
-        for($i=0; $i<count($this->arguments); $i++){
-            
-            if($this->arguments[$i]->getName() == $argumentName){
-                
-                $this->arguments[$i]->setValue($value);
-                return 0;
-            }
-        }
+    for($i=0; $i<count($this->arguments); $i++){
 
-        //if we are still here it's that the argument didn't already exist, so we create it
-        //first we need to find the type of this arg by checking in the motherModule
-        $type = $this->motherModule->getArgType($argumentName);
-        
-        if($type === "string"){
-            
-            $this->arguments[] = new StringArg($argumentName, $value);
-        }elseif($type === "after"){
-            
-            $this->arguments[] = new AfterArg($value);
-        }elseif($type === "number"){
-                    
-            $this->arguments[] = new NumberArg($argumentName, $value);
-        }elseif($type === "bool"){
+      if($this->arguments[$i]->getName() == $argumentName){
 
-            $this->arguments[] = new BoolArg($argumentName, $value);
-        }elseif($type === "array"){
-
-			$newArgument = new ArrayArg($argumentName, NULL);
-			$newArgument->setValue($value);	//$value
-			$this->arguments[] = $newArgument;
-        }elseif($type === "hash"){
-
-			$hashRef = $this->motherModule->getArgument($argumentName);
-
-			$newArgument = new HashArg($argumentName, $hashRef->gethashDef(), NULL);
-			$newArgument->setValue($value);
-			$this->arguments[] = $newArgument;
-        }
-            
-    }
-    
-    
-    public function toForm(){
-        
-        $form = "<form class=\"instanceForm\" onsubmit=\"return false;\" method=\"post\">";
-        $form .= "salut il y a : ".count($this->motherModule->getArguments())." arguments.<br>";
-    
-        foreach($this->motherModule->getArguments() as $argument){
-                
-            $form .= $argument->getName()." : ";
-            
-            $instanceArg = $this->getArgumentObject($argument->getName());
-            //if the arg is not defined in this instance, we ask the module to display the form
-            if(isset($instanceArg))$form .= $instanceArg->toForm()."<br>";
-            else $form .= $argument->toForm()."<br>";
-        }
-        
-        
-        $form .= "<input type=\"submit\" value=\"Save\">";
-        $form .= "<input class=\"deleteInstance\" type=\"button\" value=\"Delete\">";
-        $form .= "</form>";
-        
-        
-        return $form;
+        $this->arguments[$i]->setValue($value);
+        return 0;
+      }
     }
 
+    //if we are still here it's that the argument didn't already exist, so we create it
+    //first we need to find the type of this arg by checking in the motherModule
+    $type = $this->motherModule->getArgType($argumentName);
 
-    public function toJson(){
-        
-        $response = "[";
+    if($type === "string"){
 
-        foreach($this->motherModule->getArguments() as $argument){
-        
-            $instanceArg = $this->getArgumentObject($argument->getName());
-            //if the arg is not defined in this instance, we ask the module to display the form
-            if(isset($instanceArg))$response .= $instanceArg->toJson().",";
-            else $response .= $argument->toJson().",";
-        }
+      $this->arguments[] = new StringArg($argumentName, $value);
+    }elseif($type === "after"){
 
-		$response = substr($response, 0, -1); //remove the last useless ","
-        $response .= "]";
+      $this->arguments[] = new AfterArg($value);
+    }elseif($type === "number"){
 
-		return $response;
+      $this->arguments[] = new NumberArg($argumentName, $value);
+    }elseif($type === "bool"){
+
+      $this->arguments[] = new BoolArg($argumentName, $value);
+    }elseif($type === "array"){
+
+      $newArgument = new ArrayArg($argumentName, NULL);
+      $newArgument->setValue($value);	//$value
+      $this->arguments[] = $newArgument;
+    }elseif($type === "hash"){
+
+      $hashRef = $this->motherModule->getArgument($argumentName);
+
+      $newArgument = new HashArg($argumentName, $hashRef->gethashDef(), NULL);
+      $newArgument->setValue($value);
+      $this->arguments[] = $newArgument;
     }
-    
-    public function getHasBeenWritten(){return $this->hasBeenWritten;}
-    public function setHasBeenWritten($val){$this->hasBeenWritten = $val;}
-    
-    public function getAfterObjects(){return $this->afterObjects;}
-    public function addAfterObject($object){$this->afterObjects[] = $object;}
-    public function addAfterObjects($objects){$this->afterObjects = array_merge($this->afterObjects, $objects);}
-    public function isReadyToBeWritten(){
-        
-        foreach($this->afterObjects as $object){
-            
-            if($object->getHasBeenWritten() == false){return false;}
-        }
-        
-        return true;
+
+  }
+
+
+  public function toForm(){
+
+    $form = "<form class=\"instanceForm\" onsubmit=\"return false;\" method=\"post\">";
+    $form .= "salut il y a : ".count($this->motherModule->getArguments())." arguments.<br>";
+
+    foreach($this->motherModule->getArguments() as $argument){
+
+      $form .= $argument->getName()." : ";
+
+      $instanceArg = $this->getArgumentObject($argument->getName());
+      //if the arg is not defined in this instance, we ask the module to display the form
+      if(isset($instanceArg))$form .= $instanceArg->toForm()."<br>";
+      else $form .= $argument->toForm()."<br>";
     }
+
+    $form .= "<input type=\"submit\" value=\"Save\">";
+    $form .= "<input class=\"deleteInstance\" type=\"button\" value=\"Delete\">";
+    $form .= "</form>";
+
+    return $form;
+  }
+
+
+  public function toJson(){
+
+    $response = "[";
+
+    foreach($this->motherModule->getArguments() as $argument){
+
+      $instanceArg = $this->getArgumentObject($argument->getName());
+      //if the arg is not defined in this instance, we ask the module to display the form
+      if(isset($instanceArg))$response .= $instanceArg->toJson().",";
+      else $response .= $argument->toJson().",";
+    }
+
+    $response = substr($response, 0, -1); //remove the last useless ","
+    $response .= "]";
+
+    return $response;
+  }
+
+  public function getHasBeenWritten(){return $this->hasBeenWritten;}
+  public function setHasBeenWritten($val){$this->hasBeenWritten = $val;}
+
+  public function getAfterObjects(){return $this->afterObjects;}
+  public function addAfterObject($object){$this->afterObjects[] = $object;}
+  public function addAfterObjects($objects){$this->afterObjects = array_merge($this->afterObjects, $objects);}
+  public function isReadyToBeWritten(){
+
+    foreach($this->afterObjects as $object){
+
+      if($object->getHasBeenWritten() == false){return false;}
+    }
+
+    return true;
+  }
 }
 
 
