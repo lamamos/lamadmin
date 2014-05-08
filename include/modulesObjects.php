@@ -23,22 +23,34 @@ require_once("FirePHPCore/FirePHP.class.php");
 include_once("argumentObject.php");
 
 
+/** \brief Abstract class used to define the common methodes between the MainModules and SubModules
+  *
+  */
 abstract class Module{
 
-  protected $name;
+  protected $name;                /**< The name of this module */
 
-  protected $instances;
-  protected $nameVarInstance; //the name of the variables which is the name of this module
-  protected $pathToConfigFolder;
-  protected $pathToConfigFile;
-  protected $arguments;
-  protected $userRelated = false;
-  protected $afterModules;
+  protected $instances;           /**< An array of the instances of this module */
+  protected $nameVarInstance;     /**< The name of the variables which is the name of this module */
+  protected $pathToConfigFolder;  /**< The path to the folder in wich this module is defined */
+  protected $pathToConfigFile;    /**< Tha path to the file containing the definition of this module */
+  protected $arguments;           /**< An array of the arguments defining this module */
+  protected $userRelated = false; /**< If this module is owned by a specific user or not */
+  protected $afterModules;        /**< An array of the module after which this one must be written in the Rexify */
 
 
+  /** \brief Constructor of the Module object.
+    *
+    * \param $name The name of this SubModule (as a string).
+    * \param $configFolder The folder in wich we can find the definition of the module (and so read the arguments that need to be displayed to the user)
+    * \param $parentModule The module to which this one refers to (cf constructor of MainModule and SubModule)
+  */
 	abstract function __construct($name, $configFolder, $parentModule);
 
-
+  /** \brief Function getting the arguments of the module from it's definition file.
+    *
+    * This function is going to build the arguments necessary to the configuration of this module.
+  */
 	protected function readConfigurationFile(){
 
 		$file = file_get_contents($this->pathToConfigFile);
@@ -124,10 +136,31 @@ abstract class Module{
         }
 	}
 
-    public function isActivated(){if(count($this->instances) == 0)return 0;else return 1;}
+  /** \brief Function to test if this module is activated (used on the server).
+    *
+    * \return 0 if this module is not used (nothing written in Rexify about this module), else 1.
+  */
+  public function isActivated(){if(count($this->instances) == 0)return 0;else return 1;}
+  /** \brief Function adding an instance to the ones of this module
+    *
+    * \param $instance The Instance object to add to the ones of this Module.
+  */
 	public function addInstance($instance){$this->instances[] = $instance;}
-    public function getAfterModules(){return $this->afterModules;}
+  /** \brief Function Returning the array of modules this one must be written after.
+    *
+    * \return An array of Modules object
+  */
+  public function getAfterModules(){return $this->afterModules;}
+  /** \brief Function Returning the array of instances of this module.
+    *
+    * \return An array of Instance objects
+  */
 	public function getInstances(){return $this->instances;}
+  /** \brief Function Returning the instances we are searching for.
+    *
+    * \param $name The name of the instance we are searching for.
+    * \return The Instance object we are searching for.
+  */
 	public function getInstance($name){
 
 		foreach($this->instances as $instance){
@@ -140,22 +173,43 @@ abstract class Module{
         
         return NULL;
 	}
-    public function deleteInstance($name){
-                
-        for($i=0; $i<count($this->instances); $i++){
 
-            $instance = $this->instances[$i];
-			if(preg_match("/".$instance->getName()."/", $name)){
-                
-				//return $instance;
-                array_splice($this->instances, $i, 1);
-                return "done";
-			}
-		}        
-    }
+  /** \brief Function deletting an instances of the module.
+    *
+    * \param $name The name of the instance we want to delete.
+  */
+  public function deleteInstance($name){
+
+    for($i=0; $i<count($this->instances); $i++){
+
+      $instance = $this->instances[$i];
+      if(preg_match("/".$instance->getName()."/", $name)){
+
+        //return $instance;
+        array_splice($this->instances, $i, 1);
+        return "done";
+      }
+    }        
+  }
+  /** \brief Function deletting all the instances of the module.
+    *
+  */
   public function clearInstances(){$this->instances = NULL;}
+  /** \brief Function returning the name of the module.
+    *
+    * \return The name of the module as a string
+  */
 	public function getName(){return $this->name;}
+  /** \brief Function Returning the array of Arguments of this module.
+    *
+    * \return An array of Argument objects
+  */
   public function getArguments(){return $this->arguments;}
+  /** \brief Function Returning the Arguments we are searching for.
+    *
+    * \param $name The name of the Arguments we are searching for.
+    * \return The Arguments object we are searching for.
+  */
   public function getArgument($name){
          
     foreach($this->arguments as $argument){
@@ -169,58 +223,82 @@ abstract class Module{
     return NULL;
   }
 
+  /** \brief Function setting the arguments of the module.
+    *
+    * \param $arguments Array of arguments to define the Module
+  */
 	public function setArguments($arguments){$this->arguments = $arguments;}
-    public function addArgument($argument){$this->arguments[] = $argument;}
-    public function getArgType($name){
-        
-        foreach($this->arguments as $argument){
-            
-            if($argument->getName() == $name){
-                
-                return $argument->getType();
-            }
-        }
-        
-        return NULL;
-    }
-    
-        
-    public function toForm(){
-        
-        $form = "<form class=\"instanceForm\" onsubmit=\"return false;\" method=\"post\">";
-        $form .= "salut il y a : ".count($this->arguments)." arguments.<br>";
-    
-        foreach($this->arguments as $argument){
-                
-            $form .= $argument->getName()." : ";
-            $form .= $argument->toForm()."<br>";
-        }
-        
-        $form .= "<input type=\"submit\" value=\"Save\">";
-        $form .= "<input class=\"deleteInstance\" type=\"button\" value=\"Delete\">";
-        $form .= "</form>";
-        
-        return $form;
+  /** \brief Function adding an argument to the module.
+    *
+    * \param $argument Argument object to add to this module
+  */
+  public function addArgument($argument){$this->arguments[] = $argument;}
+  /** \brief Function Returning the type of an Argument of the module
+    *
+    * \param $name The name of the Arguments we are searching the type.
+    * \return The type of Arguments object we are searching for (as a string).
+  */
+  public function getArgType($name){
+      
+      foreach($this->arguments as $argument){
+          
+          if($argument->getName() == $name){
+              
+              return $argument->getType();
+          }
+      }
+      
+      return NULL;
+  }
+  
+  /** \brief Function returning the current Module as an html form.
+  *
+  * \return The form input corresponding to this Module, as a string.
+  */
+  public function toForm(){
+      
+      $form = "<form class=\"instanceForm\" onsubmit=\"return false;\" method=\"post\">";
+      $form .= "salut il y a : ".count($this->arguments)." arguments.<br>";
+  
+      foreach($this->arguments as $argument){
+              
+          $form .= $argument->getName()." : ";
+          $form .= $argument->toForm()."<br>";
+      }
+      
+      $form .= "<input type=\"submit\" value=\"Save\">";
+      $form .= "<input class=\"deleteInstance\" type=\"button\" value=\"Delete\">";
+      $form .= "</form>";
+      
+      return $form;
+  }
+
+  /** \brief Function returning the current Module as JSON.
+    *
+    * \return The Module as a JSON string.
+  */
+  public function toJson(){
+
+    $response = "[";
+
+    foreach($this->arguments as $argument){
+      
+      $response .= $argument->toJson().",";
     }
 
-    public function toJson(){
-        
-        $response = "[";
-
-        foreach($this->arguments as $argument){
-                
-            $response .= $argument->toJson().",";
-        }
-
-		$response = substr($response, 0, -1); //remove the last useless ","
-        $response .= "]";
-		return $response;
-    }
-    
-    public function getNameVarInstance(){return $this->nameVarInstance;}
+    $response = substr($response, 0, -1); //remove the last useless ","
+    $response .= "]";
+    return $response;
+  }
+  
+  /** \brief Function returning the name of the variables which is the name of this module
+    *
+    * \todo Check if we actualy are using this nameVarInstance variable.
+    *
+    * \return The name of the variables which is the name of this module
+  */
+  public function getNameVarInstance(){return $this->nameVarInstance;}
 }
-
-
 
 
 
@@ -320,7 +398,7 @@ class MainModule extends Module{
 
 
 
-/** \brief Object used to define a submodule (a submodule is always refering to a MainModule)
+/** \brief Object used to define a submodule (a submodule is always refering to a Module)
   *
   * A submodule refers to one MainModule, but a MainModule can have multiple submodules
   */
