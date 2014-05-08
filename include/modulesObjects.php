@@ -236,11 +236,19 @@ abstract class Module{
 
 
 
-
+/** \brief Object used to define a Mainmodule (a software that is available on the server (like apache))
+  *
+  */
 class MainModule extends Module{
 
-	protected $subModules;
+	protected $subModules; /**< An array of SubModules objects refering to this MainModule */
 
+  /** \brief Constructor of the MainModule object.
+    *
+    * \param $name The name of this SubModule (as a string).
+    * \param $configFolder The folder in wich we can find the definition of the module (and so read the arguments that need to be displayed to the user)
+    * \param $parentModule The MainModule don't refer to any parent module (leave empty)
+  */
 	function __construct($name, $configFolder, $parentModule=NULL){
 
 		$this->name = $name;
@@ -259,7 +267,11 @@ class MainModule extends Module{
 		}
 	}
 
-
+  /** \brief Function to get a submodule refering to this MainModule
+    *
+    * \param $name The name of the submodule we are searching for (as a string).
+    * \return The SubModule object corresponding to the name you inputed.
+  */
 	public function getSubModule($name){
 
 		foreach($this->subModules as $subModule){
@@ -271,22 +283,28 @@ class MainModule extends Module{
 		}
 	}
     
-	public function getSubModules(){return $this->subModules;}
+  /** \brief Function to get all the submodules refering to this MainModule
+    *
+    * \return An array of SubModule objects
+  */
+  public function getSubModules(){return $this->subModules;}
 
-    //function return an array containing all the instances of the module
-    //and all the instances of the suModulles associated to it
-    public function getMainAndSubInstances(){
-        
-        $instances = $this->getInstances();
-        
-        foreach($this->getSubModules() as $subModule){
-            
-            $instances = array_merge(instances, $subModule->getInstances());
-        }
-    
-        return $instances;
+  /** \brief Function to get all the submodules refering to this MainModule, and the SubModules referging to thoses SubModules
+    *
+    * \return An array of SubModule objects
+  */
+  public function getMainAndSubInstances(){
+
+    $instances = $this->getInstances();
+
+    foreach($this->getSubModules() as $subModule){
+
+      $instances = array_merge(instances, $subModule->getInstances());
     }
-    
+
+    return $instances;
+  }
+
     
 }
 
@@ -302,12 +320,20 @@ class MainModule extends Module{
 
 
 
-
+/** \brief Object used to define a submodule (a submodule is always refering to a MainModule)
+  *
+  * A submodule refers to one MainModule, but a MainModule can have multiple submodules
+  */
 class SubModule extends Module{
 
-	private $parentModule;
+	private $parentModule; /**< The Module to which this SubModule refers to */
 
-
+  /** \brief Constructor of the SubModule object.
+    *
+    * \param $name The name of this SubModule (as a string).
+    * \param $configFolder The folder in wich we can find the definition of the module (and so read the arguments that need to be displayed to the user)
+    * \param $parentModule The MainModule to which this submodule refers to.
+  */
 	function __construct($name, $configFolder, $parentModule){
 
 		$this->name = $name;
@@ -316,7 +342,7 @@ class SubModule extends Module{
 		$this->parentModule = $parentModule;
 		$this->readConfigurationFile();
         
-        $this->addArgument(new AfterArg(NULL));
+    $this->addArgument(new AfterArg(NULL));
 	}
 }
 
@@ -347,11 +373,11 @@ class SubModule extends Module{
   */
 class Instance{
 
-  private $name;
-  private $arguments;
-  private $hasBeenWritten;
-  private $afterObjects;
-  private $motherModule;
+  private $name;            /**< The name of this instance */
+  private $arguments;       /**< An array of Arguments refering to this Instance */
+  private $hasBeenWritten;  /**< Boolean telling if this Instance have already been written to Rexify */
+  private $afterObjects;    /**< An array of Instances after which this Instance must be writtent in the Rexify */
+  private $motherModule;    /**< The module or submodule from which this object is an instance */
 
   /** \brief Constructor of the Instance object.
     *
