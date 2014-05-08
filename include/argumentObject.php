@@ -95,7 +95,7 @@ abstract class Argument{
  */
 class StringArg extends Argument{
 
-  private $value;
+  private $value; /**< The valie of the argument */
   
   /** \brief Constructor of the StringArg object.
     *
@@ -194,7 +194,7 @@ class StringArg extends Argument{
  */
 class AfterArg extends Argument{
 
-  private $value;
+  private $value; /**< The valie of the argument */
   
   /** \brief Contructor of the object.
     *
@@ -296,7 +296,7 @@ class AfterArg extends Argument{
  */
 class NumberArg extends Argument{
 
-  private $value;
+  private $value; /**< The valie of the argument */
 
   /** \brief Constructor of the NumberArg object.
   *
@@ -396,7 +396,7 @@ class NumberArg extends Argument{
  */
 class BoolArg extends Argument{
 
-  private $value;
+  private $value; /**< The valie of the argument */
   
   /** \brief Constructor of the BoolArg object.
   *
@@ -519,8 +519,8 @@ class BoolArg extends Argument{
  */
 class ArrayArg extends Argument{
 
-  private $subType;
-  private $value;
+  private $subType; /**< The name of the argument type we are storring in this array */
+  private $value;   /**< The valie of the argument */
 
   /** \brief Constructor of the ArrayArg object.
   *
@@ -707,10 +707,10 @@ class ArrayArg extends Argument{
  */
 class HashArg extends Argument{
 
-  private $subType;
-  private $value;
+  private $subType; /**< The name of the argument type we are storring in this array \todo this is useless in this object */
+  private $value;   /**< The valie of the argument */
 
-  private $hashDef;
+  private $hashDef; /**< The definition of this hash pattern */
 
   /** \brief Constructor of the HashArg object.
   *
