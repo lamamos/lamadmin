@@ -302,12 +302,20 @@ class MainModule extends Module{
 
 
 
-
+/** \brief Object used to define a submodule (a submodule is always refering to a MainModule)
+  *
+  * A submodule refers to one MainModule, but a MainModule can have multiple submodules
+  */
 class SubModule extends Module{
 
 	private $parentModule;
 
-
+  /** \brief Constructor of the SubModule object.
+    *
+    * \param $name The name of this SubModule (as a string).
+    * \param $configFolder The folder in wich we can find the definition of the module (and so read the arguments that need to be displayed to the user)
+    * \param $parentModule The MainModule to which this submodule refers to.
+  */
 	function __construct($name, $configFolder, $parentModule){
 
 		$this->name = $name;
@@ -316,7 +324,7 @@ class SubModule extends Module{
 		$this->parentModule = $parentModule;
 		$this->readConfigurationFile();
         
-        $this->addArgument(new AfterArg(NULL));
+    $this->addArgument(new AfterArg(NULL));
 	}
 }
 
