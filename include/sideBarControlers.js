@@ -19,6 +19,12 @@ along with Lamadmin.  If not, see <http://www.gnu.org/licenses/>.
 
 var app = angular.module('lamadmin', ['ui.bootstrap', 'pascalprecht.translate']);
 
+/**
+* Controler of the side barre of the application.
+*
+* @class sideBarCtrl
+* @constructor
+*/
 function sideBarCtrl($scope, $translate){
 
 	$scope.selectedLine = "";
