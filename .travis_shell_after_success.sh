@@ -6,7 +6,7 @@
 #echo "TRAVIS_PULL_REQUEST: $TRAVIS_PULL_REQUEST"
 #echo "TRAVIS_BRANCH: $TRAVIS_BRANCH"
  
-if [ "$TRAVIS_REPO_SLUG" == "lamamos/lamadmin" ] && [ "$TRAVIS_PULL_REQUEST" == "false" ] && [ "$TRAVIS_PHP_VERSION" == "5.5" ]; then
+#if [ "$TRAVIS_REPO_SLUG" == "lamamos/lamadmin" ] && [ "$TRAVIS_PULL_REQUEST" == "false" ] && [ "$TRAVIS_PHP_VERSION" == "5.5" ]; #then
  
   echo -e "Publishing Doxygen and yuidoc...\n"
   ## Copie the generated documentation into the $HOME (doxygen)
@@ -42,4 +42,5 @@ if [ "$TRAVIS_REPO_SLUG" == "lamamos/lamadmin" ] && [ "$TRAVIS_PULL_REQUEST" == 
   ## And it is online !
   echo -e "Published Doxygen and yuidoc to the lamamos website.\n"
  
-fi
+#fi
+
