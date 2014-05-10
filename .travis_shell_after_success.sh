@@ -1,10 +1,10 @@
 #!/bin/bash
 
-echo "--DEBUG--"
-echo "TRAVIS_REPO_SLUG: $TRAVIS_REPO_SLUG"
-echo "TRAVIS_PHP_VERSION: $TRAVIS_PHP_VERSION"
-echo "TRAVIS_PULL_REQUEST: $TRAVIS_PULL_REQUEST"
-echo "TRAVIS_BRANCH: $TRAVIS_BRANCH"
+#echo "--DEBUG--"
+#echo "TRAVIS_REPO_SLUG: $TRAVIS_REPO_SLUG"
+#echo "TRAVIS_PHP_VERSION: $TRAVIS_PHP_VERSION"
+#echo "TRAVIS_PULL_REQUEST: $TRAVIS_PULL_REQUEST"
+#echo "TRAVIS_BRANCH: $TRAVIS_BRANCH"
  
 if [ "$TRAVIS_REPO_SLUG" == "lamamos/lamadmin" ] && [ "$TRAVIS_PULL_REQUEST" == "false" ] && [ "$TRAVIS_PHP_VERSION" == "5.5" ]; then
  
@@ -21,13 +21,15 @@ if [ "$TRAVIS_REPO_SLUG" == "lamamos/lamadmin" ] && [ "$TRAVIS_PULL_REQUEST" == 
   cd gh-pages
   
   ## Delete the old version
-  git rm -rf ./docs/lamadmin/$TRAVIS_BRANCH
+  git rm -rf ./docs/lamadmin/php/$TRAVIS_BRANCH
  
   ## Create the folders
   mkdir docs
   cd docs
   mkdir lamadmin
   cd lamadmin
+  mkdir php
+  cd php
   mkdir $TRAVIS_BRANCH
  
   ## Copie the new version
