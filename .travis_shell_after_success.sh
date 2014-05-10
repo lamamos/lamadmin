@@ -30,8 +30,8 @@ if [ "$TRAVIS_REPO_SLUG" == "lamamos/lamadmin" ] && [ "$TRAVIS_PULL_REQUEST" == 
   mkdir -p ./docs/lamadmin/$TRAVIS_BRANCH/js
 
   ## Copie the new version
-  cp -Rf $HOME/doc-latest-php/* .docs/lamadmin/$TRAVIS_BRANCH/php/
-  cp -Rf $HOME/doc-latest-js/* .docs/lamadmin/$TRAVIS_BRANCH/js/
+  cp -Rf $HOME/doc-latest-php/* ./docs/lamadmin/$TRAVIS_BRANCH/php/
+  cp -Rf $HOME/doc-latest-js/* ./docs/lamadmin/$TRAVIS_BRANCH/js/
 
   ## We add everything
   git add -f .
@@ -43,3 +43,4 @@ if [ "$TRAVIS_REPO_SLUG" == "lamamos/lamadmin" ] && [ "$TRAVIS_PULL_REQUEST" == 
   echo -e "Published Doxygen and yuidoc to the lamamos website.\n"
  
 fi
+
