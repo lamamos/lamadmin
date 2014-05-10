@@ -1,17 +1,19 @@
 #!/bin/bash
 
-echo "--DEBUG--"
-echo "TRAVIS_REPO_SLUG: $TRAVIS_REPO_SLUG"
-echo "TRAVIS_PHP_VERSION: $TRAVIS_PHP_VERSION"
-echo "TRAVIS_PULL_REQUEST: $TRAVIS_PULL_REQUEST"
-echo "TRAVIS_BRANCH: $TRAVIS_BRANCH"
+#echo "--DEBUG--"
+#echo "TRAVIS_REPO_SLUG: $TRAVIS_REPO_SLUG"
+#echo "TRAVIS_PHP_VERSION: $TRAVIS_PHP_VERSION"
+#echo "TRAVIS_PULL_REQUEST: $TRAVIS_PULL_REQUEST"
+#echo "TRAVIS_BRANCH: $TRAVIS_BRANCH"
  
 if [ "$TRAVIS_REPO_SLUG" == "lamamos/lamadmin" ] && [ "$TRAVIS_PULL_REQUEST" == "false" ] && [ "$TRAVIS_PHP_VERSION" == "5.5" ]; then
  
-  echo -e "Publishing Doxygen...\n"
-  ## Copie the generated documentation into the $HOME
-  cp -R doc/php/html $HOME/doc-latest
- 
+  echo -e "Publishing Doxygen and yuidoc...\n"
+  ## Copie the generated documentation into the $HOME (doxygen)
+  cp -R doc/php/html $HOME/doc-latest-php
+  ## Copie the generated documentation into the $HOME (doxygen)
+  cp -R doc/js $HOME/doc-latest-js
+
   cd $HOME
   ## Initialisation and retrieving of the gh-pages of the Git repo
   git config --global user.email "travis@travis-ci.org"
@@ -24,22 +26,20 @@ if [ "$TRAVIS_REPO_SLUG" == "lamamos/lamadmin" ] && [ "$TRAVIS_PULL_REQUEST" == 
   git rm -rf ./docs/lamadmin/$TRAVIS_BRANCH
  
   ## Create the folders
-  mkdir docs
-  cd docs
-  mkdir lamadmin
-  cd lamadmin
-  mkdir $TRAVIS_BRANCH
- 
+  mkdir -p ./docs/lamadmin/$TRAVIS_BRANCH/php
+  mkdir -p ./docs/lamadmin/$TRAVIS_BRANCH/js
+
   ## Copie the new version
-  cp -Rf $HOME/doc-latest/* ./$TRAVIS_BRANCH/
- 
+  cp -Rf $HOME/doc-latest-php/* .docs/lamadmin/$TRAVIS_BRANCH/php/
+  cp -Rf $HOME/doc-latest-js/* .docs/lamadmin/$TRAVIS_BRANCH/js/
+
   ## We add everything
   git add -f .
   ## We commit
-  git commit -m "Doxygen (Travis Build : $TRAVIS_BUILD_NUMBER  - Branch : $TRAVIS_BRANCH)"
+  git commit -m "Doxygen and yuidoc (Travis Build : $TRAVIS_BUILD_NUMBER  - Branch : $TRAVIS_BRANCH)"
   ## We push
   git push -fq origin master > /dev/null
   ## And it is online !
-  echo -e "Published Doxygen to the lamamos website.\n"
+  echo -e "Published Doxygen and yuidoc to the lamamos website.\n"
  
 fi

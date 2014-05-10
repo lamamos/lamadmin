@@ -15,6 +15,8 @@ before_script:
   - composer install --dev --no-interaction
   ##install doxygen
   - sudo apt-get install doxygen
+  ##install yuidoc
+  - npm -g install yuidocjs
   ## doxygen : output folder
   - mkdir -p doc
   ## PHPUnit log folder
