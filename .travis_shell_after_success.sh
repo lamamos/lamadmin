@@ -10,7 +10,7 @@ if [ "$TRAVIS_REPO_SLUG" == "lamamos/lamadmin" ] && [ "$TRAVIS_PULL_REQUEST" == 
  
   echo -e "Publishing Doxygen...\n"
   ## Copie the generated documentation into the $HOME
-  cp -R doc/html $HOME/doc-latest
+  cp -R doc/php/html $HOME/doc-latest
  
   cd $HOME
   ## Initialisation and retrieving of the gh-pages of the Git repo
