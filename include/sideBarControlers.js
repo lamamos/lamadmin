@@ -23,43 +23,68 @@ var app = angular.module('lamadmin', ['ui.bootstrap', 'pascalprecht.translate'])
 * Controler of the side barre of the application.
 *
 * @class sideBarCtrl
-* @constructor
 */
 function sideBarCtrl($scope, $translate){
 
 	$scope.selectedLine = "";
 	$scope.selectedType = "";
 
+  /**
+   * Methode returning the class of a line of the side bare. If it needs to be overlayed
+   * becose it is selected of not.
+   *
+   * @method getClass
+   * @param {String} type The type of the line (User or Service)
+   * @param {String} name The name of the line (name of the Service or the User)
+   * @return {String} Class to add to the line of the side bar.
+   */
 	$scope.getClass = function(type, name){
 
 		if( ($scope.selectedLine == name) && ($scope.selectedType == type) )return "moduleSelected";
 		else return "";
 	}
 
+	/**
+	 * Methode loading the home page (called when click on the logo in top left corner)
+	 *
+	 * @method displayHome
+	 */
 	$scope.displayHome = function(){
 
 		$scope.selectedLine = "";
 		angular.element($("#mainPannel")).scope().loadHome();
 	}
 
-	$scope.addUser = function(){
+	/**
+	 * Methode who gets a blank form to create anew user
+	 *
+	 * @method addUser
+	 */
+  $scope.addUser = function(){
 
-		activePage = "config";
-		activeModule = "user";
-		activeSubModule = "";
-		activeInstance = "Add new";
+    activePage = "config";
+    activeModule = "user";
+    activeSubModule = "";
+    activeInstance = "Add new";
 
-		$scope.selectedLine = "Add new";
-  	$scope.selectedType = "User";
+    $scope.selectedLine = "Add new";
+    $scope.selectedType = "User";
 
-		angular.element($("#mainPannel")).scope().loadUser("Add new");
-	}
+    angular.element($("#mainPannel")).scope().loadUser("Add new");
+  }
 
+  /**
+   * Methode called when clicking on a flag to change the language of the application
+   *
+   * @method changeLanguage
+   */
 	$scope.changeLanguage = function(language){
 
 		$translate.use(language);
 	}
 }
+
+
 
 
 
