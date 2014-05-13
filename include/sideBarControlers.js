@@ -88,11 +88,20 @@ function sideBarCtrl($scope, $translate){
 
 
 
-
+/**
+* Controler of the list of the users in the sidebar
+*
+* @class userListCtrl
+*/
 function userListCtrl($scope, $http){
 
 	$scope.userList = [];
 
+  /**
+   * Methode called in order to retrieve the list of the users from the server and display them in the DOM
+   *
+   * @method update
+   */
 	$scope.update = function(){
 
 		var donnees = $.param({moduleName: "user"});
@@ -116,6 +125,12 @@ function userListCtrl($scope, $http){
 	}
 
 
+  /**
+   * Methode called when we click on a user in the list
+   *
+   * @param {String} user The name of the user on which we clicked
+   * @method click
+   */
 	$scope.click = function(user) {
 
 		activePage = "config";
@@ -127,9 +142,13 @@ function userListCtrl($scope, $http){
 		$scope.$parent.selectedType = "User";
 
 		angular.element($("#mainPannel")).scope().loadUser(user.name);
-    }
+  }
 
-
+  /**
+   * Event called to update the list of the user (retrieve it from the server)
+   *
+   * @event updateUsersList
+   */
 	$scope.$on('updateUsersList', function(event, args){
 
 			$scope.update();
