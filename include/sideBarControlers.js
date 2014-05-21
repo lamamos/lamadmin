@@ -165,7 +165,13 @@ function userListCtrl($scope, $http){
 
 
 
-
+/**
+* Controler of the list of the services in the sidebar
+*
+* This controler is going to get the list of the installed module when instanciated
+*
+* @class userListCtrl
+*/
 function serviceListCtrl($scope, $http) {
 
 	$scope.moduleList = [];
@@ -186,6 +192,14 @@ function serviceListCtrl($scope, $http) {
 		})
 	;
 
+  /**
+   * Methode called when we click on a slider next to a Service
+   *
+   * This methode is going to activate or desable the service (switch it's status).
+   *
+   * @param {String} module The name of the service of which we clicked the boolean activation slider
+   * @method clickBoolean
+   */
 	$scope.clickBoolean = function(module){
 
 		module.activated = !module.activated;
@@ -215,7 +229,14 @@ function serviceListCtrl($scope, $http) {
 
 	}
 
-
+  /**
+   * Methode called when we click on a Service
+   *
+   * This methode is going to load the configuration of that service
+   *
+   * @param {String} module The name of the service of which we clicked the boolean activation slider
+   * @method click
+   */
 	$scope.click = function(module) {
 
 		if(!module.activated)return;
