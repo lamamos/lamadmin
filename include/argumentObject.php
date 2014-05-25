@@ -491,7 +491,11 @@ class BoolArg extends Argument{
     if(is_string($value)){
 
       if($value === "false")$this->value = false;
-      else $this->value = true;
+      else if($value === "true") $this->value = true;
+      else if($value === "FALSE") $this->value = false;
+      else if($value === "TRUE") $this->value = true;
+      else if($value === "0") $this->value = false;
+      else if($value === "1") $this->value = true;
     }else if(is_numeric($value)){
 
       if($value == 0)$this->value = false;
