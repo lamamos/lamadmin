@@ -96,7 +96,7 @@ function formCtrl($scope, $rootScope, $http){
 	$scope.submit = function(){
 
 
-    //alert(JSON.stringify($scope.content));
+  	//alert(JSON.stringify($scope.content));
 
 		var donnees = $.param({
 			moduleName: $scope.moduleName,
