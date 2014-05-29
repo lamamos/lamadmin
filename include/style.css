@@ -107,7 +107,14 @@ body {
 
 .user{
     
-    padding-left:8px;
+  padding-left:8px;
+  /*Make the text of the liks unselectable*/
+  -moz-user-select: none; 
+  -khtml-user-select: none; 
+  -webkit-user-select: none; 
+  -o-user-select: none;
+  /*Change the cursor to a pointer to invite to click*/
+  cursor: pointer;
 }
 
 .user:hover{
@@ -143,11 +150,23 @@ body {
 
 .mainModule{
     
-    float:left;
-    margin-right:60px;
-    padding-left:8px;
+  float:left;
+  margin-right:60px;
+  padding-left:8px;
+
+  /*Make the text of the liks unselectable*/
+  -moz-user-select: none; 
+  -khtml-user-select: none; 
+  -webkit-user-select: none; 
+  -o-user-select: none;
+  /*Change the cursor to a pointer to invite to click*/
+  cursor: pointer;
 }
 
+#unicTab a{
+
+  color: #e6e6e6;
+}
 
 .menu{
     
@@ -185,6 +204,8 @@ input{
 	box-shadow: 0 1px 10px rgba(0, 0, 0, 0.3) inset, 0 1px 0 rgba(255, 255, 255, 0.1), 0 -1px 0 rgba(0, 0, 0, 0.5);
 }
 
+
+
 .nav > li {
 
     /*background-image: linear-gradient(to top, #D69600 0%, #FFB300 100%);*/
@@ -210,6 +231,13 @@ ng-scope.active{
 	border: 0px none;
 	/*background-color: white;*/
   background-image: linear-gradient(to top, #D69600 0%, #523a00 100%);
+  /*Make the text of the liks unselectable*/
+  -moz-user-select: none; 
+  -khtml-user-select: none; 
+  -webkit-user-select: none; 
+  -o-user-select: none;
+  /*Change the cursor to a pointer to invite to click*/
+  cursor: pointer;
 }
 
 /* Link selected in the tabs */

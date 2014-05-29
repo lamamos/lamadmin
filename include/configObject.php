@@ -25,335 +25,438 @@ include_once("argumentObject.php");
 
 require_once("FirePHPCore/FirePHP.class.php");
 
+
+/** \brief Object defining the configuration of the server
+  *
+  */
 class Configuration{
 
-	protected $availableModules;
-	protected $installedSubModules;
+  protected $availableModules;    /**< An array of the Modules that are installed on the server (enabled and desabled ones) */
+  protected $installedSubModules; /**< An array of the SubModules that are installed on the server (enabled and desabled ones) \todo this argument seams to not be used. */
 
 
-
-	function __construct(){
+  /** \brief Constructor of the Configuration object.
+    *
+    * The only thing needed is the path to the configuration folder of rex inthe configuration.php file
+  */
+  function __construct(){
 
     global $PathToRexConfiguration;
-        
-		$this->initialisation();
 
-		foreach(getListOfAvalableModules() as $module){
+    $this->initialisation();
 
-		$configFolder = $PathToRexConfiguration."/lib/Service/".$module;
-      $this->availableModules[] = new MainModule($module, $configFolder);
-		}
+    if(is_array(getListOfAvalableModules())){
+      foreach(getListOfAvalableModules() as $module){
 
-		$this->readRexifile();
-	}
+        $configFolder = $PathToRexConfiguration."/lib/Service/".$module;
+        $this->availableModules[] = new MainModule($module, $configFolder);
+      }
+    }
+
+    $this->readRexifile();
+  }
 
 
+  /** \brief Function that is going to parse the Rexify and build the configuration object
+    *
+  */
 	function readRexifile(){
 
-		global $PathToRexConfiguration;
+    global $PathToRexConfiguration;
 
-		$lines = file_get_contents($PathToRexConfiguration."/Rexfile");
+    $lines = file_get_contents($PathToRexConfiguration."/Rexfile");
 
-        //The U at then end of the regexp is for ungready
-        preg_match_all("/Service::.*\(\{(\s|.)*\}\)\;/U", $lines, $out);
-        
-        foreach($out[0] as $instanceString){
-            
-            //find module name
-            preg_match("/^.*\(\{/", $instanceString, $out);
-            //we remove the two last char of the strig (which are "({")
-            $firstLine = substr($out[0], 0, -2);
-            
-            $names = explode("::", $firstLine);
-            //we remove the first element which is "Service"
-            array_shift($names);
-            //we remove the last element which is "define"
-            array_pop($names);
-            
-            
-            //if the names array has a size of one we have a mainModule, if it is 2 it's a usbmodule
-            //we are getting the right object in the configuration
-            switch(count($names)){
-                
-                case 1:     //if we got a mainModule
-                            $type = $this->getModule($names[0]);
-                            break;
-                
-                case 2:     //if we got a submodule
-                            $type = $this->getModule($names[0])->getSubModule($names[1]);
-                            break;
-                
-                default:    //if there is something strange
-                            break;
-                
-            }
-            
-            
-            
-            //we now gets the arguments given to this element
-            preg_match_all("/\'(\s|.)*\'\s*=>\s*(\s|.)*,\n/U", $instanceString, $args);
-            $args = $args[0];
+    //The U at then end of the regexp is for ungready
+    preg_match_all("/Service::.*\(\{(\s|.)*\}\)\;/U", $lines, $out);
+
+    if(is_array($out[0])){
+      foreach($out[0] as $instanceString){
+
+        //find module name
+        preg_match("/^.*\(\{/", $instanceString, $out);
+        //we remove the two last char of the strig (which are "({")
+        $firstLine = substr($out[0], 0, -2);
+
+        $names = explode("::", $firstLine);
+        //we remove the first element which is "Service"
+        array_shift($names);
+        //we remove the last element which is "define"
+        array_pop($names);
 
 
-            unset($keyValue);
-            $keyValue = array();
-            foreach($args as $argument){
+        //if the names array has a size of one we have a mainModule, if it is 2 it's a usbmodule
+        //we are getting the right object in the configuration
+        switch(count($names)){
 
-                $argument = explode("=>", $argument, 2);	//we cut only at the first "=>" (the 2, is for 2 elements max returned)
-                //we get only what is between quotes
-                preg_match_all('/".*?"|\'.*?\'/', $argument[0], $matches);
-                $argument[0] = $matches[0][0];
-                $argument[0] = substr($argument[0], 1, -1);
+          case 1:   //if we got a mainModule
+                    $type = $this->getModule($names[0]);
+                    break;
 
-                $argument[1] = readArgument($argument[1]);
-                
-                $keyValue[] = $argument;
-            }
-			//keyval is an array of array shaped like this : ['arg_Name', 'arg_value'], avec arg-value an array is needed
+          case 2:   //if we got a submodule
+                    $type = $this->getModule($names[0])->getSubModule($names[1]);
+                    break;
 
-            
-            //we now create the object corresponding to this instance
-            //we first find the name of the instance
-            $nameVar = $type->getNameVarInstance();
-            unset($name);
-            $name = "";
-            foreach($keyValue as $tmp){
-                
-                if($tmp[0] == $nameVar){
-                 
-                    $name = $tmp[1];
-                }
-            }
-            if($name == NULL){if( (isset($names[1])) && ($names[1] != NULL) )$name = $names[1]; else $name = $names[0];}
-
-            //we then create the instance
-            $type->addInstance(new Instance($name, $keyValue, $type));
+          default:  //if there is something strange
+                    break;
         }
+
+
+
+        //we now gets the arguments given to this element
+        preg_match_all("/\'(\s|.)*\'\s*=>\s*(\s|.)*,\n/U", $instanceString, $args);
+        $args = $args[0];
+
+
+        unset($keyValue);
+        $keyValue = array();
+        if(is_array($args)){
+          foreach($args as $argument){
+
+            $argument = explode("=>", $argument, 2);	//we cut only at the first "=>" (the 2, is for 2 elements max returned)
+            //we get only what is between quotes
+            preg_match_all('/".*?"|\'.*?\'/', $argument[0], $matches);
+            $argument[0] = $matches[0][0];
+            $argument[0] = substr($argument[0], 1, -1);
+
+            $argument[1] = readArgument($argument[1]);
+
+            $keyValue[] = $argument;
+          }
+        }
+        //keyval is an array of array shaped like this : ['arg_Name', 'arg_value'], avec arg-value an array is needed
+
+
+        //we now create the object corresponding to this instance
+        //we first find the name of the instance
+        $nameVar = $type->getNameVarInstance();
+        unset($name);
+        $name = "";
+        if(is_array($keyValue)){
+            foreach($keyValue as $tmp){
+
+            if($tmp[0] == $nameVar){
+
+              $name = $tmp[1];
+            }
+          }
+        }
+        if($name == NULL){if( (isset($names[1])) && ($names[1] != NULL) )$name = $names[1]; else $name = $names[0];}
+
+        //we then create the instance
+        $type->addInstance(new Instance($name, $keyValue, $type));
+      }
+    }
 	}
 
 
+  /** \brief Function of initialisation of this object (not used)
+    *
+    * \todo this function is not doing anything, we might need to delete it.
+  */
 	function initialisation(){
 
 	}
 
-
-
+  /** \brief Function returning all the modules availables on the server (in the Service folder)
+    *
+    * \return An array of MainModules object containing all the modules installed (enabled and desabled)
+  */
 	function getModules(){return $this->availableModules;}
+  /** \brief Function returning a module of the server (in the Service folder)
+    *
+    * \param $moduleName The name of the module we want to get.
+    * \return Tha MainModules object we asked for
+  */
 	function getModule($moduleName){
 
-		foreach($this->availableModules as $module){
+    if(is_array($this->availableModules)){
+      foreach($this->availableModules as $module){
 
-			if(preg_match("/".$module->getName()."/", $moduleName)){
+        if(preg_match("/".$module->getName()."/", $moduleName)){
 
-				return $module;
-			}
-		}
+          return $module;
+        }
+      }
+    }
 	}
 
+  /** \brief Function returning all the modules availables on the server (in the Service folder)
+    *
+    * \todo this function is doing the same thing as getModules. Need to delete one of the two.
+    * \return An array of MainModules object containing all the modules installed (enabled and desabled)
+  */
 	function getAvalableModules(){return $this->availableModules;}
-	function ping(){return "kikoo";}
+
+  /** \brief Debug function used to test if the object have been weel defined
+    *
+    * \todo Remove this debug function
+    * \return The string "kikoo"
+  */
+  function ping(){return "kikoo";}
+
+  /** \brief Function to test if the configuration object have completly written to the Rexify
+    *
+    * \return TRUE if all the modules and submodules that need to be written have been written, FALSE else.
+  */
+  function isCompletlyWritten(){
+
+    if(is_array($this->getAvalableModules())){
+      foreach($this->getAvalableModules() as $module){
+
+        if(is_array($module->getInstances())){
+          foreach($module->getInstances() as $moduleInstance){
+
+            if($moduleInstance->getHasBeenWritten() == false){return false;}
+          }  
+        }      
+
+        if(is_array($module->getSubModules())){
+          foreach($module->getSubModules() as $subModule){
+
+            if(is_array($subModule->getInstances())){
+              foreach($subModule->getInstances() as $subModuleInstance){
+
+                if($subModuleInstance->getHasBeenWritten() == false){return false;}
+              }
+            }
+          }
+        }
+      }
+    }
+
+    return true;
+  }
     
-    function isCompletlyWritten(){
-        
+  /** \brief Function returning the number of modules and submodule that still needs to be written
+    *
+    * \return The number of instances of modules and submodules still to writte.
+  */
+  function numberInstanceStillToWrite(){
+
+    $count = 0;
+
+    if(is_array($this->getAvalableModules())){
+      foreach($this->getAvalableModules() as $module){
+
+        if(is_array($module->getInstances())){
+          foreach($module->getInstances() as $moduleInstance){
+
+            if($moduleInstance->getHasBeenWritten() == false){$count++;}
+          }
+        }
+
+        if(is_array($module->getSubModules())){
+          foreach($module->getSubModules() as $subModule){
+            if(is_array($subModule->getInstances())){
+              foreach($subModule->getInstances() as $subModuleInstance){
+
+                if($subModuleInstance->getHasBeenWritten() == false){$count++;}
+              }
+            }
+          }
+        }
+      }
+    }
+
+    return $count;
+  }
+    
+    
+    
+    
+    
+  /** \brief Function writting this object in the Rexify
+    *
+  */
+  function writeConfigFile(){
+
+    global $PathToRexConfiguration;
+    $file = fopen($PathToRexConfiguration."/Rexfile", 'w') or die("can't open file");
+
+    fwrite($file, "user \"root\";\n");
+    fwrite($file, "password \"test\";\n");
+    fwrite($file, "#private_key \"/root/.ssh/id_rsa\";\n");
+    fwrite($file, "#public_key \"/root/.ssh/id_rsa.pub\";\n");
+    fwrite($file, "#key_auth;\n");
+    fwrite($file, "pass_auth;\n\n");
+
+    fwrite($file, "group server => \"localhost\";\n\n");
+
+    fwrite($file, "use config;\n");
+    fwrite($file, "use install;\n");
+    fwrite($file, "use init;\n");
+    fwrite($file, "\n");
+
+    fwrite($file, "require Rex::Logger;\n");
+    fwrite($file, "require communication;\n");
+    fwrite($file, "\n");
+
+    if(is_array($this->getAvalableModules())){
+      foreach($this->getAvalableModules() as $module){
+
+        fwrite($file, "require Service::".$module->getName().";\n");
+
+        if(is_array($module->getSubModules())){
+          foreach($module->getSubModules() as $subModule){
+
+            fwrite($file, "require Service::".$module->getName()."::".$subModule->getName().";\n");
+          }
+        }
+      }
+    }
+
+    fwrite($file, "\ntask \"configure\", group => server, sub{\n\n");
+
+    fwrite($file, "  initialise();\n\n");
+
+
+
+    $this->createAfterLinks();        
+    $stillToWritte = 0;
+
+    do{
+      $stillToWritte = $this->numberInstanceStillToWrite();
+
+      if(is_array($this->getAvalableModules())){
         foreach($this->getAvalableModules() as $module){
+
+          if(is_array($module->getInstances())){
             foreach($module->getInstances() as $moduleInstance){
-                
-                if($moduleInstance->getHasBeenWritten() == false){return false;}
-            }        
-            
+
+              if( ($moduleInstance->getHasBeenWritten() == false) && ($moduleInstance->isReadyToBeWritten() == true) ){
+                fwrite($file, "\tService::".$module->getName()."::define({\n\n");
+                foreach($moduleInstance->getArguments() as $argument){
+
+                  $argumentInString = $argument->toConfigFile();
+                  fwrite($file, "\t\t".$argumentInString."\n"); //fwrite($file, "\t\t'".$argument[0]."' => '".$argument[1]."',\n");
+                }
+                fwrite($file, "\t});\n\n");
+
+                $moduleInstance->setHasBeenWritten(true);
+              }
+            }
+          }
+
+          if(is_array($module->getSubModules())){
             foreach($module->getSubModules() as $subModule){
+              if(is_array($subModule->getInstances())){
                 foreach($subModule->getInstances() as $subModuleInstance){
-    
-                    if($subModuleInstance->getHasBeenWritten() == false){return false;}
-                }
-            }
-        }
-        
-        return true;
-    }
-    
-    
-    function numberInstanceStillToWrite(){
-        
-        $count = 0;
-        
-        foreach($this->getAvalableModules() as $module){
-            foreach($module->getInstances() as $moduleInstance){
-                
-                if($moduleInstance->getHasBeenWritten() == false){$count++;}
-            }        
-            
-            foreach($module->getSubModules() as $subModule){
-                foreach($subModule->getInstances() as $subModuleInstance){
-    
-                    if($subModuleInstance->getHasBeenWritten() == false){$count++;}
-                }
-            }
-        }
-        
-        return $count;
-    }
-    
-    
-    
-    
-    
-    
-    function writeConfigFile(){
-    
-        global $PathToRexConfiguration;
-        $file = fopen($PathToRexConfiguration."/Rexfile", 'w') or die("can't open file");
-    
-        fwrite($file, "user \"root\";\n");
-        fwrite($file, "private_key \"/root/.ssh/id_rsa\";\n");
-        fwrite($file, "public_key \"/root/.ssh/id_rsa.pub\";\n");
-        fwrite($file, "key_auth;\n\n");
-        
-        fwrite($file, "group martobre => \"192.168.0.151\";\n\n");
 
-        fwrite($file, "use config;\n");
-        fwrite($file, "use install;\n");
-        fwrite($file, "use init;\n");
-        fwrite($file, "\n");
+                  if( ($subModuleInstance->getHasBeenWritten() == false) && ($subModuleInstance->isReadyToBeWritten() == true) ){
+                    fwrite($file, "\tService::".$module->getName()."::".$subModule->getName()."::define({\n\n");
 
-        fwrite($file, "require Rex::Logger;\n");
-        fwrite($file, "require communication;\n");
-        fwrite($file, "\n");
+                    if(is_array($subModuleInstance->getArguments())){
+                      foreach($subModuleInstance->getArguments() as $argument){
 
-        foreach($this->getAvalableModules() as $module){
-            
-            fwrite($file, "require Service::".$module->getName().";\n");
-            foreach($module->getSubModules() as $subModule){
-                
-                fwrite($file, "require Service::".$module->getName()."::".$subModule->getName().";\n");
-            }
-        }
-        
-        fwrite($file, "\ntask \"configure\", group => martobre, sub{\n\n");
-        
-        fwrite($file, "  initialise();\n\n");
-        
-        
-        
-        $this->createAfterLinks();        
-        $stillToWritte = 0;
-        
-        do{
-            $stillToWritte = $this->numberInstanceStillToWrite();
-            
-            foreach($this->getAvalableModules() as $module){
-                
-                foreach($module->getInstances() as $moduleInstance){
-                    
-                    if( ($moduleInstance->getHasBeenWritten() == false) && ($moduleInstance->isReadyToBeWritten() == true) ){
-                        fwrite($file, "\tService::".$module->getName()."::define({\n\n");
-                        foreach($moduleInstance->getArguments() as $argument){
-                            
-                            $argumentInString = $argument->toConfigFile();
-                            fwrite($file, "\t\t".$argumentInString."\n"); //fwrite($file, "\t\t'".$argument[0]."' => '".$argument[1]."',\n");
-                            
-                        }
-                        fwrite($file, "\t});\n\n");
-                                            
-                        $moduleInstance->setHasBeenWritten(true);
+                        $argumentInString = $argument->toConfigFile();
+                        fwrite($file, "\t\t".$argumentInString."\n");
+                      }
                     }
-                }        
-                
-                foreach($module->getSubModules() as $subModule){
-                    foreach($subModule->getInstances() as $subModuleInstance){
-        
-                    if( ($subModuleInstance->getHasBeenWritten() == false) && ($subModuleInstance->isReadyToBeWritten() == true) ){
-                            fwrite($file, "\tService::".$module->getName()."::".$subModule->getName()."::define({\n\n");
-                            foreach($subModuleInstance->getArguments() as $argument){
-                                
-                                $argumentInString = $argument->toConfigFile();
-                                fwrite($file, "\t\t".$argumentInString."\n");
-                            }
-                            fwrite($file, "\t});\n\n");
-                            
-                            $subModuleInstance->setHasBeenWritten(true);
-                        }
-                    }
-                }
-            }        
-        }while($stillToWritte != $this->numberInstanceStillToWrite());    //when we don't write anything anymore in the file
-        
-        
-        if($this->numberInstanceStillToWrite() != 0){ //if there is still instances that has not been written, it's that there is a loop
-            
-            //TODO : Send error message saying the elements still to write are wrong
-        }
-        
-    
-        fwrite($file, "  finalise();\n");
+                    fwrite($file, "\t});\n\n");
 
-        fwrite($file, "};\n\n");
-     
-        fclose($file);
+                    $subModuleInstance->setHasBeenWritten(true);
+                  }
+                }
+              }
+            }
+          }
+        }  
+      }      
+    }while($stillToWritte != $this->numberInstanceStillToWrite());    //when we don't write anything anymore in the file
+
+
+    if($this->numberInstanceStillToWrite() != 0){ //if there is still instances that has not been written, it's that there is a loop
+
+      //TODO : Send error message saying the elements still to write are wrong
     }
+
+
+    fwrite($file, "  finalise();\n");
+
+    fwrite($file, "};\n\n");
+
+    fclose($file);
+  }
     
     
-    
-    function createAfterLinks(){
-        
-        foreach($this->getAvalableModules() as $module){
-            
-            foreach($module->getInstances() as $moduleInstance){
-                
-                //add the after statement in the description of the module (after section)
-                foreach($module->getAfterModules() as $afterModule){
-                    
+  /** \brief Function preparing the ordered writting of the Rexify
+    *
+    * This unction is going to change the after statements (strings) in the modules and submodules 
+    * instances into real links to the corresponding objects
+  */
+  function createAfterLinks(){
+
+    if(is_array($this->getAvalableModules())){
+      foreach($this->getAvalableModules() as $module){
+
+        if (is_array($module->getInstances())){
+          foreach($module->getInstances() as $moduleInstance){
+
+            if (is_array($module->getAfterModules())){
+              //add the after statement in the description of the module (after section)
+              foreach($module->getAfterModules() as $afterModule){
+
+                $afterModuleObject = $this->getModule($afterModule);
+                $afterModuleInstances = $afterModuleObject->getMainAndSubInstances();
+                $moduleInstance->addAfterObjects($afterModuleInstances);
+              }
+            }
+
+            if(!($moduleInstance->getArgument("after") === "")){
+
+              $object = $this->getInstanceFromString($moduleInstance->getArgument("after"));
+              $moduleInstance->addAfterObject($object);
+            }
+          }
+        }      
+
+        if (is_array($module->getSubModules())){
+          foreach($module->getSubModules() as $subModule){
+            if (is_array($subModule->getInstances())){
+              foreach($subModule->getInstances() as $subModuleInstance){
+
+                //a submodule must always be defined after the mainModule it is associated to
+                $subModuleInstance->addAfterObjects($module->getInstances());
+
+                if (is_array($subModule->getAfterModules())){
+                  //add the after statement in the description of the module (after section)
+                  foreach($subModule->getAfterModules() as $afterModule){
+
                     $afterModuleObject = $this->getModule($afterModule);
                     $afterModuleInstances = $afterModuleObject->getMainAndSubInstances();
-                    $moduleInstance->addAfterObjects($afterModuleInstances);
+                    $subModuleInstance->addAfterObjects($afterModuleInstances);
+                  }
                 }
-                
-                if(!($moduleInstance->getArgument("after") === "")){
-                    
-                    $object = $this->getInstanceFromString($moduleInstance->getArgument("after"));
-                    $moduleInstance->addAfterObject($object);
-                }
-            }        
-            
-            foreach($module->getSubModules() as $subModule){
-                foreach($subModule->getInstances() as $subModuleInstance){
-    
-                    //a submodule must always be defined after the mainModule it is associated to
-                    $subModuleInstance->addAfterObjects($module->getInstances());
-                    
-                    //add the after statement in the description of the module (after section)
-                    foreach($subModule->getAfterModules() as $afterModule){
-                        
-                        $afterModuleObject = $this->getModule($afterModule);
-                        $afterModuleInstances = $afterModuleObject->getMainAndSubInstances();
-                        $subModuleInstance->addAfterObjects($afterModuleInstances);
-                    }
-                    
-                    if(!($subModuleInstance->getArgument("after") === "")){
-                        
-                        $object = $this->getInstanceFromString($subModuleInstance->getArgument("after"));
-                        $subModuleInstance->addAfterObject($object);
-                    }
-                }
-            }
-        }
-    }
-    
-    
-    
-    function getInstanceFromString($string){
-        
-        $names = explode("::", $string);
-        
-        $module = $this->getModule($names[0]);
-        $subModule = $module->getSubModule($names[1]);
-        $instance = $subModule->getInstance($names[2]);
-    
-        return $instance;
-    }
 
+                if(!($subModuleInstance->getArgument("after") === "")){
+
+                  $object = $this->getInstanceFromString($subModuleInstance->getArgument("after"));
+                  $subModuleInstance->addAfterObject($object);
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
     
     
+  /** \brief Function returning an Instace of the configuration knowing it's name
+    *
+    * \param $string The name of the instance we want to get fallowing the patern : MainModuleName::SubModuleName::InstanceName.
+    * \return Tha MainModules object we asked for
+  */
+  function getInstanceFromString($string){
+
+    $names = explode("::", $string);
+
+    $module = $this->getModule($names[0]);
+    $subModule = $module->getSubModule($names[1]);
+    $instance = $subModule->getInstance($names[2]);
+
+    return $instance;
+  }
     
 }
 

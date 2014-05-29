@@ -3,8 +3,44 @@ php:
   - 5.5
   - 5.4
 
+env:
+  global:
+  - secure: "l9eM9SX0z2MbRKGLSXljcMH/HDbcKxf+qEFg+gcwIEB9HhaotPigmlG+xkax+NFytB55CK8u4ZL17/axpqtTMiVhKF34CeRmAAQJg8TwwqGS53XBbpEe/vDeqzQWJ60P2PM5t1sghBSSN06kLtZP41NI4q5tRyN0ZBe2S0xDeFY="
+
+
+
+
+before_script:
+  ##Install the dependancys using composer
+  - composer install --dev --no-interaction
+  ##install doxygen
+  - sudo apt-get install doxygen
+  ##install yuidoc
+  - npm -g install yuidocjs
+  ## doxygen : output folder
+  - mkdir -p doc
+  ## PHPUnit log folder
+  - mkdir -p build/logs
+
 script:
-  - "cd include"
-  - "phpunit ../tests/StringArgumentTest.php"
-  - "phpunit ../tests/NumberArgumentTest.php"
-  - "phpunit ../tests/BooleanArgumentTest.php"
+  ## We actualy do the tests
+  - "phpunit --configuration phpunit.xml --coverage-text --coverage-clover build/logs/clover.xml"
+  ## We generate the documentation of the php part
+  - doxygen
+  ##we generate the documentation of the js part
+  - yuidoc .
+
+after_script:
+  ## Coveralls
+  - php vendor/bin/coveralls -v
+  ## PHPDocumentor : Upload vers les GitHub Pages
+  - bash .travis_shell_after_success.sh
+
+
+
+
+notifications:
+  email:
+    - karlito@martobre.fr
+
+

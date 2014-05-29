@@ -52,9 +52,8 @@ foreach($_POST['values'] as $field){
 
   //$response .= $field['title']." = ".$field['value'].",\n";
 
-  if($field['value'] == "false") $instance->setArgument($field['title'], false);
-  else if($field['value'] == "true") $instance->setArgument($field['title'], true);
-	else $instance->setArgument($field['title'], $field['value']);
+
+  $instance->setArgument($field['title'], $field['value']);
 }
 
 

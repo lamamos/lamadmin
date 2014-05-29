@@ -46,7 +46,6 @@ function mainPannelCtrl($scope, $http, $sce, $compile){
 
 	$scope.loadModul = function(name){
 
-
 		var donnees = $.param({name: name});
 
 		$http({
@@ -176,7 +175,11 @@ function unicTabCtrl($scope, $http){
 		activeSubModule = "";
 		activeInstance = "";
 
-		$http({
+		/*For now we use static content*/
+		$scope.page = "home";
+
+		/*To use for latter for dynamic home page*/
+		/*$http({
 			method: "POST",
 			url: "/ajax/getHome.php",
 			headers: {'Content-Type': 'application/x-www-form-urlencoded'}
@@ -191,7 +194,7 @@ function unicTabCtrl($scope, $http){
 
 				alert("error when getting the liste of the home page");
 			})
-		;
+		;*/
 	}
 
 
