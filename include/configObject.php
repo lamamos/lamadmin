@@ -273,12 +273,12 @@ class Configuration{
     global $PathToRexConfiguration;
     $file = fopen($PathToRexConfiguration."/Rexfile", 'w') or die("can't open file");
 
-    fwrite($file, "user \"root\";\n");
-    fwrite($file, "password \"test\";\n");
-    fwrite($file, "#private_key \"/root/.ssh/id_rsa\";\n");
-    fwrite($file, "#public_key \"/root/.ssh/id_rsa.pub\";\n");
-    fwrite($file, "#key_auth;\n");
-    fwrite($file, "pass_auth;\n\n");
+    fwrite($file, "#user \"root\";\n");
+    fwrite($file, "#password \"test\";\n");
+    fwrite($file, "#pass_auth;\n\n");
+    fwrite($file, "private_key \"/root/.ssh/id_rsa\";\n");
+    fwrite($file, "public_key \"/root/.ssh/id_rsa.pub\";\n");
+    fwrite($file, "key_auth;\n");
 
     fwrite($file, "group server => \"localhost\";\n\n");
 
