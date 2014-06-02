@@ -18,7 +18,11 @@ along with Lamadmin.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 
-
+/**
+* Controler of the main pannel of the page (central space).
+*
+* @class mainPannelCtrl
+*/
 function mainPannelCtrl($scope, $http, $sce, $compile){
 
 	$scope.needTabs = false;
@@ -28,6 +32,11 @@ function mainPannelCtrl($scope, $http, $sce, $compile){
 	$scope.activeModule = "";
 
 
+  /**
+   * Methode displaying the home page (with the instruction on how tu use lamamos)
+   *
+   * @method loadHome
+   */
 	$scope.loadHome = function(){
 
 		$scope.needTabs = false;
@@ -35,7 +44,12 @@ function mainPannelCtrl($scope, $http, $sce, $compile){
 		angular.element($("#unicTab")).scope().loadHome();
 	}
 
-
+  /**
+   * Methode displaying the configuration of a user
+   *
+   * @method loadUser
+   * @param {String} name The name of the user we want to see the configuration
+   */
 	$scope.loadUser = function(name){
 
 		$scope.needTabs = false;
@@ -43,7 +57,12 @@ function mainPannelCtrl($scope, $http, $sce, $compile){
 		angular.element($("#unicTab")).scope().loadInstance("config", "user", "", name);
 	}
 
-
+  /**
+   * Methode displaying the configuration of a module
+   *
+   * @method loadModul
+   * @param {String} name The name of the module we want to see the configuration
+   */
 	$scope.loadModul = function(name){
 
 		var donnees = $.param({name: name});
