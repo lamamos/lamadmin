@@ -18,6 +18,11 @@ along with Lamadmin.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 
+/**
+* Controler of the forms of the instances
+*
+* @class formCtrl
+*/
 function formCtrl($scope, $rootScope, $http){
 
 	/*$scope.content = [
@@ -53,6 +58,12 @@ function formCtrl($scope, $rootScope, $http){
 	$scope.subModuleName = "";
 	$scope.instanceName = "";
 
+
+  /**
+   * Event called to fetch the form of an instance
+   *
+   * @event getFormEvent
+   */
 	$scope.$on('getFormEvent', function(event, args){
 
 		$scope.moduleName = args[1];
@@ -85,14 +96,22 @@ function formCtrl($scope, $rootScope, $http){
 	});
 
 
+  /**
+   * Methode caled to empty the current form
+   *
+   * @method clearForm
+   */
   $scope.clearForm = function(){
 
     $scope.content = "";
   }
 
 
-
-
+  /**
+   * Methode caled to submit the current form to the server (and so save it to the Rexify file)
+   *
+   * @method submit
+   */
 	$scope.submit = function(){
 
 
@@ -135,7 +154,11 @@ function formCtrl($scope, $rootScope, $http){
 	}
 
 
-
+  /**
+   * Methode caled to delete the form (and also in the Rexify file)
+   *
+   * @method delete
+   */
 	$scope.delete = function(){
 
 		var donnees = $.param({
@@ -172,18 +195,36 @@ function formCtrl($scope, $rootScope, $http){
 		;
 	}
 
-
+  /**
+   * Methode caled in array arguments to add a new slot in the array
+   *
+   * @method addNewElement
+   * @param {Array} array The array on which we clicked
+   */
 	$scope.addNewElement = function(array){
 
 		template = angular.fromJson(array.subType);
 		array.value.push(template);
 	}
 
+  /**
+   * Methode caled to remove one element from an array in a form
+   *
+   * @method deleteItem
+   * @param {String} arrayIndex The number of the array we clicked on
+   * @param {String} itemIndex The number of the argument in the array we want to delete
+   */
 	$scope.deleteItem = function(arrayIndex, itemIndex){
 
     $scope.content[arrayIndex].value.splice(itemIndex, 1);
 	}
 
+  /**
+   * Methode caled to test if the form is empty or not
+   *
+   * @method formNotEmpty
+   * @return {Bool} True if empty, false if not.
+   */
 	$scope.formNotEmpty = function(){
 
 		if($scope.content.length)return true;
