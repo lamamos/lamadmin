@@ -97,29 +97,58 @@ function mainPannelCtrl($scope, $http, $sce, $compile){
 }
 
 
+/**
+* Controler of the tabs in the main pannel when displaying a multi tabs module/user/page
+*
+* @class tabsControler
+*/
 function tabsControler($scope, $http, $sce){
 
 	$scope.tabs = [];
 	$scope.activeSubModule = "";
 	$scope.instancesList = [];
 
+  /**
+   * Methode removing all the tabs
+   *
+   * @method clearTabs
+   */
 	$scope.clearTabs = function(){
 
 		$scope.tabs = [];
 	}
 
+
+  /**
+   * Methode adding a tab to the ones displayed
+   *
+   * @method addTab
+   * @param {String} title The name of the tab to add
+   * @param {String} content The content of the tab (as html code)
+   */
 	$scope.addTab = function(title, content){
 
 		$scope.tabs.push({"title": title, "content": content});
 	}
 
 
+  /**
+   * Event called to update the current tab content
+   *
+   * @event updateCurrentTab
+   */
 	$scope.$on('updateCurrentTab', function(event, args){
 
     $scope.changeTab();
   });
 
 
+  /**
+   * Methode displaying the configuration of a module
+   *
+   * @method changeTab
+   * @param {Tab} tab The tab to display (JSON containing {name, content})
+   */
 	$scope.changeTab = function(tab){
 
 		if(tab)$scope.activeSubModule = tab.title;
@@ -160,7 +189,12 @@ function tabsControler($scope, $http, $sce){
 
 	}
 
-
+  /**
+   * Methode caled when we click on a "add new" button in a submodule configuration. This methode
+   * is going to get the form for a new instance of the current submodule
+   *
+   * @method add
+   */
   $scope.add = function(){
 
 		//TODO : this methode is awfull, need to find a way to wait for the formCtrl to be initialized
@@ -169,7 +203,13 @@ function tabsControler($scope, $http, $sce){
 		}, 10);
   }
 
-
+  /**
+   * Methode caled when we click on an instance of a submodule configuration. This methode
+   * is going to get the form of the instance selected
+   *
+   * @method click
+   * @param {Instance} instance The instance on which we clicked (we only use the name parameter of this object)
+   */
 	$scope.click = function(instance){
 
 		//TODO : this methode is awfull, need to find a way to wait for the formCtrl to be initialized
@@ -180,13 +220,22 @@ function tabsControler($scope, $http, $sce){
 }
 
 
-
+/**
+* Controler of the tabs in the main pannel when displaying a single tab interface (like the home page or a user)
+*
+* @class unicTabCtrl
+*/
 function unicTabCtrl($scope, $http){
 
 	$scope.page = "home";
 	$scope.home = "Home page";
 
 
+  /**
+   * Methode caled when we click on the logo or at the loading of the page to load the home page
+   *
+   * @method loadHome
+   */
 	$scope.loadHome = function(){
 
 		activePage = "home";
@@ -216,7 +265,15 @@ function unicTabCtrl($scope, $http){
 		;*/
 	}
 
-
+  /**
+   * Methode caled to load the form of a module that don't needs any tabs (like a user)
+   *
+   * @method loadInstance
+   * @param {String} activePage The current par of the interface we are in (config/home)
+   * @param {String} activeModule The current module we are in
+   * @param {String} activeSubModule The current submodule we are in
+   * @param {String} activeInstance The current instance we are in
+   */
 	$scope.loadInstance = function(activePage, activeModule, activeSubModule, activeInstance){
 
 		$scope.page = "form";
