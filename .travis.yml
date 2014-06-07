@@ -24,7 +24,7 @@ before_script:
 
 script:
   ## We do a syntax check
-  - "find . -iname '*.php' -exec php -l '{}'' \;"
+  - "find . -iname '*.php' -exec php -l '{}' \;"
   ## We actualy do the tests
   - "phpunit --configuration phpunit.xml --coverage-text --coverage-clover build/logs/clover.xml"
   ## We generate the documentation of the php part
