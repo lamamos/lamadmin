@@ -4,9 +4,9 @@ find . -iname "*.php" -exec php -l "{}" \;
 phpSyntaxContainsErrors=`echo $?`
 
 
-if [ phpSyntaxContainsErrors -eq 0 ]
+if [ $phpSyntaxContainsErrors -eq 0 ]
 then
-	return 0
+	exit 0
 else
-	return phpSyntaxContainsErrors
+	exit $phpSyntaxContainsErrors
 fi
