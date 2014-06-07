@@ -104,7 +104,7 @@ function formCtrl($scope, $rootScope, $http){
   $scope.clearForm = function(){
 
     $scope.content = "";
-  }
+  };
 
 
   /**
@@ -151,7 +151,7 @@ function formCtrl($scope, $rootScope, $http){
 				alert("error when setting the form");
 			})
 		;
-	}
+	};
 
 
   /**
@@ -193,7 +193,7 @@ function formCtrl($scope, $rootScope, $http){
 				alert("error when getting the liste of the form of the user");
 			})
 		;
-	}
+	};
 
   /**
    * Methode caled in array arguments to add a new slot in the array
@@ -205,7 +205,7 @@ function formCtrl($scope, $rootScope, $http){
 
 		template = angular.fromJson(array.subType);
 		array.value.push(template);
-	}
+	};
 
   /**
    * Methode caled to remove one element from an array in a form
@@ -217,7 +217,7 @@ function formCtrl($scope, $rootScope, $http){
 	$scope.deleteItem = function(arrayIndex, itemIndex){
 
     $scope.content[arrayIndex].value.splice(itemIndex, 1);
-	}
+	};
 
   /**
    * Methode caled to test if the form is empty or not
@@ -229,7 +229,7 @@ function formCtrl($scope, $rootScope, $http){
 
 		if($scope.content.length)return true;
 		else return false;
-	}
+	};
 
 }
 
