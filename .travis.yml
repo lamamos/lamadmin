@@ -13,6 +13,8 @@ env:
 before_script:
   ##Install the dependancys using composer
   - composer install --dev --no-interaction
+  ##Install jshint
+  - npm -g install jshint
   ##install doxygen
   - sudo apt-get install doxygen
   ##install yuidoc
@@ -23,6 +25,8 @@ before_script:
   - mkdir -p build/logs
 
 script:
+  ## We do a syntax check
+  - bash .travis_syntax_check.sh
   ## We actualy do the tests
   - "phpunit --configuration phpunit.xml --coverage-text --coverage-clover build/logs/clover.xml"
   ## We generate the documentation of the php part
