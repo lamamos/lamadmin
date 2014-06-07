@@ -21,7 +21,7 @@ along with Lamadmin.  If not, see <http://www.gnu.org/licenses/>.
 include_once("configuration.php");
 include_once("createConfig.php");
 include_once("modulesObjects.php");
-include_once("argumentObject.php");
+include_once("argumentObject.php")
 
 require_once("FirePHPCore/FirePHP.class.php");
 
