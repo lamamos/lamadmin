@@ -1,6 +1,6 @@
 #!/bin/bash
 
-find . \( -iname "*.php" ! -path "./vendor*" \) -exec php -l "{}" \;
+find . \( -iname "*.php" ! -path "./vendor*" \) -print0 | xargs -0 -n1 php -l
 phpSyntaxContainsErrors=`echo $?`
 
 
