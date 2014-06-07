@@ -4,9 +4,18 @@ find . \( -iname "*.php" ! -path "./vendor*" \) -print0 | xargs -0 -n1 php -l
 phpSyntaxContainsErrors=`echo $?`
 
 
-if [ $phpSyntaxContainsErrors -eq 0 ]
+find . \( -iname "*.js" ! -path "./vendor*" ! -path "./doc*" \) -print0 | xargs -0 -n1 jshint
+jsSyntaxContainsErrors=`echo $?`
+
+
+if [ $phpSyntaxContainsErrors != 0 ]
 then
-	exit 0
-else
 	exit $phpSyntaxContainsErrors
 fi
+
+if [ $jsSyntaxContainsErrors != 0 ]
+then
+	exit $jsSyntaxContainsErrors
+fi
+
+exit 0
