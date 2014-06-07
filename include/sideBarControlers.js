@@ -42,7 +42,7 @@ function sideBarCtrl($scope, $translate){
 
 		if( ($scope.selectedLine == name) && ($scope.selectedType == type) )return "moduleSelected";
 		else return "";
-	}
+	};
 
 	/**
 	 * Methode loading the home page (called when click on the logo in top left corner)
@@ -53,7 +53,7 @@ function sideBarCtrl($scope, $translate){
 
 		$scope.selectedLine = "";
 		angular.element($("#mainPannel")).scope().loadHome();
-	}
+	};
 
 	/**
 	 * Methode who gets a blank form to create anew user
@@ -71,7 +71,7 @@ function sideBarCtrl($scope, $translate){
     $scope.selectedType = "User";
 
     angular.element($("#mainPannel")).scope().loadUser("Add new");
-  }
+  };
 
   /**
    * Methode called when clicking on a flag to change the language of the application
@@ -81,7 +81,7 @@ function sideBarCtrl($scope, $translate){
 	$scope.changeLanguage = function(language){
 
 		$translate.use(language);
-	}
+	};
 }
 
 
@@ -122,7 +122,7 @@ function userListCtrl($scope, $http){
 				alert("error when getting the liste of the users");
 			})
 		;
-	}
+	};
 
 
   /**
@@ -142,7 +142,7 @@ function userListCtrl($scope, $http){
 		$scope.$parent.selectedType = "User";
 
 		angular.element($("#mainPannel")).scope().loadUser(user.name);
-  }
+  };
 
   /**
    * Event called to update the list of the user (retrieve it from the server)
@@ -220,14 +220,14 @@ function serviceListCtrl($scope, $http) {
 			})
 		;
 
-		if( (activeModule == module.name) && (module.activated == false) ){
+		if( (activeModule == module.name) && (module.activated === false) ){
 
 			$scope.$parent.selectedLine = "";
 		  $scope.$parent.selectedType = "";
     	angular.element($("#mainPannel")).scope().loadHome();
 		}
 
-	}
+	};
 
   /**
    * Methode called when we click on a Service
@@ -250,7 +250,7 @@ function serviceListCtrl($scope, $http) {
 		$scope.$parent.selectedType = "Service";
 
 		angular.element($("#mainPannel")).scope().loadModul(module.name);
-    }
+    };
 
 }
 
