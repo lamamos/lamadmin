@@ -18,6 +18,8 @@ You should have received a copy of the GNU General Public License
 along with Lamadmin.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+header('Content-Type: text/html; charset=utf-8');
+
 //set the garbage coloctor timeout for our session
 ini_set('session.gc_maxlifetime', 3600*24*7);
 session_start();
